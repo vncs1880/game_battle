@@ -1,7 +1,0 @@
-
-        {
-        	"Country" : ["Papua New Guinea", "New Zealand"  , "Australia"],
-            "Australia" : ["Papua New Guinea", "New Zealand" , "Indonesia" ], 
-            "New Zealand" : [ "Australia"], 
-            "Papua New Guinea" : [ "Australia"]
-        }

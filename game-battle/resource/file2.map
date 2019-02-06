@@ -1,0 +1,21 @@
+[Map]
+author=Iceworm72
+image=001_I72_Ghtroc 720.bmp
+wrap=no
+scroll=vertical
+warn=no
+
+[Continents]
+Cockpit=5
+Right Thruster=6
+Left Thruster=6
+Right Cargo=10
+Left Cargo=10
+Right Escape Pod=8
+Left Escape Pod=8
+Hyperdrive=12
+
+[Territories]
+Cockpit01,658,355,Cockpit,Cockpit02,Territory33
+Cockpit02,658,375,Cockpit,Cockpit01,Cockpit03,Territory33,Territory85
+Cockpit03,658,395,Cockpit,Cockpit02,Territory85

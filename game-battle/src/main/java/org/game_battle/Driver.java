@@ -15,8 +15,8 @@ public class Driver {
     {
 
     	 
-    	 ReadJSONFromFile jsonfile = new ReadJSONFromFile();
-    	
+    	ReadMapFile obj = new ReadMapFile();
+    	obj.readFiles("sdfd");
         MapView view = new MapView();
         WorldMap model = createIntialGraph();
    
