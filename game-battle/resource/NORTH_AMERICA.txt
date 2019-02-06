@@ -1,0 +1,22 @@
+{
+	"Country":["Canada", "Guatemala", "St. Lucia", "United States of America", "Dominican Republic", "St. Vincent and the Grenadines",
+	"Antigua & Barbuda", "Panama" ,"Costa Rica", "St. Kitts and Nevis"  ,"Haiti" , "Grenada",  "Belize", "Mexico" , "Nicaragua", 
+	"Trinidad and Tobago", "Honduras"],
+    "Canada": ["United States of America"],
+    "Guatemala": ["Mexico","Belize","Honduras","El Salvador"],
+    "St. Lucia": ["St. Vincent and the Grenadines"],
+    "United States of America": ["Canada","Mexico","Russia"],
+    "Dominican Republic": ["Haiti"],
+    "St. Vincent and the Grenadines": ["Grenada","St. Lucia"],
+    "Antigua & Barbuda": ["St. Kitts and Nevis"],
+    "Panama": ["Costa Rica","Colombia"],
+    "Costa Rica": ["Nicaragua","Panama"],
+    "St. Kitts and Nevis": ["Antigua & Barbuda"],
+    "Haiti": ["Dominican Republic"],
+    "Grenada": ["St. Vincent and the Grenadines"],
+    "Belize": ["Mexico","Guatemala"],
+    "Mexico": ["United States of America","Belize","Guatemala"],
+    "Nicaragua": ["Honduras","El Salvador","Costa Rica"],
+    "Trinidad and Tobago": ["Venezuela"],
+    "Honduras": ["Guatemala","El Salvador","Nicaragua"]
+    }

@@ -4,7 +4,7 @@ package org.game_battle;
 
  
 import org.game_battle.model.Implementation.*;
-import org.game_battle.utility.ConnectedGraph;
+import org.game_battle.utility.*;
 import org.game_battle.view.*;
 import org.json.simple.JSONObject;
 import org.game_battle.controler.*;
@@ -15,11 +15,7 @@ public class Driver {
     {
 
     	 
-    	JSONObject obj=new JSONObject();    
-    	obj.put("name","sonoo");    
-    	  obj.put("age",new Integer(27));    
-    	  obj.put("salary",new Double(600000));    
-    	   System.out.print(obj);   
+    	 ReadJSONFromFile jsonfile = new ReadJSONFromFile();
     	
         MapView view = new MapView();
         WorldMap model = createIntialGraph();

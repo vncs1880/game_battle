@@ -1,0 +1,17 @@
+    {
+    "Country" : ["Argentina" , "Bolivia" , "Peru" ,"Brazil" , "Ecuador" , "El Salvador" ,  "Chile", "Uruguay" , 
+    "Colombia" , "Suriname"  , "Venezuela"  , "Guyana"  , "Paraguay"]
+    "Argentina": ["Brazil","Bolivia","Paraguay","Chile","Uruguay"],
+    "Bolivia": ["Peru","Brazil","Paraguay","Chile","Argentina"],
+    "Peru": ["Colombia","Ecuador","Brazil","Bolivia","Chile"],
+    "Brazil": ["Colombia","Venezuela","Guyana","Suriname","Peru","Bolivia","Paraguay","Argentina","Uruguay"],
+    "Ecuador": ["Colombia","Peru"],
+    "El Salvador": ["Guatemala","Honduras","Nicaragua"],
+    "Chile": ["Peru","Bolivia","Argentina"],
+    "Uruguay": ["Brazil","Argentina"],
+    "Colombia": ["Venezuela","Ecuador","Peru","Brazil","Panama"],
+    "Suriname": ["Guyana","Brazil"],
+    "Venezuela": ["Colombia","Guyana","Brazil","Trinidad and Tobago"],
+    "Guyana": ["Venezuela","Suriname","Brazil"],
+    "Paraguay": ["Brazil","Bolivia","Argentina"]
+      }
