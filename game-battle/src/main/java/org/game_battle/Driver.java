@@ -6,12 +6,13 @@ package org.game_battle;
 import org.game_battle.model.Implementation.*;
 import org.game_battle.utility.*;
 import org.game_battle.view.*;
-import org.json.simple.JSONObject;
+//import org.json.simple.JSONObject;
 import org.game_battle.booatstrap.*;
 import org.game_battle.controler.*;
 
+
 public class Driver {
-public static String PATH = "/Users/basantsingh/git/game_battle/game-battle/resource/file.map" ;
+public static String PATH = "/resource/file.map" ;
 
     static public void main(String[] args)
     {

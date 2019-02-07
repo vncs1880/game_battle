@@ -35,7 +35,6 @@ public class MapFile {
 			System.out.println(WorldMap.neighbours);
 			System.out.println(WorldMap.noOfCountries);
 			System.out.println(WorldMap.noOfContinents);
-
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
