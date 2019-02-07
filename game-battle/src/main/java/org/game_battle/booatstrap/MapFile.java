@@ -24,7 +24,7 @@ public class MapFile {
 	{
 		BufferedReader reader;
 		try {
-			reader = new BufferedReader(new FileReader("/Users/basantsingh/git/game_battle/game-battle/resource/file.map"));
+			reader = new BufferedReader(new FileReader("resource/file.map"));
 			String line = reader.readLine();
 			while (line != null) {
 				MapLoader.extractData( line);
