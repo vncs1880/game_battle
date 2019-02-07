@@ -19,14 +19,16 @@ public static String PATH = "/Users/basantsingh/git/game_battle/game-battle/reso
     	MapFile obj = new MapFile();
     	obj.readFiles(PATH);
         MapView view = new MapView();
-        WorldMap2 model = createIntialGraph();
+        ConnectedGraph2.connected_components();
+
    
-        MapController controller = new MapController(model, view);
-        controller.printUpdatedDetails(model);
-        ConnectedGraph.connected_components(model);
-        controller.addGraphEdge(4 , 7);
-        controller.printUpdatedDetails(model);
-        ConnectedGraph.connected_components(model);
+//
+//        MapController controller = new MapController(model, view);
+//        controller.printUpdatedDetails(model);
+//        ConnectedGraph.connected_components(model);
+//        controller.addGraphEdge(4 , 7);
+//        controller.printUpdatedDetails(model);
+//        ConnectedGraph.connected_components(model);
  	
     }
     

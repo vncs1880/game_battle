@@ -67,10 +67,25 @@ public class MapLoader {
 				CountryList.add(value[i]);
 			}
 		}
+		WorldMap.neighbours.put(territoryName, CountryList);
 		TerritoryZone tz = new TerritoryZone(continentName, territoryName, cordiantes, CountryList); 
 		HashMap<String,TerritoryZone>  tz_hash= new HashMap<String,TerritoryZone>() ;
 		tz_hash.put(continentName, tz);
 		WorldMap.continents.put(territoryName  , tz_hash);
 	}
 
+	public static boolean isMapConnected()
+	{
+		
+		
+		
+		
+		return true;
+		
+		
+		
+		
+	}
+	
+	
 }
