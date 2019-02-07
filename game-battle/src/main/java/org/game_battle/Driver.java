@@ -7,18 +7,19 @@ import org.game_battle.model.Implementation.*;
 import org.game_battle.utility.*;
 import org.game_battle.view.*;
 import org.json.simple.JSONObject;
+import org.game_battle.booatstrap.*;
 import org.game_battle.controler.*;
 
 public class Driver {
-	
+public static String PATH = "/Users/basantsingh/git/game_battle/game-battle/resource/file.map" ;
+
     static public void main(String[] args)
     {
-
     	 
-    	ReadMapFile obj = new ReadMapFile();
-    	obj.readFiles("sdfd");
+    	MapFile obj = new MapFile();
+    	obj.readFiles(PATH);
         MapView view = new MapView();
-        WorldMap model = createIntialGraph();
+        WorldMap2 model = createIntialGraph();
    
         MapController controller = new MapController(model, view);
         controller.printUpdatedDetails(model);
@@ -30,9 +31,9 @@ public class Driver {
     }
     
     
-    private static WorldMap createIntialGraph(){
+    private static WorldMap2 createIntialGraph(){
     	  int V =9 ;
-    	  WorldMap g = new WorldMap(V);
+    	  WorldMap2 g = new WorldMap2(V);
           g.addEdge(1, 2); 
           g.addEdge(2, 3); 
           g.addEdge(3, 4);

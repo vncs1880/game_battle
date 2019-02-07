@@ -10,7 +10,7 @@ public class MapView {
 
 }
 	
-public void printGraphDetails(WorldMap  g)
+public void printGraphDetails(WorldMap2  g)
 	{
 	for(int i = 0 ; i < g.noOfCountries ; i++)
 		        {

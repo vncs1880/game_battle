@@ -13,7 +13,7 @@ public class ConnectedGraph
     static boolean   processed[]  = new boolean[MAXV];
     static int       parent[]     = new int[MAXV];
  
-    public static void bfs(WorldMap g, int start)
+    public static void bfs(WorldMap2 g, int start)
     {
         Queue<Integer> queue = new LinkedList<Integer>();
         int i, v;
@@ -52,7 +52,7 @@ public class ConnectedGraph
     }
     
  
-   public static void initialize_search(WorldMap g)
+   public static void initialize_search(WorldMap2 g)
     {
         for (int i = 0; i < g.noOfCountries; i++)
         {
@@ -61,7 +61,7 @@ public class ConnectedGraph
         }
     }
  
-   public static void connected_components(WorldMap g)
+   public static void connected_components(WorldMap2 g)
     {
         int c;
         initialize_search(g);

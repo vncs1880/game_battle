@@ -5,10 +5,10 @@ import org.game_battle.model.Implementation.*;
 
 public class MapController {
 	
-	   private WorldMap model;
+	   private WorldMap2 model;
 	   private MapView view;
 
-	public MapController(WorldMap model, MapView view ) {
+	public MapController(WorldMap2 model, MapView view ) {
 		this.model = model;
 	    this.view = view;
 	}
@@ -17,7 +17,7 @@ public class MapController {
 	      model.addEdge(src, dest);		
 	   }
 	
-	public void printUpdatedDetails(WorldMap model)
+	public void printUpdatedDetails(WorldMap2 model)
 		{
 	      view.printGraphDetails(model);	
 	   }
