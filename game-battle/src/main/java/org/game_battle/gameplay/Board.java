@@ -12,6 +12,13 @@ import java.util.*;
 public class Board {
 	private List<Continent> continents;
 	private List<List<Country>> countriesByContinent;
+	/**
+	 * @return the countriesByContinent
+	 */
+	public List<List<Country>> getCountriesByContinent() {
+		return countriesByContinent;
+	}
+
 	private List<Player> players;
 	
 	/**

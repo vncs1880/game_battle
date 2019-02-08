@@ -53,7 +53,12 @@ public class Player {
 		//For each Continent
 //			Continent.CalculateNumberArmies(Player)
 		for (Continent continent : board.getContinents()) {
-			
+			List<Country> countriesByContinent = board.getCountriesByContinent(continent);
+			for (Country country : countriesByContinent) {
+				if (countries.contains(country)) {
+					
+				}
+			} 
 		}
 		//
 		//
