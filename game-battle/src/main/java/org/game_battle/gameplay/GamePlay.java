@@ -18,11 +18,28 @@ public class GamePlay {
 	 */
 	public GamePlay() {
 		super();
+		initialization();
+	}
+
+	/**
+	 * 
+	 */
+	private void initialization() {
+		//Board LOADS Graph
+		//Game: The game starts by the start-up phase, where the number of players is determined, then all the
+		//countries are randomly assigned to the players. 
+		//
+		//L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
+		////generate a list of lists, each w random countries
+		//For player in PlayersTotalNumber:
+//			New Player().AssignCountries( L[player] )
+//			//set countries_list in Player OR set owner in country
 		board = new Board();
 		board.init();
 		List<List<Country>> L = board.getRandomCountriesLists(board.getPlayersCount());
-		for (Player player : board.getPlayers()) {
-			
+		List<Player> players = board.getPlayers();
+		for (Player player : players) {
+			player.assignCountries(L.get(players.indexOf(player)));//TODO check this later
 		}
 	}
 	
@@ -31,20 +48,6 @@ public class GamePlay {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//Board LOADS Graph
-		//
-		//Game: The game starts by the start-up phase, where the number of players is determined, then all the
-		//countries are randomly assigned to the players. 
-		//
-		//L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
-		////generate a list of lists, each w random countries
-		//
-		//For player in PlayersTotalNumber:
-//			New Player().AssignCountries( L[player] )
-//			//set countries_list in Player OR set owner in country
-		
-		
-
 	}
 	//Then the turn-based main play phase begins, in which all players are given a turn in a round-robin fashion. 
 	//
