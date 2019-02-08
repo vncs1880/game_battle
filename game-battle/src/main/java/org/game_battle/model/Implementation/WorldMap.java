@@ -15,7 +15,7 @@ public class WorldMap {
 	public static int noOfContinents = continentValues.size();
 
 
-	ArrayList<String> getNeighbours(String country)
+	public ArrayList<String> getNeighbours(String country)
 	{
 		return(neighbours.get(country));
 	}
