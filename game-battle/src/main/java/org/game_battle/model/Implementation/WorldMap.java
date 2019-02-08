@@ -13,10 +13,15 @@ public class WorldMap {
 	public static HashMap<String, ArrayList<String>> neighbours = new HashMap<String, ArrayList<String>> ();
 	public static int noOfCountries =  neighbours.size() ;
 	public static int noOfContinents = continentValues.size();
-	public static void clear() {
-		continents.clear();
-		continentValues.clear();
+
+
+	public ArrayList<String> getNeighbours(String country)
+	{
+		return(neighbours.get(country));
 	}
+	
+	
+	
 
 
 
