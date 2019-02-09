@@ -89,10 +89,6 @@ public class Player {
 				}
 			}	
 		}
-		
-		//Question : Do player need to play based on strategy or everything should happen in background with randomly generated value
-		//
-		//
 	}
 
 	private List<Card> getCards() {
@@ -113,6 +109,78 @@ public class Player {
 			i = 3;
 		}
 		this.armies  = i;
+	}
+
+	public void Attack() {
+		/*
+		 * Once all the reinforcement armies have been placed by the player, the attacks
+		 * phase begins. In the attack phase, the player may choose one of the countries
+		 * he owns that contains two or more armies, and declare an attack on an
+		 * adjacent country that is owned by another player.
+		 */ 
+		//elligibleAttackerCountries = Player.getCountries(Country.getArmiesCount() > 2)
+
+		List<Country> elligibleAttackerCountries = getAttackerCountries(2);
+		
+		//A battle is then simulated by the attacker rolling at most 3 dice (which should not be more than the number of armies contained in the attacking country) and the defender rolling at most 2 dice (which should not be more than the number of armies contained in the attacking country). 
+		//
+		//OffendingCountry = elligibleAttackerCountries[UI.get_user_selection]
+		//DeffendingCountry = Board.getElligibleTargets(OffendingCountry)[UI.get_user_selection] 
+		////elligible targets are adjacent nodes
+		
+		Country OffendingCountry = UI.select("Select attacker country",elligibleAttackerCountries);
+		Country DeffendingCountry = UI.select("Select target country", board.getElligibleTargets(OffendingCountry));
+		
+		//The attacker can choose to continue attacking until either all his armies or all the defending armies have been eliminated. 
+		//
+		//While (OffendingCountry.getTotalArmies() > 0) AND (DeffendingCountry.getTotalArmies() > 0) do {
+		//<<Board.Battle()>>
+		//}
+		while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
+			if (!UI.isUserOk("Want to attack?")) {
+				break;
+			}
+			//Board.Battle(OffendingCountry, DeffendingCountry) 
+			board.doBattle(OffendingCountry, DeffendingCountry);
+		}
+
+		//If all the defender's armies are eliminated the attacker captures the territory. 
+		//
+		//Board.updateTerritories(DeffendingCountry) 
+		////just change ownership if DeffendingCountry.getTotalArmies() == 0
+		//
+		
+		if (DeffendingCountry.getArmies() == 0) {
+			board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
+		}
+		/*
+		 * The attacking player must then place a number of armies in the conquered
+		 * country which is greater or equal than the number of dice that was used in
+		 * the attack that resulted in conquering the country. A player may do as many
+		 * attacks as he wants during his turn.
+		 */ 
+		//
+		//MinimumArmies = Board.Battle.getLastRollDiceResult()
+		
+		int minimumArmies = board.getLastDiceRollResult();
+		DeffendingCountry.setArmyQty(UI.askNumber("How many armies to occupy defeated country? Minimum is "+ minimumArmies+". Maximum is "+ armies));
+		
+		
+	}
+
+	private List<Country> getAttackerCountries(int i) {
+		List<Country> attackers = null;
+		
+		for (Country country : countries) {
+			if (country.getArmies() >= 2) {
+				attackers.add(country);
+			}
+		}		
+		return attackers;
+	}
+
+	public List<Country> getCountries() {
+		return countries;
 	}
 
 }

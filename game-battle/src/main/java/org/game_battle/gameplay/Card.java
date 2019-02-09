@@ -15,11 +15,10 @@ public class Card {
 		 * @author vncs
 		 *
 		 */
-	public enum Sort {
-		TYPE_1,
-		TYPE_2,
-		TYPE_3,
-		TYPE_4
+	public enum Sort {//infantry, cavalry, or artillery
+		INFANTRY,
+		CAVALRY,
+		ARTILLERY
 	}
 
 	private Sort type;

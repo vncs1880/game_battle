@@ -3,6 +3,8 @@
  */
 package org.game_battle.gameplay;
 
+import java.util.List;
+
 /**
  * @author vncs
  *
@@ -25,6 +27,11 @@ public class UI {
 	public static int askNumber(String string) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public static Country select(String prompt, List<Country> countries) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

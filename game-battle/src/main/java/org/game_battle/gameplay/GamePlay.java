@@ -74,7 +74,7 @@ public class GamePlay {
 		while (game.getBoard().getPlayers().size() > 1) {
 			for (Player player : players) {
 				player.Reinforcement();
-				//player.Attack();
+				player.Attack();
 				//player.Fortification();
 			}
 		};
@@ -86,39 +86,7 @@ public class GamePlay {
 		return board;
 	}
 
-	//Once all the reinforcement armies have been placed by the player, the attacks phase begins. In the attack phase, the player may choose one of the countries he owns that contains two or more armies, and declare an attack on an adjacent country that is owned by another player. 
-	//
-	//elligibleAttackerCountries = Player.getCountries(Country.getArmiesCount() > 2)
-	//
-	//A battle is then simulated by the attacker rolling at most 3 dice (which should not be more than the number of armies contained in the attacking country) and the defender rolling at most 2 dice (which should not be more than the number of armies contained in the attacking country). 
-	//
-	//OffendingCountry = elligibleAttackerCountries[UI.get_user_selection]
-	//DeffendingCountry = Board.getElligibleTargets(OffendingCountry)[UI.get_user_selection] 
-	////elligible targets are adjacent nodes
-	//Board.Battle(OffendingCountry, DeffendingCountry) 
-	////Battle() updates players armies numbers according to logic below
-	//
-	//The outcome of the attack is determined by comparing the defenders best dice
-	//roll with the attackers best dice roll. If the defender rolls greater or equal to the attacker, then the attacker loses an army otherwise the defender loses an army. If the defender rolled two dice, then his other dice roll is compared to the attacker's second best dice roll and a second army is lost by the attacker or defender in the same way. 
-	//
-	//Still to do 
-	//pls help😅
-	//
-	//The attacker can choose to continue attacking until either all his armies or all the defending armies have been eliminated. 
-	//
-	//While (OffendingCountry.getTotalArmies() > 0) OR (DeffendingCountry.getTotalArmies() > 0) do {
-	//<<Board.Battle()>>
-	//}
-	//
-	//If all the defender's armies are eliminated the attacker captures the territory. 
-	//
-	//Board.updateTerritories(DeffendingCountry) 
-	////just change ownership if DeffendingCountry.getTotalArmies() == 0
-	//
-	//The attacking player must then place a number of armies in the conquered country which is greater or equal than the number of dice that was used in the attack that resulted in conquering the country. A player may do as many attacks as he wants during his turn. 
-	//
-	//MinimumArmies = Board.Battle.getLastRollDiceResult()
-	//
+
 	//Once he declares that he will not attack anymore (or cannot attack because none of his countries that have an adjacent country controlled by another player is containing more than one army), the fortification phase begins. In the fortification phase, the player may move any number of armies from one of his owed countries to the other, provided that there is a path between these two countries that is composed of countries that he owns. Only one such move is allowed per fortification phase.
 	//
 	//For each country in Player.getCountryList():

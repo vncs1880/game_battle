@@ -22,4 +22,9 @@ public class Country {
 		armies = resp;
 	}
 
+	public int getArmies() {
+		// TODO Auto-generated method stub
+		return armies;
+	}
+
 }
