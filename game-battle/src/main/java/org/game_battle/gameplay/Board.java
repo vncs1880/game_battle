@@ -10,8 +10,9 @@ import java.util.*;
  *
  */
 public class Board {
-	private List<Continent> continents = new ArrayList<Continent>();
+	private List<Continent> continents;
 	private List<List<Country>> countriesByContinent;
+	private List<Player> players;
 	
 	/**
 	 * 
@@ -20,9 +21,11 @@ public class Board {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void init() {
+	public void startup() {
 		// TODO Auto-generated method stub
+		players = Arrays.asList(new Player(this),new Player(this),new Player(this),new Player(this));
 		//User-driven creation of map elements, such as country, continent, and connectivity between countries. 4
+		continents = Arrays.asList(new Continent(),new Continent(),new Continent());
 		//Saving a map to a text file exactly as edited (using the “conquest” game map format). 3
 		//Loading a map from an existing “conquest” map file, then editing the map, or create a new map from scratch. 3
 		//Verification of map correctness upon loading and before saving (at least 3 types of incorrect maps). 2
@@ -45,7 +48,12 @@ public class Board {
 
 	public List<Player> getPlayers() {
 		// TODO Auto-generated method stub
-		return null;
+		return players;
+	}
+
+	public List<Continent> getContinents() {
+		// TODO Auto-generated method stub
+		return continents;
 	}
 
 }

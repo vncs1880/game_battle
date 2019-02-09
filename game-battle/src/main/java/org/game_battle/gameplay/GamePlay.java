@@ -12,6 +12,7 @@ import java.util.List;
 public class GamePlay {
 
 	private Board board;
+	private static List<Player> players;
 	
 	/**
 	 * @param board
@@ -35,9 +36,9 @@ public class GamePlay {
 //			New Player().AssignCountries( L[player] )
 //			//set countries_list in Player OR set owner in country
 		board = new Board();
-		board.init();
+		board.startup();
 		List<List<Country>> L = board.getRandomCountriesLists(board.getPlayersCount());
-		List<Player> players = board.getPlayers();
+		players = board.getPlayers();
 		for (Player player : players) {
 			player.assignCountries(L.get(players.indexOf(player)));//TODO check this later
 		}
@@ -48,7 +49,7 @@ public class GamePlay {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-	}
+	
 	//Then the turn-based main play phase begins, in which all players are given a turn in a round-robin fashion. 
 	//
 	//Each player’s turn is itself divided into three phases: 
@@ -62,54 +63,14 @@ public class GamePlay {
 //		Player.Attack()
 //			Player.Fortification()
 	//
-	//Once a player is finished with these three phases, the next player’s turn starts. 
-	//
-	//In the reinforcements phase, the player is given a number of armies that depends on the number of countries he owns (# of countries owned divided by 3, rounded down). 
-	//If the player owns all the countries of an entire continent, the player is given an amount of armies
-	//corresponding to the continent’s control value. 
-	//
-	//Player.resetNumberArmies
-	//
-	//For each Continent:
-//		if allContinentBelongsTo(Player) 
-//			Player.updateNumberArmies(NumberArmies(Continent.control_value))  
-	////updateNumberArmies just accumulates the number 
-//		else
-//			totalCountriesOwnedByPlayer += Continent.CountriesOwnedBy(Player)
-	////add accumulated countries after all continents are checked
-	//Player.updateNumberArmies(RoundDown(totalCountriesOwnedByPlayer/3))
-	//
-	//OR (needs elaboration tho)...
-	//
-	//For each Continent
-//		Continent.CalculateNumberArmies(Player)
-	//
-	//
-	//Finally, if the player owns three cards of different sorts or the same sorts, he can exchange them for armies. 
-	//
-	//“Do you want to try to get armies from your cards?”
-	//If YES:
-	//Player.updateNumberArmies(Cards.getEligibleArmies(Player.getCards()))
-	////if not elligible,   Cards.getEligibleArmies = 0
-	////Cards.getEligibleArmies manages the counter to 5, 10, 15.. across players turns 
-	////Cards is an utility class for now (maybe should be Board.Cards because Board HAS Cards).
-	//
-	//The number of armies a player will get for cards is first 5, then increases by 5 every time any player does so (i.e. 5, 10, 15, …). In any case, the minimal number of reinforcement armies is 3. 
-	//
-	//If totalArmiesOwnedByPlayer < 3:
-//		totalArmiesOwnedByPlayer = 3
-	//
-	//Once the total number of reinforcements is determined for the player’s turn, the player may place the armies on any country he owns, divided as he wants. 
-	//
-	//For each Player.getCountries():
-//		If totalArmiesOwnedByPlayer == 0 then break
-//		N = user_input //if >  totalArmiesOwnedByPlayer, N = totalArmiesOwnedByPlayer
-//		Country.setArmiesNumber(n)
-	//
-	//
-	//Question : Do player need to play based on strategy or everything should happen in background with randomly generated value
-	//
-	//
+	//Once a player is finished with these three phases, the next player’s turn starts.
+		for (Player player : players) {
+			player.Reinforcement();
+			//player.Attack();
+			//player.Fortification();
+		}
+	}
+
 	//Once all the reinforcement armies have been placed by the player, the attacks phase begins. In the attack phase, the player may choose one of the countries he owns that contains two or more armies, and declare an attack on an adjacent country that is owned by another player. 
 	//
 	//elligibleAttackerCountries = Player.getCountries(Country.getArmiesCount() > 2)
