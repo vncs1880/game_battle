@@ -13,10 +13,11 @@ public class Board {
 	private List<Continent> continents;
 	private List<List<Country>> countriesByContinent;
 	/**
+	 * @param continent 
 	 * @return the countriesByContinent
 	 */
-	public List<List<Country>> getCountriesByContinent() {
-		return countriesByContinent;
+	public List<Country> getCountriesByContinent(Continent continent) {
+		return countriesByContinent.get(countriesByContinent.indexOf(continent));
 	}
 
 	private List<Player> players;
@@ -32,7 +33,7 @@ public class Board {
 		// TODO Auto-generated method stub
 		players = Arrays.asList(new Player(this),new Player(this),new Player(this),new Player(this));
 		//User-driven creation of map elements, such as country, continent, and connectivity between countries. 4
-		continents = Arrays.asList(new Continent(),new Continent(),new Continent());
+		continents = Arrays.asList(new Continent(20),new Continent(15),new Continent(10));
 		//Saving a map to a text file exactly as edited (using the “conquest” game map format). 3
 		//Loading a map from an existing “conquest” map file, then editing the map, or create a new map from scratch. 3
 		//Verification of map correctness upon loading and before saving (at least 3 types of incorrect maps). 2

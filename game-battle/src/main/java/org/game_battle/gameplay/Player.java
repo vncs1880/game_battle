@@ -52,14 +52,23 @@ public class Player {
 		//
 		//For each Continent
 //			Continent.CalculateNumberArmies(Player)
-		for (Continent continent : board.getContinents()) {
+		List<Continent> continents = board.getContinents();
+		int totalCountriesOwned = 0;
+		int totalArmies = 0;
+		for (Continent continent : continents) {
+			int totalCountriesInContinent = 0;
 			List<Country> countriesByContinent = board.getCountriesByContinent(continent);
 			for (Country country : countriesByContinent) {
 				if (countries.contains(country)) {
-					
+					totalCountriesOwned += 1;
 				}
-			} 
+			}
+			if (totalCountriesInContinent == countriesByContinent.size()) {
+				totalArmies  = continent.getControlValue();
+			}
+			totalCountriesOwned += totalCountriesInContinent;
 		}
+		setArmiesQtyFromCountriesQty(totalCountriesOwned, totalArmies);
 		//
 		//
 		//Finally, if the player owns three cards of different sorts or the same sorts, he can exchange them for armies. 
@@ -87,6 +96,11 @@ public class Player {
 		//Question : Do player need to play based on strategy or everything should happen in background with randomly generated value
 		//
 		//
+	}
+
+	private void setArmiesQtyFromCountriesQty(int totalCountriesOwned, int totalArmies) {
+		// TODO make sure this is rounded down
+		setArmies(totalCountriesOwned/3 + totalArmies);
 	}
 
 	private void setArmies(int i) {
