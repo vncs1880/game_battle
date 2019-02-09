@@ -183,4 +183,42 @@ public class Player {
 		return countries;
 	}
 
+	public void Fortification() {
+		/*
+		 * Once he declares that he will not attack anymore (or cannot attack because
+		 * none of his countries that have an adjacent country controlled by another
+		 * player is containing more than one army), the fortification phase begins. In
+		 * the fortification phase, the player may move any number of armies from one of
+		 * his owed countries to the other, provided that there is a path between these
+		 * two countries that is composed of countries that he owns. Only one such move
+		 * is allowed per fortification phase.
+		 */
+
+		//For each country in Player.getCountryList():
+		//If coutry.hasArmies() AND GameBoard.areConnected(country, defeatedCountry):
+//			Z = UI.ask(“Move how many armies from X to Y? [0 to country.getArmiesNumber()]”)
+//			country.setArmiesNumber(country.getArmiesNumber() - Z)
+//			defeatedCountry.setArmiesNumber(Z)	
+		//break FOR //only 1 move is allowed
+
+		for (Country country : countries) {
+			List<Country> neighbours = country.getNeighbours();
+			if (country.getArmies() > 0 && neighbours.size() > 0) {
+				Country selected = UI.select("Want to move armies from "+ country +" to a neighbour?", neighbours);
+				if (selected != null) {
+					int n_armies = UI.askNumber("How many armies from "+country+" to "+selected);
+					country.setArmyQty(country.getArmies()-n_armies);
+					selected.setArmyQty(n_armies);
+					break;
+				}
+			}
+		}
+		
+		/*
+		 * Once the move is made or the player forfeits his fortification phase, the
+		 * player’s turn ends and it is now the next player’s turn. 
+		 */
+
+	}
+
 }

@@ -75,7 +75,44 @@ public class GamePlay {
 			for (Player player : players) {
 				player.Reinforcement();
 				player.Attack();
-				//player.Fortification();
+				player.Fortification();
+				/* Any player than does
+				 * not control at least one country is removed from the game. The game ends at
+				 * any time one of the players owns all the countries in the map. Cards: A
+				 * player receives a card at the end of his turn if he successfully conquered at
+				 * least one country during his turn.
+				 */ 
+
+				//L = GameBoard.getPlayers()
+				//If L.length() == 1:
+//					GameBoard.GameOver()
+				//Else:
+				//For each player in L:
+//					countries = length(player.getCountryList())
+//						If countries == 0:		
+//							L.remove[player]
+//						If countries > player.getPreviousCountriesQty():
+//							player.receiveCard(GameBoard.getCard())
+//						player.setPreviousCountriesQty(countries)
+				//
+				/*
+				 * Each card is either an infantry, cavalry, or artillery card. During a
+				 * player’s reinforcement phase, a player can exchange a set of three cards of
+				 * the same kind, or a set of three cards of all different kinds for a number of
+				 * armies that increases every time any player does so. The number of armies a
+				 * player will get for cards is first 5, then increases by 5 every time any
+				 * player does so (i.e. 5, 10, 15, …). A player that conquers the last country
+				 * owned by another player receives all the cards held by that player. If a
+				 * player holds five cards during his reinforcement phase, he must exchange
+				 * three of them for armies.
+				 */
+
+				//After battle/during attack phase, inside Board.updateTerritories(DeffendingCountry):
+				//
+				//defeated = DeffendingCountry.getOwner()
+				//If length(defeated.getCountryList()) == 0: //lost last country
+				//cardslist = GameBoard.getDistributedCards
+				//cardslist[winner].append(cardslist[defeated])
 			}
 		};
 		
@@ -86,36 +123,4 @@ public class GamePlay {
 		return board;
 	}
 
-
-	//Once he declares that he will not attack anymore (or cannot attack because none of his countries that have an adjacent country controlled by another player is containing more than one army), the fortification phase begins. In the fortification phase, the player may move any number of armies from one of his owed countries to the other, provided that there is a path between these two countries that is composed of countries that he owns. Only one such move is allowed per fortification phase.
-	//
-	//For each country in Player.getCountryList():
-	//If coutry.hasArmies() AND GameBoard.areConnected(country, defeatedCountry):
-//		Z = UI.ask(“Move how many armies from X to Y? [0 to country.getArmiesNumber()]”)
-//		country.setArmiesNumber(country.getArmiesNumber() - Z)
-//		defeatedCountry.setArmiesNumber(Z)	
-	//break FOR //only 1 move is allowed
-	//
-	//Once the move is made or the player forfeits his fortification phase, the player’s turn ends and it is now the next player’s turn. Any player than does not control at least one country is removed from the game. The game ends at any time one of the players owns all the countries in the map. Cards: A player receives a card at the end of his turn if he successfully conquered at least one country during his turn. 
-	//
-	//L = GameBoard.getPlayers()
-	//If L.length() == 1:
-//		GameBoard.GameOver()
-	//Else:
-	//For each player in L:
-//		countries = length(player.getCountryList())
-//			If countries == 0:		
-//				L.remove[player]
-//			If countries > player.getPreviousCountriesQty():
-//				player.receiveCard(GameBoard.getCard())
-//			player.setPreviousCountriesQty(countries)
-	//
-	//Each card is either an infantry, cavalry, or artillery card. During a player’s reinforcement phase, a player can exchange a set of three cards of the same kind, or a set of three cards of all different kinds for a number of armies that increases every time any player does so. The number of armies a player will get for cards is first 5, then increases by 5 every time any player does so (i.e. 5, 10, 15, …). A player that conquers the last country owned by another player receives all the cards held by that player. If a player holds five cards during his reinforcement phase, he must exchange three of them for armies.
-	//
-	//After battle/during attack phase, inside Board.updateTerritories(DeffendingCountry):
-	//
-	//defeated = DeffendingCountry.getOwner()
-	//If length(defeated.getCountryList()) == 0: //lost last country
-	//cardslist = GameBoard.getDistributedCards
-	//cardslist[winner].append(cardslist[defeated])
 }
