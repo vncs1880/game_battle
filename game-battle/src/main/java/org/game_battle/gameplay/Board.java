@@ -3,7 +3,8 @@
  */
 package org.game_battle.gameplay;
 
-import java.util.*; 
+import java.util.*;
+import java.util.function.Predicate; 
 
 /**
  * @author voda
@@ -31,8 +32,7 @@ public class Board {
 	}
 
 	public void startup() {
-		// TODO Auto-generated method stub
-		players = Arrays.asList(new Player(this),new Player(this),new Player(this),new Player(this));
+		//players = Arrays.asList(new Player(this),new Player(this),new Player(this),new Player(this));
 		//User-driven creation of map elements, such as country, continent, and connectivity between countries. 4
 		continents = Arrays.asList(new Continent(20),new Continent(15),new Continent(10));
 		//Saving a map to a text file exactly as edited (using the “conquest” game map format). 3
@@ -65,11 +65,6 @@ public class Board {
 	}
 
 	public int getArmiesFromCards(List<Card> cards) {
-		//Finally, if the player owns three cards of different sorts or the same sorts, he can exchange them for armies. 		
-		////getEligibleArmies manages the counter to 5, 10, 15.. across players turns 
-		////Cards is an utility class for now (maybe should be Board.Cards because Board HAS Cards).
-		//The number of armies a player will get for cards is first 5, then increases by 5 every time any player does so (i.e. 5, 10, 15, …). In any case, the minimal number of reinforcement armies is 3. 
-
 		HashMap<Card.Sort, Integer> cardsCount = new HashMap<Card.Sort, Integer>(){{
 		    put(Card.Sort.TYPE_1, 0);
 		    put(Card.Sort.TYPE_2, 0);
@@ -81,13 +76,30 @@ public class Board {
 			Integer new_qty = cardsCount.get(card.getType());
 			cardsCount.put( card.getType(), new_qty++ );
 		}
+		//Finally, if the player owns three cards of different sorts or the same sorts, he can exchange them for armies. 		
+		////getEligibleArmies manages the counter to 5, 10, 15.. across players turns 
+		////Cards is an utility class for now (maybe should be Board.Cards because Board HAS Cards).
+		//The number of armies a player will get for cards is first 5, then increases by 5 every time any player does so (i.e. 5, 10, 15, …). In any case, the minimal number of reinforcement armies is 3. 
+
+		boolean equals = cardsCount.values().contains(3);
+		Collection<Integer> diffs = cardsCount.values();
+		diffs.removeIf(new Predicate<Integer>() {
+			public boolean test(Integer i) {
+				return i != 1;
+			}
+		});
+		boolean differents = diffs.size() >= 3;
 		
-		if (condition) {
+		if (equals||differents) {
 			cardsToGive += 5;
 			return cardsToGive;	
 		} else {
 			return 0;
 		}
+	}
+
+	public void setPlayers(List<Player> asList) {
+		players = asList;
 	}
 
 }

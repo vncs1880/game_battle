@@ -22,4 +22,9 @@ public class UI {
 		return false;
 	}
 
+	public static int askNumber(String string) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

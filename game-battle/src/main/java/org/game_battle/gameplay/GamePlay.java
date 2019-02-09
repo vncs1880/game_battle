@@ -3,6 +3,7 @@
  */
 package org.game_battle.gameplay;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,6 +38,7 @@ public class GamePlay {
 //			//set countries_list in Player OR set owner in country
 		board = new Board();
 		board.startup();
+		board.setPlayers(Arrays.asList(new Player(board),new Player(board),new Player(board),new Player(board)));
 		List<List<Country>> L = board.getRandomCountriesLists(board.getPlayersCount());
 		players = board.getPlayers();
 		for (Player player : players) {

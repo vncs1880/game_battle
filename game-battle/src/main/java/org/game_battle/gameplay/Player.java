@@ -81,8 +81,15 @@ public class Player {
 //			If totalArmiesOwnedByPlayer == 0 then break
 //			N = user_input //if >  totalArmiesOwnedByPlayer, N = totalArmiesOwnedByPlayer
 //			Country.setArmiesNumber(n)
-		//
-		//
+		if (armies > 0) {
+			for (Country country : countries) {
+				int qtyArmies = UI.askNumber("How many armies do you want to put in country "+ country.toString() +" ?");
+				if (qtyArmies  <= armies) {
+					country.setArmyQty(qtyArmies);
+				}
+			}	
+		}
+		
 		//Question : Do player need to play based on strategy or everything should happen in background with randomly generated value
 		//
 		//
