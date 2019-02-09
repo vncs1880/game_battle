@@ -21,6 +21,7 @@ public class Board {
 	}
 
 	private List<Player> players;
+	private int cardsToGive;
 	
 	/**
 	 * 
@@ -51,17 +52,42 @@ public class Board {
 
 	public List<List<Country>> getRandomCountriesLists(int playersCount) {
 		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	public List<Player> getPlayers() {
-		// TODO Auto-generated method stub
 		return players;
 	}
 
 	public List<Continent> getContinents() {
-		// TODO Auto-generated method stub
 		return continents;
+	}
+
+	public int getArmiesFromCards(List<Card> cards) {
+		//Finally, if the player owns three cards of different sorts or the same sorts, he can exchange them for armies. 		
+		////getEligibleArmies manages the counter to 5, 10, 15.. across players turns 
+		////Cards is an utility class for now (maybe should be Board.Cards because Board HAS Cards).
+		//The number of armies a player will get for cards is first 5, then increases by 5 every time any player does so (i.e. 5, 10, 15, …). In any case, the minimal number of reinforcement armies is 3. 
+
+		HashMap<Card.Sort, Integer> cardsCount = new HashMap<Card.Sort, Integer>(){{
+		    put(Card.Sort.TYPE_1, 0);
+		    put(Card.Sort.TYPE_2, 0);
+		    put(Card.Sort.TYPE_3, 0);
+		    put(Card.Sort.TYPE_4, 0);
+		}}; // TODO EnumMap could be better
+		
+		for (Card card : cards) {
+			Integer new_qty = cardsCount.get(card.getType());
+			cardsCount.put( card.getType(), new_qty++ );
+		}
+		
+		if (condition) {
+			cardsToGive += 5;
+			return cardsToGive;	
+		} else {
+			return 0;
+		}
 	}
 
 }

@@ -40,7 +40,7 @@ public class GamePlay {
 		List<List<Country>> L = board.getRandomCountriesLists(board.getPlayersCount());
 		players = board.getPlayers();
 		for (Player player : players) {
-			player.assignCountries(L.get(players.indexOf(player)));//TODO check this later
+			player.setCountries(L.get(players.indexOf(player)));//TODO check this later
 		}
 	}
 	
@@ -64,11 +64,24 @@ public class GamePlay {
 //			Player.Fortification()
 	//
 	//Once a player is finished with these three phases, the next player’s turn starts.
-		for (Player player : players) {
-			player.Reinforcement();
-			//player.Attack();
-			//player.Fortification();
-		}
+		/*
+		 * while (it.hasNext()) { Player player = (Player) it.next();
+		 * player.Reinforcement(); //player.Attack(); //player.Fortification(); }
+		 */
+		GamePlay game = new GamePlay();
+		while (game.getBoard().getPlayers().size() > 1) {
+			for (Player player : players) {
+				player.Reinforcement();
+				//player.Attack();
+				//player.Fortification();
+			}
+		};
+		
+	}
+
+	public Board getBoard() {
+		// TODO Auto-generated method stub
+		return board;
 	}
 
 	//Once all the reinforcement armies have been placed by the player, the attacks phase begins. In the attack phase, the player may choose one of the countries he owns that contains two or more armies, and declare an attack on an adjacent country that is owned by another player. 
