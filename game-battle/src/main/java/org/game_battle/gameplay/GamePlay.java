@@ -3,7 +3,6 @@
  */
 package org.game_battle.gameplay;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,38 +19,14 @@ public class GamePlay {
 	 */
 	public GamePlay() {
 		super();
-		initialization();
-	}
-
-	/**
-	 * 
-	 */
-	private void initialization() {
-		//Board LOADS Graph
-		//Game: The game starts by the start-up phase, where the number of players is determined, then all the
-		//countries are randomly assigned to the players. 
-		//
-		//L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
-		////generate a list of lists, each w random countries
-		//For player in PlayersTotalNumber:
-//			New Player().AssignCountries( L[player] )
-//			//set countries_list in Player OR set owner in country
-		board = new Board();
-		board.startup();
-		board.setPlayers(Arrays.asList(new Player(board),new Player(board),new Player(board),new Player(board)));
-		List<List<Country>> L = board.getRandomCountriesLists(board.getPlayersCount());
+		board = new Board(); //Start up phase
 		players = board.getPlayers();
-		for (Player player : players) {
-			player.setCountries(L.get(players.indexOf(player)));//TODO check this later
-		}
 	}
 	
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-	
+	public static void main(String[] args) {	
 	//Then the turn-based main play phase begins, in which all players are given a turn in a round-robin fashion. 
 	//
 	//Each player’s turn is itself divided into three phases: 
@@ -71,49 +46,59 @@ public class GamePlay {
 		 * player.Reinforcement(); //player.Attack(); //player.Fortification(); }
 		 */
 		GamePlay game = new GamePlay();
-		while (game.getBoard().getPlayers().size() > 1) {
+		boolean gameOver = false;
+		while (!gameOver/*players.size() > 1*/) {
 			for (Player player : players) {
 				player.Reinforcement();
 				player.Attack();
 				player.Fortification();
-				/* Any player than does
-				 * not control at least one country is removed from the game. The game ends at
+				/* Any player that does not control at least one country is removed from the game. The game ends at
 				 * any time one of the players owns all the countries in the map. Cards: A
 				 * player receives a card at the end of his turn if he successfully conquered at
 				 * least one country during his turn.
-				 */ 
-
-				//L = GameBoard.getPlayers()
-				//If L.length() == 1:
-//					GameBoard.GameOver()
-				//Else:
-				//For each player in L:
-//					countries = length(player.getCountryList())
-//						If countries == 0:		
-//							L.remove[player]
-//						If countries > player.getPreviousCountriesQty():
-//							player.receiveCard(GameBoard.getCard())
-//						player.setPreviousCountriesQty(countries)
-				//
-				/*
-				 * Each card is either an infantry, cavalry, or artillery card. During a
-				 * player’s reinforcement phase, a player can exchange a set of three cards of
-				 * the same kind, or a set of three cards of all different kinds for a number of
-				 * armies that increases every time any player does so. The number of armies a
-				 * player will get for cards is first 5, then increases by 5 every time any
-				 * player does so (i.e. 5, 10, 15, …). A player that conquers the last country
-				 * owned by another player receives all the cards held by that player. If a
-				 * player holds five cards during his reinforcement phase, he must exchange
-				 * three of them for armies.
-				 */
-
-				//After battle/during attack phase, inside Board.updateTerritories(DeffendingCountry):
-				//
-				//defeated = DeffendingCountry.getOwner()
-				//If length(defeated.getCountryList()) == 0: //lost last country
-				//cardslist = GameBoard.getDistributedCards
-				//cardslist[winner].append(cardslist[defeated])
+				 */ 				
+				int currentCountriesQty = player.getCountries().size();
+				if (currentCountriesQty == game.board.getCountries().size()) {
+					UI.isUserOk("end of game! congratulations "+ player);
+					gameOver = true;
+				}
+				if (currentCountriesQty == 0) {
+					game.board.getPlayers().remove(player);
+				} else if (currentCountriesQty > player.getPreviousCountriesQty()) {
+					player.getCards().add(game.board.getRandomCard());
+				}
+				player.setPreviousCountriesQty(currentCountriesQty);
 			}
+
+			//L = GameBoard.getPlayers()
+			//If L.length() == 1:
+//				GameBoard.GameOver()
+			//Else:
+			//For each player in L:
+//				countries = length(player.getCountryList())
+//					If countries == 0:		
+//						L.remove[player]
+//					If countries > player.getPreviousCountriesQty():
+//						player.receiveCard(GameBoard.getCard())
+//					player.setPreviousCountriesQty(countries)			
+			/*
+			 * Each card is either an infantry, cavalry, or artillery card. During a
+			 * player’s reinforcement phase, a player can exchange a set of three cards of
+			 * the same kind, or a set of three cards of all different kinds for a number of
+			 * armies that increases every time any player does so. The number of armies a
+			 * player will get for cards is first 5, then increases by 5 every time any
+			 * player does so (i.e. 5, 10, 15, …). A player that conquers the last country
+			 * owned by another player receives all the cards held by that player. If a
+			 * player holds five cards during his reinforcement phase, he must exchange
+			 * three of them for armies.
+			 */
+
+			//After battle/during attack phase, inside Board.updateTerritories(DeffendingCountry):
+			//
+			//defeated = DeffendingCountry.getOwner()
+			//If length(defeated.getCountryList()) == 0: //lost last country
+			//cardslist = GameBoard.getDistributedCards
+			//cardslist[winner].append(cardslist[defeated])
 		};
 		
 	}

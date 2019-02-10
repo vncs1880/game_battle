@@ -15,6 +15,7 @@ public class Player {
 	private Board board;
 	private List<Country> countries;
 	private List<Card> cards;
+	private int previousCountriesQty;
 
 	/**
 	 * @param board 
@@ -91,7 +92,7 @@ public class Player {
 		}
 	}
 
-	private List<Card> getCards() {
+	public List<Card> getCards() {
 		return cards;
 	}
 
@@ -122,14 +123,12 @@ public class Player {
 
 		List<Country> elligibleAttackerCountries = getAttackerCountries(2);
 		
-		//A battle is then simulated by the attacker rolling at most 3 dice (which should not be more than the number of armies contained in the attacking country) and the defender rolling at most 2 dice (which should not be more than the number of armies contained in the attacking country). 
-		//
 		//OffendingCountry = elligibleAttackerCountries[UI.get_user_selection]
 		//DeffendingCountry = Board.getElligibleTargets(OffendingCountry)[UI.get_user_selection] 
 		////elligible targets are adjacent nodes
 		
 		Country OffendingCountry = UI.select("Select attacker country",elligibleAttackerCountries);
-		Country DeffendingCountry = UI.select("Select target country", board.getElligibleTargets(OffendingCountry));
+		Country DeffendingCountry = UI.select("Select target country", OffendingCountry.getNeighbours() /*board.getElligibleTargets(OffendingCountry)*/);
 		
 		//The attacker can choose to continue attacking until either all his armies or all the defending armies have been eliminated. 
 		//
@@ -219,6 +218,15 @@ public class Player {
 		 * player’s turn ends and it is now the next player’s turn. 
 		 */
 
+	}
+
+	public int getPreviousCountriesQty() {
+		return previousCountriesQty;
+	}
+
+	public void setPreviousCountriesQty(int currentCountriesQty) {
+		// TODO Auto-generated method stub
+		previousCountriesQty = currentCountriesQty;
 	}
 
 }

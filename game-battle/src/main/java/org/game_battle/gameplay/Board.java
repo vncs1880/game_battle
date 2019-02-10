@@ -13,13 +13,6 @@ import java.util.function.Predicate;
 public class Board {
 	private List<Continent> continents;
 	private List<List<Country>> countriesByContinent;
-	/**
-	 * @param continent 
-	 * @return the countriesByContinent
-	 */
-	public List<Country> getCountriesByContinent(Continent continent) {
-		return countriesByContinent.get(countriesByContinent.indexOf(continent));
-	}
 
 	private List<Player> players;
 	private int cardsToGive;
@@ -29,13 +22,22 @@ public class Board {
 	 * 
 	 */
 	public Board() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public void startup() {
-		//players = Arrays.asList(new Player(this),new Player(this),new Player(this),new Player(this));
+		//Board LOADS Graph
+		//Game: The game starts by the start-up phase, where the number of players is determined, then all the
+		//countries are randomly assigned to the players. 
+		//L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
+		////generate a list of lists, each w random countries
+		setPlayers( Arrays.asList(new Player(this),new Player(this),new Player(this),new Player(this)) );
+		//List<List<Country>> L = getRandomCountriesLists(getPlayers().size());
+		distributeCountries(getPlayers().size());
+		//For player in PlayersTotalNumber:
+//		New Player().AssignCountries( L[player] )
+//		//set countries_list in Player OR set owner in country		
+		//for (Player player : players) {
+		//	player.setCountries(L.get(players.indexOf(player)));//TODO check this later
+		//}
 		//User-driven creation of map elements, such as country, continent, and connectivity between countries. 4
-		continents = Arrays.asList(new Continent(20),new Continent(15),new Continent(10));
+		continents = MapInterface.getContinents();
 		//Saving a map to a text file exactly as edited (using the “conquest” game map format). 3
 		//Loading a map from an existing “conquest” map file, then editing the map, or create a new map from scratch. 3
 		//Verification of map correctness upon loading and before saving (at least 3 types of incorrect maps). 2
@@ -43,26 +45,18 @@ public class Board {
 		//Game starts by user selection of a user-saved map file. 1
 		//Map is loaded as a connected graph, which is rendered effectively to the user to enable efficient play. 3
 		//User chooses the number of players,
-		
 	}
 
-	public int getPlayersCount() {
+	public void distributeCountries(int playersCount) {
 		// TODO Auto-generated method stub
-		return 4;
-	}
-
-	public List<List<Country>> getRandomCountriesLists(int playersCount) {
-		// TODO Auto-generated method stub
-		
-		return null;
-	}
-
-	public List<Player> getPlayers() {
-		return players;
-	}
-
-	public List<Continent> getContinents() {
-		return continents;
+		List<Country> countriesToDistribute = MapInterface.getCountries();
+		Collections.shuffle(countriesToDistribute);
+		int i = 0;
+		int delta = countriesToDistribute.size()/players.size();
+		for (Player player : players) {
+			player.setCountries(countriesToDistribute.subList(i, i + delta));
+			i = i + delta + 1;
+		}
 	}
 
 	public int getArmiesFromCards(List<Card> cards) {
@@ -104,17 +98,19 @@ public class Board {
 		}
 	}
 
-	public void setPlayers(List<Player> asList) {
-		players = asList;
-	}
-
-	public List<Country> getElligibleTargets(Country offendingCountry) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	/*
+	 * public List<Country> getElligibleTargets(Country offendingCountry) { // TODO
+	 * Auto-generated method stub return null; }
+	 */
 
 	public void doBattle(Country offendingCountry, Country deffendingCountry) {
 		// TODO updates players armies numbers according to logic below
+		/*
+		 * A battle is then simulated by the attacker rolling at most 3 dice (which
+		 * should not be more than the number of armies contained in the attacking
+		 * country) and the defender rolling at most 2 dice (which should not be more
+		 * than the number of armies contained in the attacking country).
+		 */		
 		/*
 		 * The outcome of the attack is determined by comparing the defenders best
 		 * dice roll with the attackers best dice roll. If the defender rolls greater
@@ -132,7 +128,6 @@ public class Board {
 	}
 
 	public Player getOwner(Country country) {
-		// TODO Auto-generated method stub
 		for (Player player : getPlayers()) {
 			if (player.getCountries().contains(country)) {
 				return player;
@@ -154,6 +149,37 @@ public class Board {
 
 	public int getLastDiceRollResult() {
 		return lastDiceRollResult;
+	}
+
+	public void setPlayers(List<Player> asList) {
+		players = asList;
+	}
+
+	public List<Player> getPlayers() {
+		return players;
+	}
+	
+	/**
+	 * @param continent 
+	 * @return the countriesByContinent
+	 */
+	public List<Country> getCountriesByContinent(Continent continent) {
+		return  MapInterface.getCountriesByContinent(continent); //countriesByContinent.get(countriesByContinent.indexOf(continent));
+	}
+
+	public List<Continent> getContinents() {
+		List<Continent> continents = MapInterface.getContinents();
+		return continents;
+	}
+
+	public List<Country> getCountries() {
+		List<Country> countries = MapInterface.getCountries();
+		return countries;
+	}
+
+	public Card getRandomCard() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
