@@ -3,6 +3,8 @@
  */
 package org.game_battle.gameplay;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -11,6 +13,7 @@ import java.util.List;
  */
 public class Player {
 
+	private static final int MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK = 2;
 	private int armies = 0;
 	private Board board;
 	private List<Country> countries;
@@ -24,6 +27,7 @@ public class Player {
 	public Player(Board board) {
 		// TODO this is not ok but...
 		this.board = board;
+		cards = Arrays.asList();
 	}
 
 	public void setCountries(List<Country> list) {
@@ -35,7 +39,7 @@ public class Player {
 		//If the player owns all the countries of an entire continent, the player is given an amount of armies
 		//corresponding to the continent’s control value. 
 		//Player.resetNumberArmies
-		this.setArmies(0);
+		armies = 0;
 		//For each Continent:
 //			if allContinentBelongsTo(Player) 
 //				Player.updateNumberArmies(NumberArmies(Continent.control_value))  
@@ -72,8 +76,8 @@ public class Player {
 		//If YES:
 		//Player.updateNumberArmies(Cards.getEligibleArmies(Player.getCards()))
 		////if not eligible,   Cards.getEligibleArmies = 0
-		if (UI.isUserOk("Do you wanna try to get armies from your cards?")) {
-			setArmies(board.getArmiesFromCards(getCards()));
+		if (UI.isUserOk("Do you wanna try to get MORE armies from your cards?")) {
+			setArmies(getArmies() + board.getArmiesFromCards(getCards()));
 		}
 
 		//Once the total number of reinforcements is determined for the player’s turn, the player may place the armies on any country he owns, divided as he wants. 
@@ -87,9 +91,15 @@ public class Player {
 				int qtyArmies = UI.askNumber("How many armies do you want to put in country "+ country.toString() +" ?");
 				if (qtyArmies  <= armies) {
 					country.setArmyQty(qtyArmies);
+					armies -= qtyArmies;
 				}
 			}	
 		}
+	}
+
+	private int getArmies() {
+		// TODO Auto-generated method stub
+		return armies;
 	}
 
 	public List<Card> getCards() {
@@ -102,14 +112,17 @@ public class Player {
 	}
 
 	private void setArmies(int i) {
-		//
+		//In any case, the minimal number of reinforcement armies is 3. 
 		//If totalArmiesOwnedByPlayer < 3:
 //			totalArmiesOwnedByPlayer = 3
 		//
 		if (i < 3) {
-			i = 3;
+			this.armies = 3;
 		}
-		this.armies  = i;
+		/*
+		 * if (i == -1) { this.armies = 0; }
+		 */
+		
 	}
 
 	public void Attack() {
@@ -121,57 +134,58 @@ public class Player {
 		 */ 
 		//elligibleAttackerCountries = Player.getCountries(Country.getArmiesCount() > 2)
 
-		List<Country> elligibleAttackerCountries = getAttackerCountries(2);
+		List<Country> elligibleAttackerCountries = getAttackerCountries(MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK);
 		
-		//OffendingCountry = elligibleAttackerCountries[UI.get_user_selection]
-		//DeffendingCountry = Board.getElligibleTargets(OffendingCountry)[UI.get_user_selection] 
-		////elligible targets are adjacent nodes
-		
-		Country OffendingCountry = UI.select("Select attacker country",elligibleAttackerCountries);
-		Country DeffendingCountry = UI.select("Select target country", OffendingCountry.getNeighbours() /*board.getElligibleTargets(OffendingCountry)*/);
-		
-		//The attacker can choose to continue attacking until either all his armies or all the defending armies have been eliminated. 
-		//
-		//While (OffendingCountry.getTotalArmies() > 0) AND (DeffendingCountry.getTotalArmies() > 0) do {
-		//<<Board.Battle()>>
-		//}
-		while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
-			if (!UI.isUserOk("Want to attack?")) {
-				break;
+		if (!elligibleAttackerCountries.isEmpty()) {
+			//OffendingCountry = elligibleAttackerCountries[UI.get_user_selection]
+			//DeffendingCountry = Board.getElligibleTargets(OffendingCountry)[UI.get_user_selection] 
+			////elligible targets are adjacent nodes
+			
+			Country OffendingCountry = UI.select("Select attacker country",elligibleAttackerCountries);
+			Country DeffendingCountry = UI.select("Select target country", OffendingCountry.getNeighbours() /*board.getElligibleTargets(OffendingCountry)*/);
+			//TODO avoid letting user attack their own countries
+			
+			//The attacker can choose to continue attacking until either all his armies or all the defending armies have been eliminated. 
+			//
+			//While (OffendingCountry.getTotalArmies() > 0) AND (DeffendingCountry.getTotalArmies() > 0) do {
+			//<<Board.Battle()>>
+			//}
+			while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
+				if (!UI.isUserOk("Want to attack?")) {
+					break;
+				}
+				//Board.Battle(OffendingCountry, DeffendingCountry) 
+				board.doBattle(OffendingCountry, DeffendingCountry);
 			}
-			//Board.Battle(OffendingCountry, DeffendingCountry) 
-			board.doBattle(OffendingCountry, DeffendingCountry);
-		}
 
-		//If all the defender's armies are eliminated the attacker captures the territory. 
-		//
-		//Board.updateTerritories(DeffendingCountry) 
-		////just change ownership if DeffendingCountry.getTotalArmies() == 0
-		//
-		
-		if (DeffendingCountry.getArmies() == 0) {
-			board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
+			//If all the defender's armies are eliminated the attacker captures the territory. 
+			//
+			//Board.updateTerritories(DeffendingCountry) 
+			////just change ownership if DeffendingCountry.getTotalArmies() == 0
+			//
+			
+			if (DeffendingCountry.getArmies() == 0) {
+				board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
+			}
+			/*
+			 * The attacking player must then place a number of armies in the conquered
+			 * country which is greater or equal than the number of dice that was used in
+			 * the attack that resulted in conquering the country. A player may do as many
+			 * attacks as he wants during his turn.
+			 */ 
+			//
+			//MinimumArmies = Board.Battle.getLastRollDiceResult()
+			
+			int minimumArmies = board.getLastDiceRollResult();
+			DeffendingCountry.setArmyQty(UI.askNumber("How many armies to occupy defeated country? Minimum is "+ minimumArmies+". Maximum is "+ armies));
 		}
-		/*
-		 * The attacking player must then place a number of armies in the conquered
-		 * country which is greater or equal than the number of dice that was used in
-		 * the attack that resulted in conquering the country. A player may do as many
-		 * attacks as he wants during his turn.
-		 */ 
-		//
-		//MinimumArmies = Board.Battle.getLastRollDiceResult()
-		
-		int minimumArmies = board.getLastDiceRollResult();
-		DeffendingCountry.setArmyQty(UI.askNumber("How many armies to occupy defeated country? Minimum is "+ minimumArmies+". Maximum is "+ armies));
-		
-		
 	}
 
 	private List<Country> getAttackerCountries(int i) {
-		List<Country> attackers = null;
+		List<Country> attackers = new ArrayList<Country>();
 		
 		for (Country country : countries) {
-			if (country.getArmies() >= 2) {
+			if (country.getArmies() >= i) {
 				attackers.add(country);
 			}
 		}		

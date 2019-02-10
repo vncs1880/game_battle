@@ -11,12 +11,14 @@ import java.util.function.Predicate;
  *
  */
 public class Board {
+	private static final int CARDS_EQUAL_DIFFERENT_AMOUNT = 3;
 	private List<Continent> continents;
 	private List<List<Country>> countriesByContinent;
 
 	private List<Player> players;
 	private int cardsToGive;
 	private int lastDiceRollResult;
+	private MapInterface mapinterface;
 	
 	/**
 	 * 
@@ -27,6 +29,7 @@ public class Board {
 		//countries are randomly assigned to the players. 
 		//L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
 		////generate a list of lists, each w random countries
+		mapinterface = new MapInterface();
 		setPlayers( Arrays.asList(new Player(this),new Player(this),new Player(this),new Player(this)) );
 		//List<List<Country>> L = getRandomCountriesLists(getPlayers().size());
 		distributeCountries(getPlayers().size());
@@ -48,15 +51,15 @@ public class Board {
 	}
 
 	public void distributeCountries(int playersCount) {
-		// TODO Auto-generated method stub
 		List<Country> countriesToDistribute = MapInterface.getCountries();
 		Collections.shuffle(countriesToDistribute);
 		int i = 0;
 		int delta = countriesToDistribute.size()/players.size();
 		for (Player player : players) {
-			player.setCountries(countriesToDistribute.subList(i, i + delta));
-			i = i + delta + 1;
-		}
+			int j = i + delta;
+			player.setCountries(countriesToDistribute.subList(i, j));
+			i = j;
+		}//TODO distribute remaining countries
 	}
 
 	public int getArmiesFromCards(List<Card> cards) {
@@ -81,14 +84,14 @@ public class Board {
 		////Cards is an utility class for now (maybe should be Board.Cards because Board HAS Cards).
 		//The number of armies a player will get for cards is first 5, then increases by 5 every time any player does so (i.e. 5, 10, 15, …). In any case, the minimal number of reinforcement armies is 3. 
 
-		boolean equals = cardsCount.values().contains(3);
+		boolean equals = cardsCount.values().contains(CARDS_EQUAL_DIFFERENT_AMOUNT);
 		Collection<Integer> diffs = cardsCount.values();
 		diffs.removeIf(new Predicate<Integer>() {
 			public boolean test(Integer i) {
 				return i != 1;
 			}
 		});
-		boolean differents = diffs.size() >= 3;
+		boolean differents = diffs.size() >= CARDS_EQUAL_DIFFERENT_AMOUNT;
 		
 		if (equals||differents) {
 			cardsToGive += 5;
@@ -103,7 +106,7 @@ public class Board {
 	 * Auto-generated method stub return null; }
 	 */
 
-	public void doBattle(Country offendingCountry, Country deffendingCountry) {
+	public Player doBattle(Country offendingCountry, Country deffendingCountry) {
 		// TODO updates players armies numbers according to logic below
 		/*
 		 * A battle is then simulated by the attacker rolling at most 3 dice (which
@@ -124,7 +127,13 @@ public class Board {
 		//
 		Player attacker = getOwner(offendingCountry);
 		Player deffender = getOwner(deffendingCountry);
-		
+		Player winner = (getDiceRollResult(attacker) > getDiceRollResult(deffender))?attacker:deffender;
+		return winner;
+	}
+
+	private int getDiceRollResult(Player attacker) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	public Player getOwner(Country country) {
