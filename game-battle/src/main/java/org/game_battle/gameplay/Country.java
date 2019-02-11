@@ -17,7 +17,6 @@ public class Country {
      *
      */
     public Country() {
-        // TODO Auto-generated constructor stub
     }
 
 	public void setArmyQty(int n_armies) {
@@ -29,7 +28,6 @@ public class Country {
 	}
 
 	public List<Country> getNeighbours() {
-		// TODO Auto-generated method stub
 		return MapInterface.getNeighbours(this);
 	}
 

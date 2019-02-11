@@ -37,7 +37,7 @@ public class Board {
 //		New Player().AssignCountries( L[player] )
 //		//set countries_list in Player OR set owner in country		
 		//for (Player player : players) {
-		//	player.setCountries(L.get(players.indexOf(player)));//TODO check this later
+		//	player.setCountries(L.get(players.indexOf(player)));
 		//}
 		//User-driven creation of map elements, such as country, continent, and connectivity between countries. 4
 		continents = MapInterface.getContinents();
@@ -102,8 +102,7 @@ public class Board {
 	}
 
 	/*
-	 * public List<Country> getElligibleTargets(Country offendingCountry) { // TODO
-	 * Auto-generated method stub return null; }
+	 * public List<Country> getElligibleTargets(Country offendingCountry) {  return null; }
 	 */
 
 	public Player doBattle(Country offendingCountry, Country deffendingCountry) {
@@ -132,7 +131,7 @@ public class Board {
 	}
 
 	private int getDiceRollResult(Player attacker) {
-		// TODO Auto-generated method stub
+		// TODO random stuff here
 		return 0;
 	}
 

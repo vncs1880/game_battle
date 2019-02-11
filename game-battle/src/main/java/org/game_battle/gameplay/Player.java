@@ -98,7 +98,6 @@ public class Player {
 	}
 
 	private int getArmies() {
-		// TODO Auto-generated method stub
 		return armies;
 	}
 
@@ -141,8 +140,8 @@ public class Player {
 			//DeffendingCountry = Board.getElligibleTargets(OffendingCountry)[UI.get_user_selection] 
 			////elligible targets are adjacent nodes
 			
-			Country OffendingCountry = UI.select("Select attacker country",elligibleAttackerCountries);
-			Country DeffendingCountry = UI.select("Select target country", OffendingCountry.getNeighbours() /*board.getElligibleTargets(OffendingCountry)*/);
+			Country OffendingCountry = UI.selectCountry("Select attacker country",elligibleAttackerCountries);
+			Country DeffendingCountry = UI.selectCountry("Select target country", OffendingCountry.getNeighbours() /*board.getElligibleTargets(OffendingCountry)*/);
 			//TODO avoid letting user attack their own countries
 			
 			//The attacker can choose to continue attacking until either all his armies or all the defending armies have been eliminated. 
@@ -217,7 +216,7 @@ public class Player {
 		for (Country country : countries) {
 			List<Country> neighbours = country.getNeighbours();
 			if (country.getArmies() > 0 && neighbours.size() > 0) {
-				Country selected = UI.select("Want to move armies from "+ country +" to a neighbour?", neighbours);
+				Country selected = UI.selectCountry("Want to move armies from "+ country +" to a neighbour?", neighbours);
 				if (selected != null) {
 					int n_armies = UI.askNumber("How many armies from "+country+" to "+selected);
 					country.setArmyQty(country.getArmies()-n_armies);
@@ -239,7 +238,6 @@ public class Player {
 	}
 
 	public void setPreviousCountriesQty(int currentCountriesQty) {
-		// TODO Auto-generated method stub
 		previousCountriesQty = currentCountriesQty;
 	}
 

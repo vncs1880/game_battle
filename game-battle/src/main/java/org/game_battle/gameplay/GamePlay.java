@@ -104,7 +104,6 @@ public class GamePlay {
 	}
 
 	public Board getBoard() {
-		// TODO Auto-generated method stub
 		return board;
 	}
 

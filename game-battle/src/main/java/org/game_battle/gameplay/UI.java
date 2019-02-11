@@ -15,12 +15,11 @@ public class UI {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public static boolean isUserOk(String string) {
-		// TODO Auto-generated method stub
+		// TODO always true here
 		return true;
 	}
 
@@ -29,7 +28,7 @@ public class UI {
 		return 1;
 	}
 
-	public static Country select(String prompt, List<Country> countries) {
+	public static Country selectCountry(String prompt, List<Country> countries) {
 		// TODO always returning 1st country in the list
 		return countries.get(0);
 	}

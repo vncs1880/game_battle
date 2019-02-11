@@ -24,7 +24,6 @@ public class Card {
 	private Sort type;
 
 	public Sort getType() {
-		// TODO Auto-generated method stub
 		return type;
 	}
 
