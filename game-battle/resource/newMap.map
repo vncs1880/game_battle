@@ -1,0 +1,7 @@
+[Continents]
+continent=10
+basant=10
+Cockpit=20
+[Territories]
+Cockpit41,658,355,continent,Cockpit02,Territory33
+Cockpit31,658,355,Cockpit,Cockpit02,Territory33

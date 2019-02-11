@@ -82,7 +82,8 @@ public class Board {
 			cardsCount.put( card.getType(), new_qty++ );
 		}
 		
-		if (condition) {
+		boolean condition =true;
+		if (condition ) {
 			cardsToGive += 5;
 			return cardsToGive;	
 		} else {
