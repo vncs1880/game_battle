@@ -1,2 +1,7 @@
 [Continents]
+basant=10
+asia=20
+hemant=20
 [Territories]
+pakistan,222,333,asia,india,afghanistan,china
+india,111,222,asia,pakistan,srilanka,burma

@@ -1,10 +1,6 @@
 package org.game_battle.model.Implementation;
 
 import java.util.ArrayList;
-import java.util.Set;
-
-import org.game_battle.model.Contract.Continent;
-import org.game_battle.model.Contract.Player;
 import org.game_battle.model.Contract.Territory;
 
 public class TerritoryZone implements Territory {
@@ -25,50 +21,9 @@ public class TerritoryZone implements Territory {
 		this.adjacentTerritories = n_adjacentTerritories;
 	}
 
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Void setName(String x) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Continent getContinent() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setContinent(Continent c) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setRuler(Player player) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Player getRuler() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int getArmies() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int setArmies() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	
 	public boolean hasAdjacencyWith(Territory t) {
-		// TODO Auto-generated method stub
-		return false;
+		return continentName.contains(t.getTerritoryName());
 	}
 
 	public ArrayList<Territory> getAdjacentNeighbours() {
@@ -81,11 +36,6 @@ public class TerritoryZone implements Territory {
 		
 	} 
 
-
-	public String  getContinentName() {
-		// TODO Auto-generated method stub
-		return continentName;	
-		}
 
 	public String getTerritoryName() {
 		return territoryName;
@@ -113,6 +63,10 @@ public class TerritoryZone implements Territory {
 	
 	public String toString() { 
 	    return "territory: '" + this.territoryName + "', continent: '" + this.continentName + "', Terrirotry: '" + this.adjacentTerritories + "'";
+	}
+
+	public String getContinentName() {
+		return continentName;
 	}
 
 
