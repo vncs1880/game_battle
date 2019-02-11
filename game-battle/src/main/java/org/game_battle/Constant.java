@@ -1,4 +1,4 @@
-package org;
+package org.game_battle;
 
 public class Constant {
 	

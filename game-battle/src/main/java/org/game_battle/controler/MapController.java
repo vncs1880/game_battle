@@ -7,7 +7,7 @@ import org.game_battle.utility.MapDataExtractor;
 
 import java.util.ArrayList;
 
-import org.Constant;
+import org.game_battle.*;;
 
 public class MapController {
 
