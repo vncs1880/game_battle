@@ -1,8 +1,12 @@
 package org.game_battle.utility;
 import org.game_battle.model.Implementation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 
 
@@ -12,77 +16,69 @@ public class ConnectedGraph
     static boolean   discovered[] = new boolean[MAXV];
     static boolean   processed[]  = new boolean[MAXV];
     static int       parent[]     = new int[MAXV];
- 
-    public static void bfs(WorldMap2 g, int start)
+    
+    static ArrayList<String>discovered_ = new ArrayList<String>();
+    static ArrayList<String>processed_ = new ArrayList<String>();
+
+    public static void bfs(Map<String, ArrayList<String>> wm, String start)
     {
-        Queue<Integer> queue = new LinkedList<Integer>();
-        int i, v;
+        Queue<String> queue = new LinkedList<String>();
+		String v;
         queue.offer(start);
-        discovered[start] = true;
+        discovered_.add(start);
         while (!queue.isEmpty())
         {
             v = queue.remove();
-//            System.out.print(v +" "); 
-
-            processed[v] = true;
-            Iterator<Integer> it = g.adjCountry[v].listIterator(); 
-            while (it.hasNext()) 
+            processed_.add(v); 
+            ArrayList<String> entry = new  ArrayList<String>();
+            if(wm.containsKey(v))
             {
-            	int n = it.next(); 
-            	 if (!discovered[n]) 
-                 { 
-            		 discovered[n] = true; 
-                     queue.add(n); 
-                 }
+            	entry =  wm.get(v);
             }
+            for (String x: entry )
+            {
+            	if(!discovered_.contains(x))
+            	{
+            		discovered_.add(x);
+                    queue.add(x); 
+
+            	}
+            	
+            }
+            	
         }
-//    	System.out.print("\n");
-//
-//        for(boolean  x :  discovered )
-//        {
-//        	System.out.print(x+ " ");
-//        }
-//    	System.out.print("\n");
-//
-//        for(boolean  x :  processed )
-//        {
-//        	System.out.print(x+ " ");
-//        }
 
     }
     
  
-   public static void initialize_search(WorldMap2 g)
+   public static void initialize_search(Map<String, ArrayList<String>> wm)
     {
-        for (int i = 0; i < g.noOfCountries; i++)
+     //  System.out.println( wm.size()) ;
+	   for (int i = 0; i < wm.size(); i++)
         {
             processed[i] = discovered[i] = false;
             parent[i] = -1;
         }
     }
  
-   public static void connected_components(WorldMap2 g)
+   public static int connected_components(Map<String, ArrayList<String>> wm)
     {
         int c;
-        initialize_search(g);
+        initialize_search(wm);
         c = 0;
-        for (int i = 0; i < g.noOfCountries; i++)
-        {
-            if (!discovered[i])
+        
+        for (Entry<String, ArrayList<String>> entry : wm.entrySet()) {
+        	
+    	//	System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
+    		String x = entry.getKey();
+    		if (!discovered_.contains(x))
             {
                 c++;
-                bfs(g, i);
-            }      
-        }
-        
-            if(c==1){
-                System.out.println("Graph is connected");
-            }
-            else{
-                System.out.print("No. of Disconnected graph: ");
-                System.out.print(c);
-            }
-            System.out.print("\n");
+                bfs(wm, x);
+            }  
+    		
+    	}
+            return c;
     }
  
 }

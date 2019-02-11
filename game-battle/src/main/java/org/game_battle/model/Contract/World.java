@@ -1,15 +1,15 @@
 package org.game_battle.model.Contract;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface World {
-	
-	 void addEdge(int src, int dest);
-	 boolean removeEdge(int src, int dest);
-	 ArrayList<Continent> getContinent();
 
-
-	 
-	 
+	public Map<String, Integer> getContinentValues( );
+	public Map<String,  ArrayList<String>> getTerritoryNeighbour( );
+	public Map<String,  Map<String, ?>> getContinentsInfo();
+	public Map<String,?> getContinentInfo(String continent);
+	public int getNumberOfCountries();
+	public int getNumberOfContinents();
 	 
 }
