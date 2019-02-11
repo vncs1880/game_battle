@@ -17,7 +17,7 @@ public class Driver {
         MapController controller = new MapController(view, model);
         controller.loadMap();
         controller.printMap();
-        controller.checkCorrectnessOfMap();
+        controller.checkCorrectnessOfMap(model.getTerritoryNeighbour());
     }
     
 }

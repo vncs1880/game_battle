@@ -6,6 +6,7 @@ import org.game_battle.utility.FileReaderWriter;
 import org.game_battle.utility.MapDataExtractor;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.game_battle.*;;
 
@@ -37,9 +38,11 @@ public class MapController {
 	
 	}
 	
-	public void checkCorrectnessOfMap( )
+	
+	
+	public void checkCorrectnessOfMap( Map<String, ArrayList<String>> tn)
 	{
-		view.validateMap(model.getTerritoryNeighbour());
+		view.validateMap(tn);
 	}
 
 	public void printMap()
