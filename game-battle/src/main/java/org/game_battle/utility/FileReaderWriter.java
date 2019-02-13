@@ -1,14 +1,15 @@
-package org.game_battle.booatstrap;
+package org.game_battle.utility;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.game_battle.model.Implementation.TerritoryZone;
 import org.game_battle.model.Implementation.WorldMap;
-import org.game_battle.utility.MapLoader;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,52 +17,49 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class MapFile {
+public class FileReaderWriter {
 
 	File outputPath;
 
-	public	void readFiles(String PATH)
+	public static ArrayList<String> readFile(String PATH)
 	{
 		BufferedReader reader;
+		ArrayList<String> filedData = new ArrayList<String>();
 		try {
-			reader = new BufferedReader(new FileReader("resource/file.map"));
+			reader = new BufferedReader(new FileReader(PATH));
 			String line = reader.readLine();
 			while (line != null) {
-				MapLoader.extractData( line);
+				filedData.add( line);
 				line = reader.readLine();
 			}
-			System.out.println(WorldMap.continents);
-			System.out.println(WorldMap.continentValues);
-			System.out.println(WorldMap.neighbours);
-			System.out.println(WorldMap.noOfCountries);
-			System.out.println(WorldMap.noOfContinents);
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return filedData;
+
 	}
 	
-	
-	public void writeFiles(){		
+	public static void writeFile(String PATH , WorldMap wm){		
 		try {
-			FileWriter fw = new FileWriter(outputPath);
+			FileWriter fw = new FileWriter(PATH);
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write("[Continents]");
 			bw.newLine();
-			for(String key : WorldMap.continentValues.keySet()){
-				bw.write(key+"="+WorldMap.continentValues.get(key));
+			for(String key : wm.getContinentValues().keySet()){
+				bw.write(key+"="+wm.getContinentValues().get(key));
 				bw.newLine();
 			}
 			bw.write("[Territories]");
 			bw.newLine();
-			for(String key : WorldMap.continents.keySet()){
-                HashMap<String,TerritoryZone> territories = WorldMap.continents.get(key);
+			for(String key : wm.getContinentsInfo().keySet()){
+                Map<String,TerritoryZone> territories = wm.getContinentInfo(key);
                 for(TerritoryZone t:territories.values()){
                 	String tmpStorage = "";
                 	for(String s:t.getAdjacentTerritories()){
                 		tmpStorage +=","+s; 
                 	}
-                	bw.write(t.getTerritoryName()+","+t.getCoordinates()+","+t.getContinentName()+tmpStorage);
+                	bw.write(t.getTerritoryName()+","+t.getxCoordinates()+ ","+ t.getyCoordinates()+ ","+ t.getContinentName()+tmpStorage);
     			    bw.newLine();
     			}
 			}
@@ -71,5 +69,12 @@ public class MapFile {
 			e.printStackTrace();
 		}
 	}
+	
+	
+
+	
+	
+	
+	
 
 }

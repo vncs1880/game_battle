@@ -1,0 +1,7 @@
+[Continents]
+c3=30
+c1=10
+c2=20
+[Territories]
+t1,111,111,a1,b1,c1,d1
+t2,111,222,a2,b2,c2,d2
