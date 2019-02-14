@@ -11,6 +11,23 @@ import java.util.List;
  */
 public class Card {
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return getType().toString();//super.toString();
+	}
+
+	/**
+	 * @param type
+	 */
+	public Card(Sort type) {
+		super();
+		this.type = type;
+	}
+
 	/**
 		 * @author vncs
 		 *

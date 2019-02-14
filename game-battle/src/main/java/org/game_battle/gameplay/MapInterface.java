@@ -4,6 +4,7 @@
 package org.game_battle.gameplay;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -27,8 +28,8 @@ public class MapInterface {
 						 * List<List<Country>> countriesByContinent
 						 */) {
 		super();
-		countries = Arrays.asList(new Country(),new Country(),new Country(),new Country(),new Country(),new Country(),new Country(),new Country(),new Country(),new Country());
-		continents = Arrays.asList(new Continent(10),new Continent(20),new Continent(30),new Continent(40));
+		countries = new LinkedList<Country>(Arrays.asList(new Country("ca"),new Country("cb"),new Country("cc"),new Country("cd"),new Country("ce"),new Country("cf"),new Country("cg"),new Country("ch"),new Country("ci"),new Country("cj")));
+		continents = new LinkedList<Continent>(Arrays.asList(new Continent(10,"cta"),new Continent(20,"ctb"),new Continent(30,"ctc"),new Continent(40,"ctd")));
 		countriesByContinent = Arrays.asList(
 				Arrays.asList(countries.get(0), countries.get(1)),
 				Arrays.asList(countries.get(2), countries.get(3)),

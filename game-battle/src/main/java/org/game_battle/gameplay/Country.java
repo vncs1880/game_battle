@@ -10,13 +10,21 @@ import java.util.List;
  *
  */
 public class Country {
-
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return name + " armies: "+armies;//super.toString();
+	}
 	private int armies;
-
+	private String name;
     /**
+     * @param name 
      *
      */
-    public Country() {
+    public Country(String name) {
+    	this.name = name;
     }
 
 	public void setArmyQty(int n_armies) {

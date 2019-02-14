@@ -5,11 +5,17 @@ package org.game_battle.gameplay;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
+
 /**
  * @author voda
  *
  */
 public class GamePlay {
+    private static final Logger LOG = LogManager.getLogger(GamePlay.class);
 
 	private Board board;
 	private static List<Player> players;
@@ -19,7 +25,10 @@ public class GamePlay {
 	 */
 	public GamePlay() {
 		super();
+		
 		board = new Board(); //Start up phase
+		//board.getCountries().toArray();
+		//UI.selectCountry("dsd", board.getCountries());
 		players = board.getPlayers();
 	}
 	
@@ -49,9 +58,13 @@ public class GamePlay {
 		boolean gameOver = false;
 		while (!gameOver/*players.size() > 1*/) {
 			for (Player player : players) {
+				LOG.info("\r\n"+game.board+"\r\n<<PLAYER TURN "+player+">>\r\nReinforcement START");
 				player.Reinforcement();
+				LOG.info("\r\nReinforcement END: "+player+"\r\nAttack START");
 				player.Attack();
+				LOG.info("\r\nAttack END: "+player+"\r\nFortification START");
 				player.Fortification();
+				LOG.info("Fortification END: " + player);
 				/* Any player that does not control at least one country is removed from the game. The game ends at
 				 * any time one of the players owns all the countries in the map. Cards: A
 				 * player receives a card at the end of his turn if he successfully conquered at
