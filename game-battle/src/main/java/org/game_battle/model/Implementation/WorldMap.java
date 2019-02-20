@@ -23,6 +23,7 @@ public class WorldMap {
 		    continentValues.put(key, value);
 		}
 	}
+	
 	public void setContinentValues(String key, Integer value)
 	{
 		    continentValues.put(key, value);
