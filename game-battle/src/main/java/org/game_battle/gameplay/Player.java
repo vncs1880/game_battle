@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,10 +39,17 @@ public class Player {
 	 * 
 	 */
 	public Player(Board board, String name) {
-		// TODO this is not ok but...
 		this.board = board;
 		this.name = name;
-		cards = new LinkedList<Card>(Arrays.asList());//TODO distribute cards here
+		cards = new LinkedList<Card>(distributeCards(board));
+	}
+
+	/**
+	 * @param board
+	 * @return
+	 */
+	private List<Card> distributeCards(Board board) {
+		return Arrays.asList(board.getRandomCard(),board.getRandomCard(),board.getRandomCard());
 	}
 
 	public void setCountries(List<Country> list) {
@@ -81,7 +86,8 @@ public class Player {
 				}
 			}
 			if (totalCountriesOwnedInThisContinent == countriesByContinent.size()) {
-				totalArmies  = continent.getControlValue();
+				totalArmies  = continent.getControlValue();//TODO LOG announce conquered continent
+				LOG.info("\r\n"+this.name+" occupies all "+continent+". Gained "+totalArmies+" armies for that.");
 				totalCountriesOwnedInAllContinents -= totalCountriesOwnedInThisContinent;
 			}			
 		}
@@ -94,7 +100,6 @@ public class Player {
 		//Player.updateNumberArmies(Cards.getEligibleArmies(Player.getCards()))
 		////if not eligible,   Cards.getEligibleArmies = 0
 		if (UI.isUserOk("Do you wanna try to get MORE armies from your cards?")) {
-			//TODO no cards yet in the first turn
 			setArmies(getArmies() + board.getArmiesFromCards(getCards()));
 			LOG.info(this.toString());
 		}
@@ -140,7 +145,7 @@ public class Player {
 		if (i < 3) {
 			this.armies = 3;
 		}
-		LOG.info(this.toString());
+		LOG.info(this.toString()); //TODO log announce gained armies
 		/*
 		 * if (i == -1) { this.armies = 0; }
 		 */
@@ -164,8 +169,14 @@ public class Player {
 			////elligible targets are adjacent nodes
 			
 			Country OffendingCountry = UI.selectCountry("Select attacker country",elligibleAttackerCountries);
-			Country DeffendingCountry = UI.selectCountry("Select target country", OffendingCountry.getNeighbours() /*board.getElligibleTargets(OffendingCountry)*/);
-			//TODO avoid letting user attack their own countries
+			List<Country> neighbours = new CopyOnWriteArrayList<>(OffendingCountry.getNeighbours());
+			neighbours.remove(OffendingCountry);
+			for (Country country : neighbours) {
+				if (board.getOwner(OffendingCountry)==board.getOwner(country)) {
+					neighbours.remove(country);
+				}
+			}
+			Country DeffendingCountry = UI.selectCountry("Select target country", neighbours /*board.getElligibleTargets(OffendingCountry)*/);
 			
 			//The attacker can choose to continue attacking until either all his armies or all the defending armies have been eliminated. 
 			//
@@ -173,7 +184,7 @@ public class Player {
 			//<<Board.Battle()>>
 			//}
 			while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
-				if (!UI.isUserOk("Want to attack?")) {
+				if (!UI.isUserOk(board.getOwner(OffendingCountry).name+", do you want to attack "+board.getOwner(DeffendingCountry).name+" ?")) {
 					break;
 				}
 				//Board.Battle(OffendingCountry, DeffendingCountry) 
@@ -237,15 +248,23 @@ public class Player {
 		//break FOR //only 1 move is allowed
 
 		for (Country country : countries) {
-			List<Country> neighbours = country.getNeighbours();
+			List<Country> neighbours = new CopyOnWriteArrayList<>(country.getNeighbours());
+			for (Country country1 : neighbours) {
+				if (board.getOwner(country)==board.getOwner(country1)) {
+					neighbours.remove(country1);
+				}
+			}
 			if (country.getArmies() > 0 && neighbours.size() > 0) {
 				Country selected = UI.selectCountry("Want to move armies from "+ country +" to a neighbour?", neighbours);
 				if (selected != null) {
 					int n_armies = UI.askNumber("How many armies from "+country+" to "+selected,  0, country.getArmies());
 					country.setArmyQty(country.getArmies()-n_armies);
 					selected.setArmyQty(n_armies);
+					LOG.info("\r\n[Fortification] Player "+this.name+" moved "+n_armies+" army from "+country.getName()+" to "+selected.getName());
 					break;
 				}
+			} else {
+				LOG.info("\r\nNo armies or no neighbours to move around.");
 			}
 		}
 		

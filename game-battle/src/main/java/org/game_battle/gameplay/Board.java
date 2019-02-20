@@ -22,7 +22,6 @@ public class Board {
 	 */
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		String s = "\r\ncardsToGive: "+cardsToGive+", lastDiceRollResult: "+lastDiceRollResult+", \r\nplayers: "+players+" \r\ncontinents:"+continents;
 		return s;//super.toString();
 	}
@@ -146,11 +145,11 @@ public class Board {
 		Player attacker = getOwner(offendingCountry);
 		Player deffender = getOwner(deffendingCountry);
 		Player winner = (getDiceRollResult(attacker) > getDiceRollResult(deffender))?attacker:deffender;
+		LOG.info("Battle winner: " + winner);
 		return winner;
 	}
 
 	private int getDiceRollResult(Player attacker) {
-		// TODO random stuff here
 		return RANDOM.nextInt(6);
 	}
 
@@ -174,8 +173,10 @@ public class Board {
 		
 		List<Country> attacker_countries = new CopyOnWriteArrayList<>(attacker.getCountries());
 		attacker_countries.add(DeffendingCountry);
+		attacker.setCountries(attacker_countries);
 		List<Country> deffender_countries = new CopyOnWriteArrayList<>(deffender.getCountries());
 		deffender_countries.remove(DeffendingCountry);
+		deffender.setCountries(deffender_countries);
 		LOG.info("ANNEXING COUNTRY END\r\nattacker: "+attacker+" defender: "+deffender);
 	}
 
@@ -210,7 +211,6 @@ public class Board {
 	}
 
 	public Card getRandomCard() {
-		// TODO random stuff
 		Sort[] card_types = Sort.values();
 		return new Card(card_types[RANDOM.nextInt(card_types.length)]);
 	}

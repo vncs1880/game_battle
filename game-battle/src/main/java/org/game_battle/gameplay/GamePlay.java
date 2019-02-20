@@ -27,8 +27,6 @@ public class GamePlay {
 		super();
 		
 		board = new Board(); //Start up phase
-		//board.getCountries().toArray();
-		//UI.selectCountry("dsd", board.getCountries());
 		players = board.getPlayers();
 	}
 	
@@ -64,7 +62,7 @@ public class GamePlay {
 				player.Attack();
 				LOG.info("\r\nAttack END: "+player+"\r\nFortification START");
 				player.Fortification();
-				LOG.info("Fortification END: " + player);
+				LOG.info("\r\nFortification END: " + player);
 				/* Any player that does not control at least one country is removed from the game. The game ends at
 				 * any time one of the players owns all the countries in the map. Cards: A
 				 * player receives a card at the end of his turn if he successfully conquered at
