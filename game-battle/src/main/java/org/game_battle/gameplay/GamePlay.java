@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * @author voda
- *
+ * TODO javadocs
  */
 public class GamePlay {
     private static final Logger LOG = LogManager.getLogger(GamePlay.class);
@@ -56,7 +56,7 @@ public class GamePlay {
 		boolean gameOver = false;
 		while (!gameOver/*players.size() > 1*/) {
 			for (Player player : players) {
-				LOG.info("\r\n"+game.board+"\r\n<<PLAYER TURN "+player+">>\r\nReinforcement START");
+				LOG.info("\r\n"+game.board+"\r\n\r\n<<PLAYER TURN "+player+">>\r\nReinforcement START");
 				player.Reinforcement();
 				LOG.info("\r\nReinforcement END: "+player+"\r\nAttack START");
 				player.Attack();
