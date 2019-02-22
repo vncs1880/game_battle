@@ -6,17 +6,22 @@ package org.game_battle.gameplay;
 import java.util.List;
 
 /**
- * @author vncs
- *
- */
+ * Allows the creation of Card objects.
+ * 
+ * @author Vini
+ * @version Alpha
+ * @date 5/02/19
+ **/
 public class Card {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return getType().toString();//super.toString();
+		return getType().toString();// super.toString();
 	}
 
 	/**
@@ -28,17 +33,19 @@ public class Card {
 	}
 
 	/**
-		 * @author vncs
-		 *
-		 */
-	public enum Sort {//infantry, cavalry, or artillery
-		INFANTRY,
-		CAVALRY,
-		ARTILLERY
+	 * @author vncs
+	 *
+	 */
+	public enum Sort {// infantry, cavalry, or artillery
+		INFANTRY, CAVALRY, ARTILLERY
 	}
 
 	private Sort type;
 
+	/**
+	 * Returns the type of the card
+	 *
+	 */
 	public Sort getType() {
 		return type;
 	}
