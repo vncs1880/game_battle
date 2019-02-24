@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * @author voda
- * TODO javadocs!
+ * 
  */
 public class GamePlay {
     private static final Logger LOG = LogManager.getLogger(GamePlay.class);

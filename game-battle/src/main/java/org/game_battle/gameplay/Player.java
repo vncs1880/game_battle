@@ -34,7 +34,7 @@ public class Player {
 	private static final int MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK = 2;
 	private int armies = 0;
 	private Board board;
-	private List<Country> countries;
+	private List<Country> countries = new ArrayList<Country>();
 	private List<Card> cards;
 	private int previousCountriesQty = 0;
 	private String name;
@@ -95,7 +95,7 @@ public class Player {
 				}
 			}
 			if (totalCountriesOwnedInThisContinent == countriesByContinent.size()) {
-				totalArmies = continent.getControlValue();// TODO LOG announce conquered continent
+				totalArmies = continent.getControlValue();
 				LOG.info("\r\n" + this.name + " occupies all " + continent + ". Gained " + totalArmies
 						+ " armies for that.");
 				totalCountriesOwnedInAllContinents -= totalCountriesOwnedInThisContinent;
@@ -110,7 +110,9 @@ public class Player {
 		// If YES:
 		// Player.updateNumberArmies(Cards.getEligibleArmies(Player.getCards()))
 		//// if not eligible, Cards.getEligibleArmies = 0
-		if (UI.isUserOk("Do you wanna try to get MORE armies from your cards?")) {
+		if (UI.isUserOk(
+				/* this.getClass().getEnclosingMethod().getName()+ */
+				"Do you wanna try to get MORE armies from your cards?")) {
 			setArmies(getArmies() + board.getArmiesFromCards(getCards()));
 			LOG.info(this.toString());
 		}
@@ -127,9 +129,9 @@ public class Player {
 				int qtyArmies = UI.askNumber(
 						"How many armies do you want to put in country " + country.toString() + " ?", 0, armies);
 				if (qtyArmies <= armies) {
+					LOG.info("Adding "+qtyArmies+" armies to country "+country.getName()+". Previous was "+country.getArmies()/* this.toString() */);
 					country.setArmyQty(qtyArmies);
 					armies -= qtyArmies;
-					LOG.info(this.toString());
 				}
 			}
 		}
@@ -155,7 +157,9 @@ public class Player {
 
 	private void setArmiesQtyFromCountriesQty(int totalCountriesOwned, int totalArmies) {
 		// TODO make sure this is rounded down
-		setArmies(totalCountriesOwned / 3 + totalArmies);
+		//setArmies(totalCountriesOwned / 3 + totalArmies);
+		int countries_div = totalCountriesOwned/3;
+		setArmies(countries_div + totalArmies);
 	}
 
 	private void setArmies(int i) {
@@ -163,11 +167,12 @@ public class Player {
 		// If totalArmiesOwnedByPlayer < 3:
 //			totalArmiesOwnedByPlayer = 3
 		//
-		this.armies = i;
+		int r = i;
 		if (i < 3) {
-			this.armies = 3;
+			r = 3;
 		}
-		LOG.info(this.toString()); // TODO log announce gained armies
+		LOG.info(r + " armies gained. Previous amount was " + this.armies/* +" \r\n"+this.toString() */);
+		this.armies = r;
 		/*
 		 * if (i == -1) { this.armies = 0; }
 		 */
@@ -210,37 +215,38 @@ public class Player {
 			// (DeffendingCountry.getTotalArmies() > 0) do {
 			// <<Board.Battle()>>
 			// }
+			LOG.info("Checking if enough armies in both attacker/target countries to allow attack...");
 			while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
 				if (!UI.isUserOk(board.getOwner(OffendingCountry).name + ", do you want to attack "
 						+ board.getOwner(DeffendingCountry).name + " ?")) {
 					break;
 				}
+				LOG.info("Enough armies in both countries(>0). Starting Battle. ");
 				// Board.Battle(OffendingCountry, DeffendingCountry)
 				board.doBattle(OffendingCountry, DeffendingCountry);
+				// If all the defender's armies are eliminated the attacker captures the
+				// territory.
+				//
+				// Board.updateTerritories(DeffendingCountry)
+				//// just change ownership if DeffendingCountry.getTotalArmies() == 0
+				//
+
+				if (DeffendingCountry.getArmies() == 0) {
+					board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
+				}
+				/*
+				 * The attacking player must then place a number of armies in the conquered
+				 * country which is greater or equal than the number of dice that was used in
+				 * the attack that resulted in conquering the country. A player may do as many
+				 * attacks as he wants during his turn.
+				 */
+				//
+				// MinimumArmies = Board.Battle.getLastRollDiceResult()
+
+				int minimumArmies = board.getLastDiceRollResult();
+				DeffendingCountry
+						.setArmyQty(UI.askNumber("How many armies to occupy defeated country?", minimumArmies, armies));
 			}
-
-			// If all the defender's armies are eliminated the attacker captures the
-			// territory.
-			//
-			// Board.updateTerritories(DeffendingCountry)
-			//// just change ownership if DeffendingCountry.getTotalArmies() == 0
-			//
-
-			if (DeffendingCountry.getArmies() == 0) {
-				board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
-			}
-			/*
-			 * The attacking player must then place a number of armies in the conquered
-			 * country which is greater or equal than the number of dice that was used in
-			 * the attack that resulted in conquering the country. A player may do as many
-			 * attacks as he wants during his turn.
-			 */
-			//
-			// MinimumArmies = Board.Battle.getLastRollDiceResult()
-
-			int minimumArmies = board.getLastDiceRollResult();
-			DeffendingCountry
-					.setArmyQty(UI.askNumber("How many armies to occupy defeated country?", minimumArmies, armies));
 		}
 	}
 
@@ -290,14 +296,14 @@ public class Player {
 		for (Country country : countries) {
 			List<Country> neighbours = new CopyOnWriteArrayList<>(country.getNeighbours());
 			for (Country country1 : neighbours) {
-				if (board.getOwner(country) == board.getOwner(country1)) {
-					neighbours.remove(country1);
+				if ((board.getOwner(country) != board.getOwner(country1))||(country.getName().equals(country1.getName()))) {
+					neighbours.remove(country1);//TODO check if it should be the opposite here
 				}
 			}
 			if (country.getArmies() > 0 && neighbours.size() > 0) {
 				Country selected = UI.selectCountry("Want to move armies from " + country + " to a neighbour?",
 						neighbours);
-				if (selected != null) {
+				if (selected != null) {//TODO prevent suggesting countries player does not own
 					int n_armies = UI.askNumber("How many armies from " + country + " to " + selected, 0,
 							country.getArmies());
 					country.setArmyQty(country.getArmies() - n_armies);
