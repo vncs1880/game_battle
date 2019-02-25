@@ -71,13 +71,22 @@ public class Board {
 	public void distributeCountries(int playersCount) {
 		List<Country> countriesToDistribute = MapInterface.getCountries();
 		Collections.shuffle(countriesToDistribute);
-		int i = 0;
-		int delta = countriesToDistribute.size()/players.size();
-		for (Player player : players) {
-			int j = i + delta;
-			player.setCountries(countriesToDistribute.subList(i, j));
-			i = j;
-		}//TODO distribute remaining countries
+		/*
+		 * int i = 0; int delta = countriesToDistribute.size()/players.size(); for
+		 * (Player player : players) { int j = i + delta;
+		 * player.setCountries(countriesToDistribute.subList(i, j)); i = j; }//
+		 * distribute remaining countries
+		 */		
+		Iterator<Country> it = countriesToDistribute.iterator();
+		int k = 0;
+		while (it.hasNext()) {
+			Country c = (Country) it.next();
+			Player player = players.get(k);
+			List<Country> countries = player.getCountries();
+			countries.add(c);
+			//countriesToDistribute.remove(c);
+			k = (++k==players.size())?0:k;
+		}
 	}
 
 	public int getArmiesFromCards(List<Card> cards) {
@@ -145,11 +154,11 @@ public class Board {
 		Player attacker = getOwner(offendingCountry);
 		Player deffender = getOwner(deffendingCountry);
 		Player winner = (getDiceRollResult(attacker) > getDiceRollResult(deffender))?attacker:deffender;
-		LOG.info("Battle winner: " + winner);
+		LOG.info("\r\nBattle winner: " + winner);
 		return winner;
 	}
 
-	private int getDiceRollResult(Player attacker) {
+	private int getDiceRollResult(Player attacker) {//TODO doesnt really need parameter for now
 		return RANDOM.nextInt(6);
 	}
 
@@ -169,7 +178,7 @@ public class Board {
 	void giveLoserCountryToWinnerPlayer(Country OffendingCountry, Country DeffendingCountry) {
 		Player attacker = getOwner(OffendingCountry);
 		Player deffender = getOwner(DeffendingCountry);
-		LOG.info("ANNEXING COUNTRY START\r\nattacker: "+attacker+" defender: "+deffender);
+		LOG.info("ANNEXING COUNTRY START\r\nattacker: "+attacker+"\r\ndefender: "+deffender);
 		
 		List<Country> attacker_countries = new CopyOnWriteArrayList<Country>(attacker.getCountries());
 		attacker_countries.add(DeffendingCountry);
@@ -177,7 +186,7 @@ public class Board {
 		List<Country> deffender_countries = new CopyOnWriteArrayList<Country>(deffender.getCountries());
 		deffender_countries.remove(DeffendingCountry);
 		deffender.setCountries(deffender_countries);
-		LOG.info("ANNEXING COUNTRY END\r\nattacker: "+attacker+" defender: "+deffender);
+		LOG.info("ANNEXING COUNTRY END\r\nattacker: "+attacker+"\r\ndefender: "+deffender);
 	}
 
 	public int getLastDiceRollResult() {
