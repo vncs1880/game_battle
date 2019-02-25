@@ -181,10 +181,10 @@ public class Board {
 		Player deffender = getOwner(DeffendingCountry);
 		LOG.info("ANNEXING COUNTRY START\r\nattacker: "+attacker+"\r\ndefender: "+deffender);
 		
-		List<Country> attacker_countries = new CopyOnWriteArrayList<>(attacker.getCountries());
+		List<Country> attacker_countries = new CopyOnWriteArrayList<Country>(attacker.getCountries());
 		attacker_countries.add(DeffendingCountry);
 		attacker.setCountries(attacker_countries);
-		List<Country> deffender_countries = new CopyOnWriteArrayList<>(deffender.getCountries());
+		List<Country> deffender_countries = new CopyOnWriteArrayList<Country>(deffender.getCountries());
 		deffender_countries.remove(DeffendingCountry);
 		deffender.setCountries(deffender_countries);
 		LOG.info("ANNEXING COUNTRY END\r\nattacker: "+attacker+"\r\ndefender: "+deffender);
