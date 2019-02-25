@@ -84,6 +84,7 @@ public class Board {
 			Player player = players.get(k);
 			List<Country> countries = player.getCountries();
 			countries.add(c);
+			player.setPreviousCountriesQty(countries.size());
 			//countriesToDistribute.remove(c);
 			k = (++k==players.size())?0:k;
 		}

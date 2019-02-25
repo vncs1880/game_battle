@@ -39,6 +39,14 @@ public class Player {
 	private int previousCountriesQty = 0;
 	private String name;
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	/**
 	 * @param board
 	 * @param name
@@ -96,7 +104,7 @@ public class Player {
 			}
 			if (totalCountriesOwnedInThisContinent == countriesByContinent.size()) {
 				totalArmies = continent.getControlValue();
-				LOG.info("\r\n" + this.name + " occupies all " + continent + ". Gained " + totalArmies
+				LOG.info(/* "\r\n" + */this.name + " occupies all " + continent + ". Gained " + totalArmies
 						+ " armies for that.");
 				totalCountriesOwnedInAllContinents -= totalCountriesOwnedInThisContinent;
 			}
@@ -111,7 +119,7 @@ public class Player {
 		// Player.updateNumberArmies(Cards.getEligibleArmies(Player.getCards()))
 		//// if not eligible, Cards.getEligibleArmies = 0
 		if (UI.isUserOk(
-				/* this.getClass().getEnclosingMethod().getName()+ */
+				"Reinforcement phase", /* this.getClass().getEnclosingMethod().getName()+ */
 				"Do you wanna try to get MORE armies from your cards?")) {
 			setArmies(getArmies() + board.getArmiesFromCards(getCards()));
 			LOG.info(this.toString());
@@ -127,7 +135,7 @@ public class Player {
 		if (armies > 0) {
 			for (Country country : countries) {
 				int qtyArmies = UI.askNumber(
-						"How many armies do you want to put in country " + country.toString() + " ?", 0, armies);
+						"Reinforcement phase", "How many armies do you want to put in country " + country.toString() + " ?", 0, armies);
 				if (qtyArmies <= armies) {
 					LOG.info("Adding "+qtyArmies+" armies to country "+country.getName()+". Previous was "+country.getArmies()/* this.toString() */);
 					country.setArmyQty(qtyArmies);
@@ -197,7 +205,7 @@ public class Player {
 			// Board.getElligibleTargets(OffendingCountry)[UI.get_user_selection]
 			//// elligible targets are adjacent nodes
 
-			Country OffendingCountry = UI.selectCountry("Select attacker country", elligibleAttackerCountries);
+			Country OffendingCountry = UI.selectCountry("Attack phase", "Select attacker country", elligibleAttackerCountries);
 			List<Country> neighbours = new CopyOnWriteArrayList<>(OffendingCountry.getNeighbours());
 			neighbours.remove(OffendingCountry);
 			for (Country country : neighbours) {
@@ -205,8 +213,8 @@ public class Player {
 					neighbours.remove(country);
 				}
 			}
-			Country DeffendingCountry = UI.selectCountry("Select target country",
-					neighbours /* board.getElligibleTargets(OffendingCountry) */);
+			Country DeffendingCountry = UI.selectCountry("Attack phase",
+					"Select target country", neighbours /* board.getElligibleTargets(OffendingCountry) */);
 
 			// The attacker can choose to continue attacking until either all his armies or
 			// all the defending armies have been eliminated.
@@ -217,7 +225,7 @@ public class Player {
 			// }
 			LOG.info("Checking if enough armies in both attacker/target countries to allow attack...");
 			while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
-				if (!UI.isUserOk(board.getOwner(OffendingCountry).name + ", do you want to attack "
+				if (!UI.isUserOk("Attack phase", board.getOwner(OffendingCountry).name + ", do you want to attack "
 						+ board.getOwner(DeffendingCountry).name + " ?")) {
 					break;
 				}
@@ -245,7 +253,7 @@ public class Player {
 
 				int minimumArmies = board.getLastDiceRollResult();
 				DeffendingCountry
-						.setArmyQty(UI.askNumber("How many armies to occupy defeated country?", minimumArmies, armies));
+						.setArmyQty(UI.askNumber("Attack phase", "How many armies to occupy defeated country?", minimumArmies, armies));
 			}
 		}
 	}
@@ -295,25 +303,25 @@ public class Player {
 
 		for (Country country : countries) {
 			List<Country> neighbours = new CopyOnWriteArrayList<>(country.getNeighbours());
-			for (Country country1 : neighbours) {
-				if ((board.getOwner(country) != board.getOwner(country1))||(country.getName().equals(country1.getName()))) {
-					neighbours.remove(country1);//TODO check if it should be the opposite here
+			for (Country neighbour : neighbours) {
+				if ((board.getOwner(country) != board.getOwner(neighbour))||(country.getName().equals(neighbour.getName()))) {
+					neighbours.remove(neighbour);
 				}
 			}
 			if (country.getArmies() > 0 && neighbours.size() > 0) {
-				Country selected = UI.selectCountry("Want to move armies from " + country + " to a neighbour?",
-						neighbours);
-				if (selected != null) {//TODO prevent suggesting countries player does not own
-					int n_armies = UI.askNumber("How many armies from " + country + " to " + selected, 0,
-							country.getArmies());
+				Country selected = UI.selectCountry("Fortification phase",
+						"Want to move armies from " + country + " to a neighbour?", neighbours);
+				if (selected != null) {
+					int n_armies = UI.askNumber("Fortification phase", "How many armies from " + country + " to " + selected,
+							0, country.getArmies());
 					country.setArmyQty(country.getArmies() - n_armies);
-					selected.setArmyQty(n_armies);
-					LOG.info("\r\n[Fortification] Player " + this.name + " moved " + n_armies + " army from "
+					selected.setArmyQty(selected.getArmies()+ n_armies);//TODO bug here. not really updating selected army qty
+					LOG.info("Player " + this.name + " moved " + n_armies + " army from "
 							+ country.getName() + " to " + selected.getName());
 					break;
 				}
 			} else {
-				LOG.info("\r\nNo armies or no neighbours to move around.");
+				LOG.info(country.getName()+": No armies or no neighbours to move around.");
 			}
 		}
 
