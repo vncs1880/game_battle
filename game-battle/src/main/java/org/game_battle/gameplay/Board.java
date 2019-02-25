@@ -112,7 +112,15 @@ public class Board {
 		////Cards is an utility class for now (maybe should be Board.Cards because Board HAS Cards).
 		//The number of armies a player will get for cards is first 5, then increases by 5 every time any player does so (i.e. 5, 10, 15, …). In any case, the minimal number of reinforcement armies is 3. 
 
-		boolean equals = cardsCount.values().contains(CARDS_EQUAL_DIFFERENT_AMOUNT);
+		//boolean equals = cardsCount.values().contains(CARDS_EQUAL_DIFFERENT_AMOUNT);
+		Collection<Integer> eqs = cardsCount.values();
+		eqs.removeIf(new Predicate<Integer>() {
+			public boolean test(Integer i) {
+				return i < CARDS_EQUAL_DIFFERENT_AMOUNT;
+			}
+		});
+		boolean equals = eqs.size()>0; 
+				
 		Collection<Integer> diffs = cardsCount.values();
 		diffs.removeIf(new Predicate<Integer>() {
 			public boolean test(Integer i) {

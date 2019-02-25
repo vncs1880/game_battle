@@ -122,7 +122,7 @@ public class Player {
 				"Reinforcement phase", /* this.getClass().getEnclosingMethod().getName()+ */
 				"Do you wanna try to get MORE armies from your cards?")) {
 			setArmies(getArmies() + board.getArmiesFromCards(getCards()));
-			LOG.info(this.toString());
+			LOG.info("Getting more armies from cards result: " + this.toString());
 		}
 
 		// Once the total number of reinforcements is determined for the player’s turn,

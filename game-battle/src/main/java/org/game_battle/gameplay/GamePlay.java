@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
  * 
  */
 public class GamePlay {
+	//System.setProperty("log4j.configurationFile","./path_to_the_log4j2_config_file/log4j2.xml");
     private static final Logger LOG = LogManager.getLogger(GamePlay.class);
 
 	private Board board;
