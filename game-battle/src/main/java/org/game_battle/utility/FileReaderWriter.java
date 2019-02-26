@@ -20,7 +20,12 @@ import java.util.HashMap;
 public class FileReaderWriter {
 
 	File outputPath;
-
+	/**
+	 * readFile is to read the existing map file from the stored
+	 * location.
+	 * @param PATH
+	 * @return filedData
+	 */
 	public static ArrayList<String> readFile(String PATH)
 	{
 		BufferedReader reader;

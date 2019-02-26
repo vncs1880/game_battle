@@ -20,6 +20,11 @@ public class MapController {
 	      this.view = view;
 	      this.model = model;
 	   }	
+	/**
+	 * loadMap is to load the existing Map or to create a new map and
+	 * display the new created Map.
+	 * 
+	 */
 	public void loadMap()
 	{
 		boolean isEditMap = view.initiateMapLoad();

@@ -85,6 +85,10 @@ public class WorldMapView {
 	{
 		return isEditMap;
 	}
+	/**
+	 * getter for the getting the new map data
+	 * @return inputMapData
+	 */
 	
 	public  ArrayList<String> getInputMapData()
 	{
