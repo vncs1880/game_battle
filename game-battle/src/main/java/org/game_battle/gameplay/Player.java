@@ -118,10 +118,12 @@ public class Player {
 		// If YES:
 		// Player.updateNumberArmies(Cards.getEligibleArmies(Player.getCards()))
 		//// if not eligible, Cards.getEligibleArmies = 0
+		List<Card> player_cards = getCards();
 		if (UI.isUserOk(
 				"Reinforcement phase", /* this.getClass().getEnclosingMethod().getName()+ */
-				"Do you wanna try to get MORE armies from your cards?")) {
-			setArmies(getArmies() + board.getArmiesFromCards(getCards()));
+				"Do you wanna try to get MORE armies from your cards? "+player_cards)) {
+			
+			setArmies(getArmies() + board.getArmiesFromCards(player_cards));
 			LOG.info("Getting more armies from cards result: " + this.toString());
 		}
 
@@ -179,7 +181,7 @@ public class Player {
 		if (i < 3) {
 			r = 3;
 		}
-		LOG.info(r + " armies gained. Previous amount was " + this.armies/* +" \r\n"+this.toString() */);
+		LOG.info(r + " armies now. Previous amount was " + this.armies/* +" \r\n"+this.toString() */);
 		this.armies = r;
 		/*
 		 * if (i == -1) { this.armies = 0; }
@@ -225,11 +227,13 @@ public class Player {
 			// }
 			LOG.info("Checking if enough armies in both attacker/target countries to allow attack...");
 			while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
-				if (!UI.isUserOk("Attack phase", board.getOwner(OffendingCountry).name + ", do you want to attack "
-						+ board.getOwner(DeffendingCountry).name + " ?")) {
+				String attacker = board.getOwner(OffendingCountry).name;
+				String deffender = board.getOwner(DeffendingCountry).name;
+				if (!UI.isUserOk("Attack phase", attacker + ", do you want to attack "
+						+ deffender + " ?")) {
 					break;
 				}
-				LOG.info("Enough armies in both countries(>0). Starting Battle. ");
+				LOG.info("Enough armies in both countries(>0). Starting Battle. "+attacker+" attacking "+deffender+".");
 				// Board.Battle(OffendingCountry, DeffendingCountry)
 				board.doBattle(OffendingCountry, DeffendingCountry);
 				// If all the defender's armies are eliminated the attacker captures the
@@ -251,7 +255,7 @@ public class Player {
 				//
 				// MinimumArmies = Board.Battle.getLastRollDiceResult()
 
-				int minimumArmies = board.getLastDiceRollResult();
+				int minimumArmies = board.getLastDiceRollResult();//TODO fix to only do this if player won the battling
 				DeffendingCountry
 						.setArmyQty(UI.askNumber("Attack phase", "How many armies to occupy defeated country?", minimumArmies, armies));
 			}
