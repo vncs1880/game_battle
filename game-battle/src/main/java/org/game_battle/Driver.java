@@ -18,6 +18,7 @@ public class Driver {
         controller.loadMap();
         controller.printMap();
         controller.checkCorrectnessOfMap(model.getTerritoryNeighbour());
+        controller.editMap();
     }
     
 }

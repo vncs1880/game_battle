@@ -28,6 +28,10 @@ public class WorldMap {
 	{
 		    continentValues.put(key, value);
 	}
+	/**
+	 * getContinentValues gets the continent values
+	 * @return continentValues
+	 */
 	public Map<String, Integer> getContinentValues( )
 	{
 		return continentValues;
@@ -48,7 +52,10 @@ public class WorldMap {
 		}
 
 	}
-	
+	/**
+	 * getTerritoryNeighbour gets the neighbours of the territories.
+	 * @return territoryNeighbour
+	 */
 	public Map<String,  ArrayList<String>> getTerritoryNeighbour( )
 	{
 		return  territoryNeighbour; 

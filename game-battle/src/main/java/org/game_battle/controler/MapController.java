@@ -1,14 +1,13 @@
 package org.game_battle.controler;
 
-import org.game_battle.view.*;
-import org.game_battle.model.Implementation.*;
-import org.game_battle.utility.FileReaderWriter;
-import org.game_battle.utility.MapDataExtractor;
-
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.game_battle.*;;
+import org.game_battle.Constant;
+import org.game_battle.model.Implementation.WorldMap;
+import org.game_battle.utility.FileReaderWriter;
+import org.game_battle.utility.MapDataExtractor;
+import org.game_battle.view.WorldMapView;;
 
 public class MapController {
 
@@ -42,14 +41,23 @@ public class MapController {
 			FileReaderWriter.writeFile(Constant.WriteFilePATH, model );
 	
 	}
+	public void editMap() {
+		
+	}
 	
 	
-	
+	/**
+	 * checkcorrectnessOfMap is to validate the map with respect to 
+	 * its neighbours.
+	 * @param tn
+	 */
 	public void checkCorrectnessOfMap( Map<String, ArrayList<String>> tn)
 	{
 		view.validateMap(tn);
 	}
-
+	/**
+	 * printMap is to print the map to the console.
+	 */
 	public void printMap()
 	{
 		System.out.println(this.model.getTerritoryNeighbour());

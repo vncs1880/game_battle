@@ -96,7 +96,11 @@ public class WorldMapView {
 	}
 
 
-
+	/**
+	 * validateMap checks if the countries,continents and its neighbours are mapped 
+	 * properly.
+	 * @param wm
+	 */
 	public void validateMap(Map<String, ArrayList<String>> wm) {
 		
 		int c = ConnectedGraph.connected_components(wm);

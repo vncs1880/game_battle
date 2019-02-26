@@ -60,7 +60,11 @@ public class ConnectedGraph
             parent[i] = -1;
         }
     }
- 
+   /**
+    * 
+    * @param wm
+    * @return
+    */
    public static int connected_components(Map<String, ArrayList<String>> wm)
     {
         int c;
