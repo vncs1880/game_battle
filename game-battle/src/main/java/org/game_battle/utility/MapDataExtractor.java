@@ -9,7 +9,12 @@ import org.game_battle.model.Implementation.*;
 
 public class MapDataExtractor {
 	
-	
+	/**
+	 * extractData is to extract the data from the map file 
+	 * and store the continents and countries in worldMap.
+	 * @param mapList
+	 * @param wm
+	 */
 	public static void extractData(ArrayList<String> mapList , WorldMap wm)
 	{
 		boolean isContinent = false;

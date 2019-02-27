@@ -98,8 +98,14 @@ public class Board {
 			Player player = players.get(k);
 			List<Country> countries = player.getCountries();
 			countries.add(c);
+<<<<<<< HEAD
 			// countriesToDistribute.remove(c);
 			k = (++k == players.size()) ? 0 : k;
+=======
+			player.setPreviousCountriesQty(countries.size());
+			//countriesToDistribute.remove(c);
+			k = (++k==players.size())?0:k;
+>>>>>>> 0b964af6e8ee5e789ee51f34d383fc4417a0abf6
 		}
 	}
 
@@ -138,7 +144,15 @@ public class Board {
 		//// by 5 every time any player does so (i.e. 5, 10, 15, …). In any case, the
 		//// minimal number of reinforcement armies is 3.
 
-		boolean equals = cardsCount.values().contains(CARDS_EQUAL_DIFFERENT_AMOUNT);
+		//boolean equals = cardsCount.values().contains(CARDS_EQUAL_DIFFERENT_AMOUNT);
+		Collection<Integer> eqs = cardsCount.values();
+		eqs.removeIf(new Predicate<Integer>() {
+			public boolean test(Integer i) {
+				return i < CARDS_EQUAL_DIFFERENT_AMOUNT;
+			}
+		});
+		boolean equals = eqs.size()>0; 
+				
 		Collection<Integer> diffs = cardsCount.values();
 		diffs.removeIf(new Predicate<Integer>() {
 			public boolean test(Integer i) {
@@ -206,15 +220,15 @@ public class Board {
 	void giveLoserCountryToWinnerPlayer(Country OffendingCountry, Country DeffendingCountry) {
 		Player attacker = getOwner(OffendingCountry);
 		Player deffender = getOwner(DeffendingCountry);
-		LOG.info("ANNEXING COUNTRY START\r\nattacker: " + attacker + "\r\ndefender: " + deffender);
-
-		List<Country> attacker_countries = new CopyOnWriteArrayList<>(attacker.getCountries());
+		LOG.info("ANNEXING COUNTRY START\r\nattacker: "+attacker+"\r\ndefender: "+deffender);
+		
+		List<Country> attacker_countries = new CopyOnWriteArrayList<Country>(attacker.getCountries());
 		attacker_countries.add(DeffendingCountry);
 		attacker.setCountries(attacker_countries);
-		List<Country> deffender_countries = new CopyOnWriteArrayList<>(deffender.getCountries());
+		List<Country> deffender_countries = new CopyOnWriteArrayList<Country>(deffender.getCountries());
 		deffender_countries.remove(DeffendingCountry);
 		deffender.setCountries(deffender_countries);
-		LOG.info("ANNEXING COUNTRY END\r\nattacker: " + attacker + "\r\ndefender: " + deffender);
+		LOG.info("ANNEXING COUNTRY END\r\nattacker: "+attacker+"\r\ndefender: "+deffender);
 	}
 
 	public int getLastDiceRollResult() {

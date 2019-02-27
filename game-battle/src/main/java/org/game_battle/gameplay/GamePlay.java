@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
  * 
  */
 public class GamePlay {
+	//System.setProperty("log4j.configurationFile","./path_to_the_log4j2_config_file/log4j2.xml");
     private static final Logger LOG = LogManager.getLogger(GamePlay.class);
 
 	private Board board;
@@ -56,27 +57,30 @@ public class GamePlay {
 		boolean gameOver = false;
 		while (!gameOver/*players.size() > 1*/) {
 			for (Player player : players) {
-				LOG.info("\r\n"+game.board+"\r\n\r\n<<PLAYER TURN "+player+">>\r\nReinforcement START");
+				LOG.info("\r\n"+game.board+"\r\n\r\n<<PLAYER "+player.getName()+" TURN>>\r\n\r\nReinforcement START");
 				player.Reinforcement();
-				LOG.info("\r\nReinforcement END: "+player+"\r\nAttack START");
+				LOG.info("\r\nReinforcement END: \r\n\r\n"+player+"\r\n\r\nAttack START");
 				player.Attack();
-				LOG.info("\r\nAttack END: "+player+"\r\nFortification START");
+				LOG.info("\r\nAttack END: \r\n\r\n"+player+"\r\n\r\nFortification START");
 				player.Fortification();
-				LOG.info("\r\nFortification END: " + player);
+				LOG.info("\r\nFortification END: \r\n\r\n" + player);
 				/* Any player that does not control at least one country is removed from the game. The game ends at
 				 * any time one of the players owns all the countries in the map. Cards: A
 				 * player receives a card at the end of his turn if he successfully conquered at
 				 * least one country during his turn.
+				 * https://docs.google.com/document/d/1dm4wG1lrqY6gxv315bQzvsdfSGi36X9BB-8Y1byZSe0/edit?disco=AAAAClD6TuY
 				 */ 				
 				int currentCountriesQty = player.getCountries().size();
 				if (currentCountriesQty == game.board.getCountries().size()) {
-					UI.isUserOk("end of game! congratulations "+ player);
+					UI.isUserOk("it is over", "end of game! congratulations "+ player.getName());
 					gameOver = true;
 				}
 				if (currentCountriesQty == 0) {
 					game.board.getPlayers().remove(player);
+					LOG.info(player.getName() + ", you lost all your countries. Thank you for your participation. Good bye.");
 				} else if (currentCountriesQty > player.getPreviousCountriesQty()) {
 					player.getCards().add(game.board.getRandomCard());
+					LOG.info("You conquered at least one new country. Have an extra card for that. Congratulations.");
 				}
 				player.setPreviousCountriesQty(currentCountriesQty);
 			}

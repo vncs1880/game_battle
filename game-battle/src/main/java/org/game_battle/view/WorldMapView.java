@@ -13,7 +13,10 @@ public class WorldMapView {
 	private boolean isEditMap;
 	private ArrayList<String> inputMapData;
 	private Scanner sc;
-	
+	/**
+	 * setInputMapData sets the continents,control values and countries
+	 * for the new map load
+	 */
 	
 	public void setInputMapData()
 	{	
@@ -31,7 +34,8 @@ public class WorldMapView {
 		for(int i =0 ; i <numberOfContinent ; i++ )
 		{
 			String line = sc.nextLine();
-			this.inputMapData.add(line);	
+			this.inputMapData.add(line);
+			System.out.println(this.inputMapData.add(line));
 		}
 
 		System.out.println("Enter number of country you want to add");
@@ -49,7 +53,11 @@ public class WorldMapView {
 		}
 		
 	}
-	
+	/**
+	 * initiateMapLoad method is to get user input for
+	 * loading previous map or creating a new map.
+	 * @return isEditMap
+	 */
 	
 	public boolean initiateMapLoad()
 	{
@@ -77,6 +85,10 @@ public class WorldMapView {
 	{
 		return isEditMap;
 	}
+	/**
+	 * getter for the getting the new map data
+	 * @return inputMapData
+	 */
 	
 	public  ArrayList<String> getInputMapData()
 	{
