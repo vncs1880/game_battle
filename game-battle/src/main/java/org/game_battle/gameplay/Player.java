@@ -245,19 +245,21 @@ public class Player {
 
 				if (DeffendingCountry.getArmies() == 0) {
 					board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
+					LOG.info("All the defender's armies are eliminated."+ attacker +" captured "+DeffendingCountry);
+					/*
+					 * The attacking player must then place a number of armies in the conquered
+					 * country which is greater or equal than the number of dice that was used in
+					 * the attack that resulted in conquering the country. A player may do as many
+					 * attacks as he wants during his turn.
+					 */
+					int minimumArmies = board.getLastDiceRollResult();
+					int armies_to_occupy = UI.askNumber("Attack phase", "How many armies to occupy defeated country?", minimumArmies, armies);
+					DeffendingCountry.setArmyQty(armies_to_occupy);
+					LOG.info(attacker +" places "+armies_to_occupy+" armies in "+DeffendingCountry);
+				} else {
+					LOG.info(attacker +" lost battle.");
 				}
-				/*
-				 * The attacking player must then place a number of armies in the conquered
-				 * country which is greater or equal than the number of dice that was used in
-				 * the attack that resulted in conquering the country. A player may do as many
-				 * attacks as he wants during his turn.
-				 */
-				//
-				// MinimumArmies = Board.Battle.getLastRollDiceResult()
-
-				int minimumArmies = board.getLastDiceRollResult();//TODO fix to only do this if player won the battling
-				DeffendingCountry
-						.setArmyQty(UI.askNumber("Attack phase", "How many armies to occupy defeated country?", minimumArmies, armies));
+				
 			}
 		}
 	}
@@ -319,9 +321,9 @@ public class Player {
 					int n_armies = UI.askNumber("Fortification phase", "How many armies from " + country + " to " + selected,
 							0, country.getArmies());
 					country.setArmyQty(country.getArmies() - n_armies);
-					selected.setArmyQty(selected.getArmies()+ n_armies);//TODO bug here. not really updating selected army qty
 					LOG.info("Player " + this.name + " moved " + n_armies + " army from "
-							+ country.getName() + " to " + selected.getName());
+							+ country.getName() + " to " + selected.getName()+" previous army qty was "+selected.getArmies());
+					selected.setArmyQty(selected.getArmies()+ n_armies);//TODO bug here. not really updating selected army qty
 					break;
 				}
 			} else {
