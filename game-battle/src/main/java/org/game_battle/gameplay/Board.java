@@ -98,14 +98,14 @@ public class Board {
 			Player player = players.get(k);
 			List<Country> countries = player.getCountries();
 			countries.add(c);
-<<<<<<< HEAD
+
 			// countriesToDistribute.remove(c);
 			k = (++k == players.size()) ? 0 : k;
-=======
+
 			player.setPreviousCountriesQty(countries.size());
 			//countriesToDistribute.remove(c);
 			k = (++k==players.size())?0:k;
->>>>>>> 0b964af6e8ee5e789ee51f34d383fc4417a0abf6
+
 		}
 	}
 
