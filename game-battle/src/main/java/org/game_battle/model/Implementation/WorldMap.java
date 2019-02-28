@@ -2,7 +2,12 @@
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
+
 import java.util.ArrayList;
+import java.util.Collection;
 
 
 public class WorldMap {
@@ -98,5 +103,54 @@ public class WorldMap {
 	{
 		return continentValues.size();
 	}
+	public void updateContinent(String continentVlaues) {
+		if(continentVlaues.length()>0)
+		{
+			String [] value = continentVlaues.split(":");
+			String continent = value[0];
+			Integer control_value = Integer.parseInt( value[1]);
+		    this.continentValues.put(continent ,  control_value);   
+		}
+		
+	}
+	public void updateNeighbours(String neighbourValues) {
+		if(neighbourValues.length()>0)
+		{
+			String [] value = neighbourValues.split(":");
+			
+			String key = value[0];
+			String []neighbour = value[1].split(",");
+			 ArrayList<String> temp = new ArrayList<String>();
+			    for(String element : value )
+			    {
+			    	temp.add(element) ; 
+			    }
+		    this.territoryNeighbour.put(key, temp);
+
+		}	
+		
+	}
+	public void removeNeighbours(String removeNeighbours) {
+		if(removeNeighbours.length()>0)
+		{
+			String [] value = removeNeighbours.split(":");
+			String key = value[0];
+			String []neighbour = value[1].split(",");
+			if(this.territoryNeighbour.containsKey(key))
+			{
+				ArrayList<String> temp = new ArrayList<String>();
+				temp = this.territoryNeighbour.get(key);
+				for(String element : value )
+				 	{
+						temp.remove(element);
+				    }
+			    this.territoryNeighbour.put(key, temp);
+
+				}   
+			}
+		}
+		
+		
+	}
 	
-}
+

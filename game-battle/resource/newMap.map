@@ -1,5 +1,4 @@
 [Continents]
-asia=10
+Cockpit=11
 [Territories]
-pakisthan,222,333,asia,india,afganishtan,china
-india,111,222,asia,afganisthan,china,burma
+Cockpit02,658,375,Cockpit,Cockpit01,Cockpit03,Territory33,Territory85

@@ -16,9 +16,9 @@ public class Driver {
         WorldMapView view = new WorldMapView();
         MapController controller = new MapController(view, model);
         controller.loadMap();
-        controller.printMap();
+        controller.printMap(view, model);
         controller.checkCorrectnessOfMap(model.getTerritoryNeighbour());
-        controller.editMap();
+        controller.editMap(view, model);
     }
     
 }

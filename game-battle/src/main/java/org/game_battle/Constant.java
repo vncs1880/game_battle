@@ -6,3 +6,4 @@ public class Constant {
 	public static String WriteFilePATH = "resource/newMap.map" ;
 
 }
+

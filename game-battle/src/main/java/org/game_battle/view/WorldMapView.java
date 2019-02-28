@@ -1,7 +1,8 @@
 package org.game_battle.view;
-
+import org.game_battle.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -10,7 +11,9 @@ import org.game_battle.utility.ConnectedGraph;
 
 public class WorldMapView {
 	
+	private boolean isAddMap;
 	private boolean isEditMap;
+
 	private ArrayList<String> inputMapData;
 	private Scanner sc;
 	/**
@@ -35,7 +38,6 @@ public class WorldMapView {
 		{
 			String line = sc.nextLine();
 			this.inputMapData.add(line);
-			System.out.println(this.inputMapData.add(line));
 		}
 
 		System.out.println("Enter number of country you want to add");
@@ -59,32 +61,30 @@ public class WorldMapView {
 	 * @return isEditMap
 	 */
 	
-	public boolean initiateMapLoad()
+	public void initiateMapLoad()
 	{
 		sc = new Scanner(System.in);
     	System.out.println("Enter 0 to load existing map, Enter 1 to create a new map");
     	int input = sc.nextInt();
     	if(input == 0) 
     	{
-    		isEditMap= false;
+    		isAddMap= false;
+        	System.out.println("Enter 0 to edit the map, else enter 1 to proceed ");
+        	int input1 = sc.nextInt();
+        	isEditMap = input1 == 0 ? true : false;
     	}
     	else if(input == 1) 
     	{
-    		isEditMap = true;
+    		isAddMap = true;
     	}
     	else
     	{
     		System.out.println("Incorrect input");
     	    System.exit(0);
     	}
-    	return isEditMap;
 		
 	}
 	
-	public boolean editMap()
-	{
-		return isEditMap;
-	}
 	/**
 	 * getter for the getting the new map data
 	 * @return inputMapData
@@ -114,5 +114,91 @@ public class WorldMapView {
 
 		
 	}
+	
+	public boolean getEditMap() {
+		return isEditMap;
+	}
+	public boolean getAddMap() {
+		return isAddMap;
+	}
+	
+	/**
+	 * printMap is to print the map to the console.
+	 */
+
+	public void displayMap(WorldMap map) {
+		System.out.println("\nList of continents and their respective continent values");
+		System.out.println("[Continent] : values");
+		map.getContinentValues().forEach((k,v)-> System.out.println( "["+  k+ "]" + " : " + v));
+		System.out.println("\nList of countires and their respective neighbours");
+		System.out.println("[Country]    : [Neighbours] ");
+		map.getTerritoryNeighbour().forEach((k,v)->System.out.println( "["+  k+ "]" + "  : " + v));
+	}
+	
+	public userAction editMap()
+	{
+		System.out.println("\n Enter 0 to edit Continent vlaue");
+		System.out.println("\n Enter 1 to add neighbours ");
+		System.out.println("\n Enter 2 to remove neighbours ");
+		ArrayList<String> mapEdit = new ArrayList<String>();
+		sc = new Scanner(System.in);
+		int input = sc.nextInt();
+		if(input == 0)
+		{
+//			System.out.println("\n Enter the continent name you want to edit");
+			return userAction.EDIT_CONTINENT_VALUE;
+		}
+		else if(input == 1)
+		{
+//			System.out.println("\n Enter the country for which neighbour has to be added");
+//			String country = sc.nextLine();
+//			System.out.println("\n Enter name of neighbour in comma seperatedd");
+//			String neighbour = sc.nextLine();
+			return userAction.ADD_NEIGHBOURS;
+
+		}
+		else if(input == 2)
+		{
+//			System.out.println("\n Enter the country for which neighbour has to be added");
+//			String country = sc.nextLine();
+//			System.out.println("\n Enter name of neighbour in comma seperatedd");
+//			String neighbour = sc.nextLine();
+			return userAction.REMOVE_NEIGHBOURS;
+
+		}
+		else return null; 
+	}
+	
+public	String editContinentValue()
+	{
+		sc = new Scanner(System.in);
+		System.out.println("\n Enter the continent name you want to edit");
+		String input = sc.nextLine();
+		System.out.println("\n Enter the continent value");
+		String value = sc.nextLine();
+		return input+ ":"+ value; 
+	}
+public	String editNeighbours()
+	{
+		sc = new Scanner(System.in);
+		System.out.println("\n Enter the country name you want to add");
+		String input = sc.nextLine();
+		System.out.println("\n Enter the neighbours in commma seprated");
+		String value = sc.nextLine();
+		return input+ ":"+ value; 
+	}
+	
+
+public	String removeNeighbours()
+	{
+		sc = new Scanner(System.in);
+		System.out.println("\n Enter the country name you want to remove");
+		String input = sc.nextLine();
+		System.out.println("\n Enter the neighbours in commma seprated");
+		String value = sc.nextLine();
+		return input+ ":"+ value; 
+	}
+	
+	
 
 }
