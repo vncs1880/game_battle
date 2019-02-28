@@ -9,21 +9,28 @@ import java.util.function.Predicate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.game_battle.gameplay.Card.Sort; 
+import org.game_battle.gameplay.Card.Sort;
 
 /**
- * @author voda
- *
- */
+ * This class sets up the countries and continents on the game board
+ * 
+ * @author Vini
+ * @version Alpha
+ * @date 5/02/19
+ **/
 public class Board {
 	private static final Logger LOG = LogManager.getLogger(Board.class);
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		String s = "\r\ncardsToGive: "+cardsToGive+", lastDiceRollResult: "+lastDiceRollResult+", \r\nplayers: "+players+" \r\ncontinents:"+continents;
-		return s;//super.toString();
+		String s = "\r\ncardsToGive: " + cardsToGive + ", lastDiceRollResult: " + lastDiceRollResult + ", \r\nplayers: "
+				+ players + " \r\ncontinents:" + continents;
+		return s;// super.toString();
 	}
 
 	private static final int CARDS_EQUAL_DIFFERENT_AMOUNT = 3;
@@ -34,38 +41,45 @@ public class Board {
 	private int cardsToGive;
 	private int lastDiceRollResult;
 	private MapInterface mapinterface;
-	
+
 	private static final Random RANDOM = new Random();
 
-	
 	/**
 	 * 
 	 */
 	public Board() {
-		//Board LOADS Graph
-		//Game: The game starts by the start-up phase, where the number of players is determined, then all the
-		//countries are randomly assigned to the players. 
-		//L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
-		////generate a list of lists, each w random countries
+		// Board LOADS Graph
+		// Game: The game starts by the start-up phase, where the number of players is
+		// determined, then all the
+		// countries are randomly assigned to the players.
+		// L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
+		//// generate a list of lists, each w random countries
 		mapinterface = new MapInterface();
-		setPlayers( new LinkedList<Player>(Arrays.asList(new Player(this,"x"),new Player(this,"y"),new Player(this,"z"),new Player(this,"a"))) );
-		//List<List<Country>> L = getRandomCountriesLists(getPlayers().size());
+		setPlayers(new LinkedList<Player>(Arrays.asList(new Player(this, "x"), new Player(this, "y"),
+				new Player(this, "z"), new Player(this, "a"))));
+		// List<List<Country>> L = getRandomCountriesLists(getPlayers().size());
 		distributeCountries(getPlayers().size());
-		//For player in PlayersTotalNumber:
+		// For player in PlayersTotalNumber:
 //		New Player().AssignCountries( L[player] )
 //		//set countries_list in Player OR set owner in country		
-		//for (Player player : players) {
-		//	player.setCountries(L.get(players.indexOf(player)));
-		//}
-		//User-driven creation of map elements, such as country, continent, and connectivity between countries. 4
+		// for (Player player : players) {
+		// player.setCountries(L.get(players.indexOf(player)));
+		// }
+		// User-driven creation of map elements, such as country, continent, and
+		// connectivity between countries. 4
 		continents = MapInterface.getContinents();
-		//Saving a map to a text file exactly as edited (using the “conquest” game map format). 3
-		//Loading a map from an existing “conquest” map file, then editing the map, or create a new map from scratch. 3
-		//Verification of map correctness upon loading and before saving (at least 3 types of incorrect maps). 2
-		//Implementation of a game driver implementing the game phases according to the Risk rules. 2
-		//Game starts by user selection of a user-saved map file. 1
-		//Map is loaded as a connected graph, which is rendered effectively to the user to enable efficient play. 3
-		//User chooses the number of players,
+		// Saving a map to a text file exactly as edited (using the “conquest” game map
+		// format). 3
+		// Loading a map from an existing “conquest” map file, then editing the map, or
+		// create a new map from scratch. 3
+		// Verification of map correctness upon loading and before saving (at least 3
+		// types of incorrect maps). 2
+		// Implementation of a game driver implementing the game phases according to the
+		// Risk rules. 2
+		// Game starts by user selection of a user-saved map file. 1
+		// Map is loaded as a connected graph, which is rendered effectively to the user
+		// to enable efficient play. 3
+		// User chooses the number of players,
 	}
 
 	public void distributeCountries(int playersCount) {
@@ -76,7 +90,7 @@ public class Board {
 		 * (Player player : players) { int j = i + delta;
 		 * player.setCountries(countriesToDistribute.subList(i, j)); i = j; }//
 		 * distribute remaining countries
-		 */		
+		 */
 		Iterator<Country> it = countriesToDistribute.iterator();
 		int k = 0;
 		while (it.hasNext()) {
@@ -84,33 +98,51 @@ public class Board {
 			Player player = players.get(k);
 			List<Country> countries = player.getCountries();
 			countries.add(c);
+<<<<<<< HEAD
+			// countriesToDistribute.remove(c);
+			k = (++k == players.size()) ? 0 : k;
+=======
 			player.setPreviousCountriesQty(countries.size());
 			//countriesToDistribute.remove(c);
 			k = (++k==players.size())?0:k;
+>>>>>>> 0b964af6e8ee5e789ee51f34d383fc4417a0abf6
 		}
 	}
 
 	public int getArmiesFromCards(List<Card> cards) {
-		HashMap<Card.Sort, Integer> cardsCount = new HashMap<Card.Sort, Integer>(){{
-		    put(Card.Sort.INFANTRY, 0);
-		    put(Card.Sort.CAVALRY, 0);
-		    put(Card.Sort.ARTILLERY, 0);
-		}}; // TODO EnumMap could be better
-		
+		HashMap<Card.Sort, Integer> cardsCount = new HashMap<Card.Sort, Integer>() {
+			{
+				put(Card.Sort.INFANTRY, 0);
+				put(Card.Sort.CAVALRY, 0);
+				put(Card.Sort.ARTILLERY, 0);
+			}
+		}; // TODO EnumMap could be better
+
 		for (Card card : cards) {
 			Integer new_qty = cardsCount.get(card.getType());
-			cardsCount.put( card.getType(), new_qty++ );
+			cardsCount.put(card.getType(), new_qty++);
 		}
-		//Finally, if the player owns three cards of different sorts or the same sorts, he can exchange them for armies.
+		// Finally, if the player owns three cards of different sorts or the same sorts,
+		// he can exchange them for armies.
 
-		//Each card is either an infantry, cavalry, or artillery card. During a player’s reinforcement phase, a player can exchange a set of three cards of the same kind, 
-		//or a set of three cards of all different kinds for a number of armies that increases every time any player does so. The number of armies a player will get for 
-		//cards is first 5, then increases by 5 every time any player does so (i.e. 5, 10, 15, …). A player that conquers the last country owned by another player receives 
-		//all the cards held by that player. If a player holds five cards during his reinforcement phase, he must exchange three of them for armies.
+		// Each card is either an infantry, cavalry, or artillery card. During a
+		// player’s reinforcement phase, a player can exchange a set of three cards of
+		// the same kind,
+		// or a set of three cards of all different kinds for a number of armies that
+		// increases every time any player does so. The number of armies a player will
+		// get for
+		// cards is first 5, then increases by 5 every time any player does so (i.e. 5,
+		// 10, 15, …). A player that conquers the last country owned by another player
+		// receives
+		// all the cards held by that player. If a player holds five cards during his
+		// reinforcement phase, he must exchange three of them for armies.
 
-		////getEligibleArmies manages the counter to 5, 10, 15.. across players turns 
-		////Cards is an utility class for now (maybe should be Board.Cards because Board HAS Cards).
-		//The number of armies a player will get for cards is first 5, then increases by 5 every time any player does so (i.e. 5, 10, 15, …). In any case, the minimal number of reinforcement armies is 3. 
+		//// getEligibleArmies manages the counter to 5, 10, 15.. across players turns
+		//// Cards is an utility class for now (maybe should be Board.Cards because
+		//// Board HAS Cards).
+		// The number of armies a player will get for cards is first 5, then increases
+		//// by 5 every time any player does so (i.e. 5, 10, 15, …). In any case, the
+		//// minimal number of reinforcement armies is 3.
 
 		//boolean equals = cardsCount.values().contains(CARDS_EQUAL_DIFFERENT_AMOUNT);
 		Collection<Integer> eqs = cardsCount.values();
@@ -128,17 +160,18 @@ public class Board {
 			}
 		});
 		boolean differents = diffs.size() >= CARDS_EQUAL_DIFFERENT_AMOUNT;
-		
-		if (equals||differents) {
+
+		if (equals || differents) {
 			cardsToGive += 5;
-			return cardsToGive;	
+			return cardsToGive;
 		} else {
 			return 0;
 		}
 	}
 
 	/*
-	 * public List<Country> getElligibleTargets(Country offendingCountry) {  return null; }
+	 * public List<Country> getElligibleTargets(Country offendingCountry) { return
+	 * null; }
 	 */
 
 	public Player doBattle(Country offendingCountry, Country deffendingCountry) {
@@ -148,26 +181,26 @@ public class Board {
 		 * should not be more than the number of armies contained in the attacking
 		 * country) and the defender rolling at most 2 dice (which should not be more
 		 * than the number of armies contained in the attacking country).
-		 */		
+		 */
 		/*
-		 * The outcome of the attack is determined by comparing the defenders best
-		 * dice roll with the attackers best dice roll. If the defender rolls greater
-		 * or equal to the attacker, then the attacker loses an army otherwise the
-		 * defender loses an army. If the defender rolled two dice, then his other dice
-		 * roll is compared to the attacker's second best dice roll and a second army is
-		 * lost by the attacker or defender in the same way.
-		 */		
-		//Still to do 
-		//pls help😅
+		 * The outcome of the attack is determined by comparing the defenders best dice
+		 * roll with the attackers best dice roll. If the defender rolls greater or
+		 * equal to the attacker, then the attacker loses an army otherwise the defender
+		 * loses an army. If the defender rolled two dice, then his other dice roll is
+		 * compared to the attacker's second best dice roll and a second army is lost by
+		 * the attacker or defender in the same way.
+		 */
+		// Still to do
+		// pls help😅
 		//
 		Player attacker = getOwner(offendingCountry);
 		Player deffender = getOwner(deffendingCountry);
-		Player winner = (getDiceRollResult(attacker) > getDiceRollResult(deffender))?attacker:deffender;
+		Player winner = (getDiceRollResult(attacker) > getDiceRollResult(deffender)) ? attacker : deffender;
 		LOG.info("\r\nBattle winner: " + winner);
 		return winner;
 	}
 
-	private int getDiceRollResult(Player attacker) {//TODO doesnt really need parameter for now
+	private int getDiceRollResult(Player attacker) {// TODO doesnt really need parameter for now
 		return RANDOM.nextInt(6);
 	}
 
@@ -209,13 +242,13 @@ public class Board {
 	public List<Player> getPlayers() {
 		return players;
 	}
-	
+
 	/**
-	 * @param continent 
+	 * @param continent
 	 * @return the countriesByContinent
 	 */
 	public List<Country> getCountriesByContinent(Continent continent) {
-		return  MapInterface.getCountriesByContinent(continent); //countriesByContinent.get(countriesByContinent.indexOf(continent));
+		return MapInterface.getCountriesByContinent(continent); // countriesByContinent.get(countriesByContinent.indexOf(continent));
 	}
 
 	public List<Continent> getContinents() {
