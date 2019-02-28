@@ -112,7 +112,7 @@ public class Board {
 				put(Card.Sort.CAVALRY, 0);
 				put(Card.Sort.ARTILLERY, 0);
 			}
-		}; // TODO EnumMap could be better
+		}; // TODO getArmiesFromCards is not working
 
 		for (Card card : cards) {
 			Integer new_qty = cardsCount.get(card.getType());
