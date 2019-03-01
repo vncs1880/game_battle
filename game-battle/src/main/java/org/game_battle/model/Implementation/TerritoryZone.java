@@ -20,6 +20,10 @@ public class TerritoryZone implements Territory {
 		this.setCoordinates(x_coordinates, y_coordinates);
 		this.adjacentTerritories = n_adjacentTerritories;
 	}
+    public TerritoryZone() {
+    
+    }
+
 
 	
 	public boolean hasAdjacencyWith(Territory t) {
@@ -33,6 +37,15 @@ public class TerritoryZone implements Territory {
 
 	public ArrayList<String> getAdjacentTerritories() {
 		return this.adjacentTerritories;
+		
+	} 
+	
+	public void setAdjacentTerritories( ArrayList<String> territorylist ) {
+		System.out.println("insie");
+
+		System.out.println(territorylist);
+		 this.adjacentTerritories.clear();
+		 this.adjacentTerritories = territorylist;
 		
 	} 
 

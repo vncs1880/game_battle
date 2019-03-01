@@ -25,11 +25,10 @@ public class MapController {
 	 * display the new created Map.
 	 * 
 	 */
-	public void loadMap()
+	public void loadMap(WorldMapView view)
 	{
-		 view.initiateMapLoad();
-		 boolean isAddMap = view.getAddMap();
-		 boolean isEditMap = view.getEditMap();
+		view.initiateMapLoad();
+		boolean isAddMap = view.isAddMap();
 		ArrayList<String> mapData = new ArrayList<String>();
 		if(isAddMap)
 		{
@@ -39,11 +38,11 @@ public class MapController {
 		else mapData = FileReaderWriter.readFile(Constant.ReadFilePATH); 
 		
 		MapDataExtractor.extractData(mapData, model);
-		
-		
 		 
 		if(isAddMap)
+		{
 			FileReaderWriter.writeFile(Constant.WriteFilePATH, model );
+		}
 	
 	}
 	public void editMap(WorldMapView view ,WorldMap map ) 
@@ -62,7 +61,12 @@ public class MapController {
 				map.removeNeighbours(view.removeNeighbours());
 				
 			}
+
 		else System.out.println("error");
+	
+
+		FileReaderWriter.writeFile(Constant.ReadFilePATH, map );
+
 	}
 			
 		
@@ -84,8 +88,6 @@ public class MapController {
 	public void printMap(WorldMapView view ,WorldMap map )
 	{
 		view.displayMap(map);
-//		System.out.println(this.model.getTerritoryNeighbour());
-//		System.out.println(this.model.getContinentValues());
 	}
 		 
 	

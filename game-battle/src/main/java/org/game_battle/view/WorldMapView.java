@@ -68,22 +68,28 @@ public class WorldMapView {
     	int input = sc.nextInt();
     	if(input == 0) 
     	{
-    		isAddMap= false;
-        	System.out.println("Enter 0 to edit the map, else enter 1 to proceed ");
-        	int input1 = sc.nextInt();
-        	isEditMap = input1 == 0 ? true : false;
+    		this.isAddMap= false;
+        
     	}
     	else if(input == 1) 
     	{
-    		isAddMap = true;
+    		this.isAddMap = true;
     	}
     	else
     	{
     		System.out.println("Incorrect input");
     	    System.exit(0);
     	}
-		
 	}
+    public boolean intiateMapEdit()
+    {
+    	System.out.println("Enter 0 to edit the map, else enter 1 to proceed ");
+    	int input1 = sc.nextInt();
+    	this.isEditMap = input1 == 0 ? true : false;
+    	return this.isEditMap;
+    }
+		
+	
 	
 	/**
 	 * getter for the getting the new map data
@@ -115,10 +121,10 @@ public class WorldMapView {
 		
 	}
 	
-	public boolean getEditMap() {
+	public boolean isEditMap() {
 		return isEditMap;
 	}
-	public boolean getAddMap() {
+	public boolean isAddMap() {
 		return isAddMap;
 	}
 	
@@ -127,6 +133,8 @@ public class WorldMapView {
 	 */
 
 	public void displayMap(WorldMap map) {
+		System.out.println(map.getContinentsInfo());
+
 		System.out.println("\nList of continents and their respective continent values");
 		System.out.println("[Continent] : values");
 		map.getContinentValues().forEach((k,v)-> System.out.println( "["+  k+ "]" + " : " + v));
@@ -138,33 +146,21 @@ public class WorldMapView {
 	public userAction editMap()
 	{
 		System.out.println("\n Enter 0 to edit Continent vlaue");
-		System.out.println("\n Enter 1 to add neighbours ");
-		System.out.println("\n Enter 2 to remove neighbours ");
-		ArrayList<String> mapEdit = new ArrayList<String>();
+		System.out.println(" Enter 1 to add neighbours ");
+		System.out.println(" Enter 2 to remove neighbours ");
 		sc = new Scanner(System.in);
 		int input = sc.nextInt();
 		if(input == 0)
 		{
-//			System.out.println("\n Enter the continent name you want to edit");
 			return userAction.EDIT_CONTINENT_VALUE;
 		}
 		else if(input == 1)
 		{
-//			System.out.println("\n Enter the country for which neighbour has to be added");
-//			String country = sc.nextLine();
-//			System.out.println("\n Enter name of neighbour in comma seperatedd");
-//			String neighbour = sc.nextLine();
 			return userAction.ADD_NEIGHBOURS;
-
 		}
 		else if(input == 2)
 		{
-//			System.out.println("\n Enter the country for which neighbour has to be added");
-//			String country = sc.nextLine();
-//			System.out.println("\n Enter name of neighbour in comma seperatedd");
-//			String neighbour = sc.nextLine();
 			return userAction.REMOVE_NEIGHBOURS;
-
 		}
 		else return null; 
 	}

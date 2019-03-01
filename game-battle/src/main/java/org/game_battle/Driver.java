@@ -15,10 +15,19 @@ public class Driver {
 		WorldMap model  = new WorldMap();
         WorldMapView view = new WorldMapView();
         MapController controller = new MapController(view, model);
-        controller.loadMap();
+        controller.loadMap(view);
         controller.printMap(view, model);
         controller.checkCorrectnessOfMap(model.getTerritoryNeighbour());
-        controller.editMap(view, model);
+        if(!view.isAddMap())
+        {
+        	if(view.intiateMapEdit())
+        	{
+        		controller.editMap(view, model);
+                controller.printMap(view, model);
+
+        	}
+        }
+      
     }
     
 }

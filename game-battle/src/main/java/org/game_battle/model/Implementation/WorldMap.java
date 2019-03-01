@@ -11,6 +11,7 @@ import java.util.Collection;
 
 
 public class WorldMap {
+	private TerritoryZone TerritoryZone;
 	private  Map<String, Integer> continentValues ;		
 	private Map<String, ArrayList<String>> territoryNeighbour ;
 	private  HashMap<String, HashMap<String,TerritoryZone>> continentsInfo ;
@@ -19,6 +20,7 @@ public class WorldMap {
 		continentValues = new HashMap<String, Integer>();	
 		territoryNeighbour = new HashMap<String, ArrayList<String>> ();
 		continentsInfo = new HashMap<String, HashMap<String,TerritoryZone>>();
+		TerritoryZone tz = new TerritoryZone(); 
 	}
 	public void setContinentValues(Map<String, Integer> input)
 	{
@@ -90,6 +92,55 @@ public class WorldMap {
 		return continentsInfo; 
 	}
 	
+	public void updateContinentsInfo (String key)
+	{
+		 HashMap<String,TerritoryZone> temp =  this.continentsInfo.get(key) ;
+		 for(Map.Entry<String,TerritoryZone>  entry : temp.entrySet())
+		 {
+			String keyforTerritory = entry.getKey() ;
+
+		 }
+		 TerritoryZone tz = temp.get(key);
+		 System.out.println(tz );
+
+		 System.out.println(this.territoryNeighbour.get(key) );
+
+//		 tz.setAdjacentTerritories(this.territoryNeighbour.get(key) ); 
+//		 temp.put(key, tz);
+//		 continentsInfo.put(key, temp);
+		 
+	}
+	
+	public void updateNeighboursInCountryInfo(Map<String,  HashMap<String,TerritoryZone>> input)
+	{
+		for (Map.Entry<String, HashMap<String,TerritoryZone>> entry : input.entrySet()) 
+		{
+		    String key = entry.getKey() ;
+		    Map<String,TerritoryZone> value = entry.getValue();
+		    Map<String, TerritoryZone> value_copy = new HashMap<String, TerritoryZone>();	
+			for (Map.Entry<String, TerritoryZone> entryforTerritory : value.entrySet()) 
+			{
+				String keyforTerritory = entryforTerritory.getKey() ;
+				TerritoryZone valueforTerritory = entryforTerritory.getValue();
+				valueforTerritory.setAdjacentTerritories(this.territoryNeighbour.get(key) ); 
+				value_copy.put(keyforTerritory, valueforTerritory);
+			}
+			continentsInfo.put(key, (HashMap<String, TerritoryZone>) value_copy);
+		}
+
+	}
+	
+	public void setUpdatedNeighbours( String key)
+	{
+
+		 HashMap<String,TerritoryZone> temp =  continentsInfo.get(key) ;
+		 TerritoryZone tz = temp.get(key);
+		 tz.setAdjacentTerritories(territoryNeighbour.get(key) ); 
+		 temp.put(key, tz);
+		 continentsInfo.put(key, temp);
+
+	}
+	
 	public Map<String,TerritoryZone> getContinentInfo(String continent)
 	{
 		return continentsInfo.get(continent); 
@@ -117,16 +168,25 @@ public class WorldMap {
 		if(neighbourValues.length()>0)
 		{
 			String [] value = neighbourValues.split(":");
-			
 			String key = value[0];
 			String []neighbour = value[1].split(",");
 			 ArrayList<String> temp = new ArrayList<String>();
-			    for(String element : value )
-			    {
-			    	temp.add(element) ; 
-			    }
-		    this.territoryNeighbour.put(key, temp);
+			 temp = this.territoryNeighbour.get(key);
+			 System.out.println(temp);
+			 System.out.println("start");
 
+			 for(String element : neighbour )
+			    {
+				 System.out.println(temp);
+	
+				 temp.add(element) ; 
+			    }
+			 System.out.println("end");
+
+			 System.out.println(temp);
+
+		    this.territoryNeighbour.put(key, temp);
+		    this.updateNeighboursInCountryInfo( this.continentsInfo);
 		}	
 		
 	}
@@ -140,11 +200,12 @@ public class WorldMap {
 			{
 				ArrayList<String> temp = new ArrayList<String>();
 				temp = this.territoryNeighbour.get(key);
-				for(String element : value )
+				for(String element : neighbour )
 				 	{
 						temp.remove(element);
 				    }
 			    this.territoryNeighbour.put(key, temp);
+			    this.updateNeighboursInCountryInfo( this.continentsInfo);
 
 				}   
 			}

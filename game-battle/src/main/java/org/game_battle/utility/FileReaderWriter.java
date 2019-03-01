@@ -47,6 +47,11 @@ public class FileReaderWriter {
 	
 	public static void writeFile(String PATH , WorldMap wm){		
 		try {
+			
+		    System.out.println("#####");
+
+		    System.out.println( wm.getTerritoryNeighbour());
+
 			FileWriter fw = new FileWriter(PATH);
 			BufferedWriter bw = new BufferedWriter(fw);
 			bw.write("[Continents]");
