@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class WorldMap {
 	private TerritoryZone TerritoryZone;
+	private ContinentZone ContinentZone;
+
 	private  Map<String, Integer> continentValues ;		
 	private Map<String, ArrayList<String>> territoryNeighbour ;
 	private  HashMap<String, HashMap<String,TerritoryZone>> continentsInfo ;
@@ -16,7 +18,8 @@ public class WorldMap {
 		continentValues = new HashMap<String, Integer>();	
 		territoryNeighbour = new HashMap<String, ArrayList<String>> ();
 		continentsInfo = new HashMap<String, HashMap<String,TerritoryZone>>();
-		TerritoryZone tz = new TerritoryZone(); 
+		TerritoryZone TerritoryZone = new TerritoryZone();
+
 	}
 	public void setContinentValues(Map<String, Integer> input)
 	{
@@ -201,6 +204,20 @@ public class WorldMap {
  		
 		return territories;	
 		
+	}
+	
+	public List<ContinentZone> getContinents()
+	{
+		List<ContinentZone> continentList = new ArrayList<ContinentZone>();
+		
+		for (Map.Entry<String , Integer> entry : this.continentValues.entrySet()) 
+		{
+			ContinentZone ContinentZone = new ContinentZone(); 
+			String value = entry.getKey();
+			ContinentZone.setContinentName(value);	
+			continentList.add(ContinentZone);
+		}
+		return continentList;	
 	}
 		
 		

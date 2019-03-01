@@ -2,6 +2,9 @@ package org.game_battle;
  
 import org.game_battle.model.Implementation.*;
 import org.game_battle.view.*;
+
+import java.util.List;
+
 import org.game_battle.controler.*;
 
 public class Driver {
@@ -21,7 +24,8 @@ public class Driver {
 
         	}
         }
-        System.out.println(model.getTerritories());
+      
+
       
     }
     
