@@ -24,8 +24,6 @@ public class TerritoryZone implements Territory {
     
     }
 
-
-	
 	public boolean hasAdjacencyWith(Territory t) {
 		return continentName.contains(t.getTerritoryName());
 	}
@@ -41,9 +39,6 @@ public class TerritoryZone implements Territory {
 	} 
 	
 	public void setAdjacentTerritories( ArrayList<String> territorylist ) {
-		System.out.println("insie");
-
-		System.out.println(territorylist);
 		 this.adjacentTerritories.clear();
 		 this.adjacentTerritories = territorylist;
 		

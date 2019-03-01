@@ -1,11 +1,8 @@
 package org.game_battle.view;
-import org.game_battle.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
+import org.game_battle.Enums.MapView.userAction;
 import org.game_battle.model.Implementation.WorldMap;
 import org.game_battle.utility.ConnectedGraph;
 
@@ -64,7 +61,7 @@ public class WorldMapView {
 	public void initiateMapLoad()
 	{
 		sc = new Scanner(System.in);
-    	System.out.println("Enter 0 to load existing map, Enter 1 to create a new map");
+    	System.out.println("\nEnter 0 to load existing map, Enter 1 to create a new map");
     	int input = sc.nextInt();
     	if(input == 0) 
     	{
@@ -83,7 +80,7 @@ public class WorldMapView {
 	}
     public boolean intiateMapEdit()
     {
-    	System.out.println("Enter 0 to edit the map, else enter 1 to proceed ");
+    	System.out.println("\nEnter 0 to edit the map, else enter 1 to proceed ");
     	int input1 = sc.nextInt();
     	this.isEditMap = input1 == 0 ? true : false;
     	return this.isEditMap;
@@ -111,10 +108,10 @@ public class WorldMapView {
 		
 		int c = ConnectedGraph.connected_components(wm);
         if(c==1){
-            System.out.println("Map is connected");
+            System.out.println("\n=> Map is connected");
         }
         else{
-            System.out.print("No. of Disconnected map: " +  c);
+            System.out.print("\n=>  Map is is disconnected and No. of Disconnected map: " +  c);
         }
         System.out.print("\n");
 
@@ -134,14 +131,13 @@ public class WorldMapView {
 
 	public void displayMap(WorldMap map) {
 
-		System.out.println("\n=> List of continents and their continent values");
+		System.out.println("\n=> Continents and their values");
 		System.out.println("[Continent] : values");
-		System.out.println("##########################");
-
+		System.out.println("-----------------------------");
 		map.getContinentValues().forEach((k,v)-> System.out.println( "["+  k+ "]" + " : " + v));
-		System.out.println("\n=> List of countires and their respective neighbours");
+		System.out.println("\n=> Countires and their respective neighbours");
 		System.out.println("[Country]    : [Neighbours] ");
-		System.out.println("##########################");
+		System.out.println("------------------------------");
 		map.getTerritoryNeighbour().forEach((k,v)->System.out.println( "["+  k+ "]" + "  : " + v));
 	}
 	
@@ -171,18 +167,18 @@ public	String editContinentValue()
 	{
 		sc = new Scanner(System.in);
 		System.out.println("\n Enter the continent name you want to edit");
-		String input = sc.nextLine();
+		String input = sc.nextLine().trim();
 		System.out.println("\n Enter the continent value");
-		String value = sc.nextLine();
+		String value = sc.nextLine().trim();
 		return input+ ":"+ value; 
 	}
 public	String editNeighbours()
 	{
 		sc = new Scanner(System.in);
 		System.out.println("\n Enter the country name you want to add");
-		String input = sc.nextLine();
+		String input = sc.nextLine().trim();
 		System.out.println("\n Enter the neighbours in commma seprated");
-		String value = sc.nextLine();
+		String value = sc.nextLine().trim();
 		return input+ ":"+ value; 
 	}
 	
@@ -191,9 +187,9 @@ public	String removeNeighbours()
 	{
 		sc = new Scanner(System.in);
 		System.out.println("\n Enter the country name you want to remove");
-		String input = sc.nextLine();
+		String input = sc.nextLine().trim();
 		System.out.println("\n Enter the neighbours in commma seprated");
-		String value = sc.nextLine();
+		String value = sc.nextLine().trim();
 		return input+ ":"+ value; 
 	}
 	

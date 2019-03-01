@@ -47,13 +47,11 @@ public class ConnectedGraph
  
    public static int connected_components(Map<String, ArrayList<String>> wm)
     {
-        int c;
-        c = 0;
-        
-        for (Entry<String, ArrayList<String>> entry : wm.entrySet()) {
-        	
-    	//	System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
-    		String x = entry.getKey();
+        int c = 0;
+        discovered_.clear();
+        for (Entry<String, ArrayList<String>> entry : wm.entrySet()) 
+        {
+       		String x = entry.getKey();
     		if (!discovered_.contains(x))
             {
                 c++;

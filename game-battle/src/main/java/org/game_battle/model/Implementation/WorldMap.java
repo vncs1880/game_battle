@@ -178,11 +178,8 @@ public class WorldMap {
 				ArrayList<String> temp = new ArrayList<String>();
 				temp = this.territoryNeighbour.get(key);
 				for(String element : neighbour )
-				 	{
-					System.out.println(element+ ":"+ temp);
-	
+				 	{	
 					temp.remove(element.trim());
-					System.out.println(element+ ":"+ temp);
 				    }
 			    this.territoryNeighbour.put(key, temp);
 			    this.updateNeighboursInCountryInfo( this.continentsInfo);

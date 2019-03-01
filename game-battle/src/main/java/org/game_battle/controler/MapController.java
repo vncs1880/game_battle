@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.game_battle.Constant;
-import org.game_battle.userAction;
 import org.game_battle.model.Implementation.WorldMap;
 import org.game_battle.utility.FileReaderWriter;
 import org.game_battle.utility.MapDataExtractor;
-import org.game_battle.view.WorldMapView;;
+import org.game_battle.view.WorldMapView;
+import org.game_battle.Enums.MapView.userAction;
 
 public class MapController {
 
@@ -88,6 +88,8 @@ public class MapController {
 	public void printMap(WorldMapView view ,WorldMap map )
 	{
 		view.displayMap(map);
+        checkCorrectnessOfMap(map.getTerritoryNeighbour());
+
 	}
 		 
 	
