@@ -133,13 +133,15 @@ public class WorldMapView {
 	 */
 
 	public void displayMap(WorldMap map) {
-		System.out.println(map.getContinentsInfo());
 
-		System.out.println("\nList of continents and their respective continent values");
+		System.out.println("\n=> List of continents and their continent values");
 		System.out.println("[Continent] : values");
+		System.out.println("##########################");
+
 		map.getContinentValues().forEach((k,v)-> System.out.println( "["+  k+ "]" + " : " + v));
-		System.out.println("\nList of countires and their respective neighbours");
+		System.out.println("\n=> List of countires and their respective neighbours");
 		System.out.println("[Country]    : [Neighbours] ");
+		System.out.println("##########################");
 		map.getTerritoryNeighbour().forEach((k,v)->System.out.println( "["+  k+ "]" + "  : " + v));
 	}
 	

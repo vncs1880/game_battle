@@ -92,24 +92,6 @@ public class WorldMap {
 		return continentsInfo; 
 	}
 	
-	public void updateContinentsInfo (String key)
-	{
-		 HashMap<String,TerritoryZone> temp =  this.continentsInfo.get(key) ;
-		 for(Map.Entry<String,TerritoryZone>  entry : temp.entrySet())
-		 {
-			String keyforTerritory = entry.getKey() ;
-
-		 }
-		 TerritoryZone tz = temp.get(key);
-		 System.out.println(tz );
-
-		 System.out.println(this.territoryNeighbour.get(key) );
-
-//		 tz.setAdjacentTerritories(this.territoryNeighbour.get(key) ); 
-//		 temp.put(key, tz);
-//		 continentsInfo.put(key, temp);
-		 
-	}
 	
 	public void updateNeighboursInCountryInfo(Map<String,  HashMap<String,TerritoryZone>> input)
 	{
@@ -172,18 +154,13 @@ public class WorldMap {
 			String []neighbour = value[1].split(",");
 			 ArrayList<String> temp = new ArrayList<String>();
 			 temp = this.territoryNeighbour.get(key);
-			 System.out.println(temp);
-			 System.out.println("start");
 
 			 for(String element : neighbour )
 			    {
-				 System.out.println(temp);
 	
-				 temp.add(element) ; 
+				 temp.add(element.trim()) ; 
 			    }
-			 System.out.println("end");
 
-			 System.out.println(temp);
 
 		    this.territoryNeighbour.put(key, temp);
 		    this.updateNeighboursInCountryInfo( this.continentsInfo);
@@ -202,7 +179,10 @@ public class WorldMap {
 				temp = this.territoryNeighbour.get(key);
 				for(String element : neighbour )
 				 	{
-						temp.remove(element);
+					System.out.println(element+ ":"+ temp);
+	
+					temp.remove(element.trim());
+					System.out.println(element+ ":"+ temp);
 				    }
 			    this.territoryNeighbour.put(key, temp);
 			    this.updateNeighboursInCountryInfo( this.continentsInfo);
