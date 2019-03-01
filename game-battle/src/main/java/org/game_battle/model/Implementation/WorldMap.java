@@ -1,13 +1,9 @@
  package org.game_battle.model.Implementation;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.swing.text.html.HTMLDocument.Iterator;
-
 import java.util.ArrayList;
-import java.util.Collection;
 
 
 public class WorldMap {
@@ -187,6 +183,25 @@ public class WorldMap {
 				}   
 			}
 		}
+	
+	
+	public List<TerritoryZone> getTerritories()
+	{
+		List<TerritoryZone> territories = new ArrayList<TerritoryZone>();
+		
+		for (Map.Entry<String, HashMap<String,TerritoryZone>> entry : this.continentsInfo.entrySet()) 
+		{
+		    Map<String,TerritoryZone> value = entry.getValue();
+			for (Map.Entry<String, TerritoryZone> entryforTerritory : value.entrySet()) 
+			{
+				TerritoryZone = entryforTerritory.getValue();
+				territories.add(TerritoryZone);
+			}
+		}
+ 		
+		return territories;	
+		
+	}
 		
 		
 	}

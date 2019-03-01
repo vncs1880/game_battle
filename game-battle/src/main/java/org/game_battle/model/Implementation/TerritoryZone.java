@@ -1,6 +1,8 @@
 package org.game_battle.model.Implementation;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.game_battle.model.Contract.Territory;
 
 public class TerritoryZone implements Territory {
@@ -11,6 +13,7 @@ public class TerritoryZone implements Territory {
 
 	private String continentName;
 
+	private Integer armiesCount;
 
     private ArrayList<String> adjacentTerritories = new ArrayList<String>();    
 
@@ -19,6 +22,7 @@ public class TerritoryZone implements Territory {
 		this.setTerritoryName(n_territoryName);
 		this.setCoordinates(x_coordinates, y_coordinates);
 		this.adjacentTerritories = n_adjacentTerritories;
+		this.armiesCount= 0;
 	}
     public TerritoryZone() {
     
@@ -76,7 +80,9 @@ public class TerritoryZone implements Territory {
 	public String getContinentName() {
 		return continentName;
 	}
+	
 
+	
 
 
 }
