@@ -21,13 +21,18 @@ public class Continent {
 	private int controlValue;
 	private String name;
 
+	/**
+	 * @param ctrlValue control value associated with the continent
+	 * @param name      Name of the continent
+	 * 
+	 */
 	public Continent(int ctrlValue, String name) {
 		controlValue = ctrlValue;
 		this.name = name;
 	}
 
 	/**
-	 * Returns the control value associated with a continent
+	 * @ return Returns the control value associated with a continent
 	 * 
 	 **/
 	public int getControlValue() {

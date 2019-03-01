@@ -26,6 +26,10 @@ public class Country {
 	private int armies;
 	private String name;
 
+	/**
+	 * 
+	 * @return name of the country
+	 */
 	public String getName() {
 		return name;
 	}

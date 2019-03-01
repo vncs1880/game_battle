@@ -25,7 +25,7 @@ public class Card {
 	}
 
 	/**
-	 * @param type
+	 * @param type card type
 	 */
 	public Card(Sort type) {
 		super();
@@ -43,7 +43,7 @@ public class Card {
 	private Sort type;
 
 	/**
-	 * Returns the type of the card
+	 * @return type of the card
 	 *
 	 */
 	public Sort getType() {

@@ -1,9 +1,8 @@
 package org.game_battle.model.Implementation;
+import org.game_battle.model.Contract.Territory;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import org.game_battle.model.Contract.Territory;
 
 public class TerritoryZone implements Territory {
 	
