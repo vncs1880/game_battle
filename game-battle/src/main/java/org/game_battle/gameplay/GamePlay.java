@@ -8,76 +8,84 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
-
 /**
- * @author voda
+ * This class sets up the gameplay of the game
  * 
- */
+ * @author Vini
+ * @version Alpha
+ * @date 5/02/19
+ **/
 public class GamePlay {
-	//System.setProperty("log4j.configurationFile","./path_to_the_log4j2_config_file/log4j2.xml");
-    private static final Logger LOG = LogManager.getLogger(GamePlay.class);
+	// System.setProperty("log4j.configurationFile","./path_to_the_log4j2_config_file/log4j2.xml");
+	private static final Logger LOG = LogManager.getLogger(GamePlay.class);
 
 	private Board board;
 	private static List<Player> players;
-	
+
 	/**
 	 * @param board
 	 */
 	public GamePlay() {
 		super();
-		
-		board = new Board(); //Start up phase
+
+		board = new Board(); // Start up phase
 		players = board.getPlayers();
 	}
-	
+
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {	
-	//Then the turn-based main play phase begins, in which all players are given a turn in a round-robin fashion. 
-	//
-	//Each player’s turn is itself divided into three phases: 
-	//1) reinforcement phase, 2) attack phase, 3) fortifications phase. 
-	//
-	//Game driver
-	//
-	//While NOT GameBoard.isGameOver() //checks if there is only one player left etc
-	//For each Player:
+	public static void main(String[] args) {
+		// Then the turn-based main play phase begins, in which all players are given a
+		// turn in a round-robin fashion.
+		//
+		// Each player’s turn is itself divided into three phases:
+		// 1) reinforcement phase, 2) attack phase, 3) fortifications phase.
+		//
+		// Game driver
+		//
+		// While NOT GameBoard.isGameOver() //checks if there is only one player left
+		// etc
+		// For each Player:
 //			Player.Reinforcement()
 //		Player.Attack()
 //			Player.Fortification()
-	//
-	//Once a player is finished with these three phases, the next player’s turn starts.
+		//
+		// Once a player is finished with these three phases, the next player’s turn
+		// starts.
 		/*
 		 * while (it.hasNext()) { Player player = (Player) it.next();
 		 * player.Reinforcement(); //player.Attack(); //player.Fortification(); }
 		 */
 		GamePlay game = new GamePlay();
 		boolean gameOver = false;
-		while (!gameOver/*players.size() > 1*/) {
+		while (!gameOver/* players.size() > 1 */) {
 			for (Player player : players) {
-				LOG.info("\r\n"+game.board+"\r\n\r\n<<PLAYER "+player.getName()+" TURN>>\r\n\r\nReinforcement START");
+				LOG.info("\r\n" + game.board + "\r\n\r\n<<PLAYER " + player.getName()
+						+ " TURN>>\r\n\r\nReinforcement START");
 				player.Reinforcement();
-				LOG.info("\r\nReinforcement END: \r\n\r\n"+player+"\r\n\r\nAttack START");
+				LOG.info("\r\nReinforcement END: \r\n\r\n" + player + "\r\n\r\nAttack START");
 				player.Attack();
-				LOG.info("\r\nAttack END: \r\n\r\n"+player+"\r\n\r\nFortification START");
+				LOG.info("\r\nAttack END: \r\n\r\n" + player + "\r\n\r\nFortification START");
 				player.Fortification();
 				LOG.info("\r\nFortification END: \r\n\r\n" + player);
-				/* Any player that does not control at least one country is removed from the game. The game ends at
-				 * any time one of the players owns all the countries in the map. Cards: A
-				 * player receives a card at the end of his turn if he successfully conquered at
-				 * least one country during his turn.
-				 * https://docs.google.com/document/d/1dm4wG1lrqY6gxv315bQzvsdfSGi36X9BB-8Y1byZSe0/edit?disco=AAAAClD6TuY
-				 */ 				
+				/*
+				 * Any player that does not control at least one country is removed from the
+				 * game. The game ends at any time one of the players owns all the countries in
+				 * the map. Cards: A player receives a card at the end of his turn if he
+				 * successfully conquered at least one country during his turn.
+				 * https://docs.google.com/document/d/1dm4wG1lrqY6gxv315bQzvsdfSGi36X9BB-
+				 * 8Y1byZSe0/edit?disco=AAAAClD6TuY
+				 */
 				int currentCountriesQty = player.getCountries().size();
 				if (currentCountriesQty == game.board.getCountries().size()) {
-					UI.isUserOk("it is over", "end of game! congratulations "+ player.getName());
+					UI.isUserOk("it is over", "end of game! congratulations " + player.getName());
 					gameOver = true;
 				}
 				if (currentCountriesQty == 0) {
 					game.board.getPlayers().remove(player);
-					LOG.info(player.getName() + ", you lost all your countries. Thank you for your participation. Good bye.");
+					LOG.info(player.getName()
+							+ ", you lost all your countries. Thank you for your participation. Good bye.");
 				} else if (currentCountriesQty > player.getPreviousCountriesQty()) {
 					player.getCards().add(game.board.getRandomCard());
 					LOG.info("You conquered at least one new country. Have an extra card for that. Congratulations.");
@@ -85,11 +93,11 @@ public class GamePlay {
 				player.setPreviousCountriesQty(currentCountriesQty);
 			}
 
-			//L = GameBoard.getPlayers()
-			//If L.length() == 1:
+			// L = GameBoard.getPlayers()
+			// If L.length() == 1:
 //				GameBoard.GameOver()
-			//Else:
-			//For each player in L:
+			// Else:
+			// For each player in L:
 //				countries = length(player.getCountryList())
 //					If countries == 0:		
 //						L.remove[player]
@@ -108,16 +116,22 @@ public class GamePlay {
 			 * three of them for armies.
 			 */
 
-			//After battle/during attack phase, inside Board.updateTerritories(DeffendingCountry):
+			// After battle/during attack phase, inside
+			// Board.updateTerritories(DeffendingCountry):
 			//
-			//defeated = DeffendingCountry.getOwner()
-			//If length(defeated.getCountryList()) == 0: //lost last country
-			//cardslist = GameBoard.getDistributedCards
-			//cardslist[winner].append(cardslist[defeated])
-		};
-		
+			// defeated = DeffendingCountry.getOwner()
+			// If length(defeated.getCountryList()) == 0: //lost last country
+			// cardslist = GameBoard.getDistributedCards
+			// cardslist[winner].append(cardslist[defeated])
+		}
+		;
+
 	}
 
+	/**
+	 * 
+	 * @return game board
+	 */
 	public Board getBoard() {
 		return board;
 	}
