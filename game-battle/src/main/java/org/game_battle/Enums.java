@@ -5,7 +5,7 @@ public class Enums {
 	{
 		public enum userAction
 		{
-			EDIT_CONTINENT_VALUE, ADD_NEIGHBOURS, REMOVE_NEIGHBOURS    ;
+			EDIT_CONTINENT_VALUE, ADD_NEIGHBOURS, REMOVE_NEIGHBOURS;
 		}
 	}
 
