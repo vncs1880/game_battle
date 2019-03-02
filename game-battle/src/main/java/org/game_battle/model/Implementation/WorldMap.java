@@ -7,11 +7,10 @@ import java.util.ArrayList;
 
 
 public class WorldMap {
-	private ContinentZone ContinentZone;
-	private TerritoryZone TerritoryZone;
+	private ContinentZone continentZone;
+	private TerritoryZone territoryZone;
 	private Map<String, Integer> continentValues ;		
 	private Map<String, ArrayList<String>> territoryNeighbour ;
-	private Map<String, ArrayList<TerritoryZone>> neighbourList ;
 	private HashMap<String, HashMap<String,TerritoryZone>> continentsInfo ;
 	private Map<String, ArrayList<TerritoryZone>> territoryContinents;
 	private ArrayList<ContinentZone> continents;
@@ -23,9 +22,30 @@ public class WorldMap {
 		continentsInfo = new HashMap<String, HashMap<String,TerritoryZone>>();
 		territoryContinents = new HashMap<String, ArrayList<TerritoryZone>>();
 		continents = new ArrayList<ContinentZone>();
-		neighbourList =new HashMap<String, ArrayList<TerritoryZone>>();
 	}
 	
+	/** the mehods set creates the continentInfo data structure
+	 * @param input
+	 */
+	public void setContinentsInfo(Map<String,  HashMap<String,TerritoryZone>> input)
+	{
+		for (Map.Entry<String, HashMap<String,TerritoryZone>> entry : input.entrySet()) 
+		{
+		    String key = entry.getKey() ;
+		    Map<String,TerritoryZone> value = entry.getValue();
+		    Map<String, TerritoryZone> value_copy = new HashMap<String, TerritoryZone>();	
+			for (Map.Entry<String, TerritoryZone> entryforTerritory : value.entrySet()) 
+			{
+				String keyforTerritory = entryforTerritory.getKey() ;
+				TerritoryZone valueforTerritory = entryforTerritory.getValue();
+				value_copy.put(keyforTerritory, valueforTerritory);
+			}
+			continentsInfo.put(key, (HashMap<String, TerritoryZone>) value_copy);
+		}
+
+	}
+	
+	// the method creates list of continent objects
 	public void setContinentZone()
 	{
 		for(Map.Entry<String, ArrayList<TerritoryZone>> entry : territoryContinents.entrySet())
@@ -33,10 +53,12 @@ public class WorldMap {
 			String name = entry.getKey();
 			ArrayList<TerritoryZone> str = new ArrayList<TerritoryZone>();
 			str = entry.getValue();
-			ContinentZone = new ContinentZone(name , str);
-			continents.add(ContinentZone);
+			continentZone = new ContinentZone(name , str);
+			continents.add(continentZone);
 		}
 	}
+	
+	// this method creates the list of continent and its values
 	public void setContinentValues(Map<String, Integer> input)
 	{
 		for (Map.Entry<String, Integer> entry : input.entrySet()) {
@@ -46,6 +68,7 @@ public class WorldMap {
 		}
 	}
 	
+	// the setter method to set continentVlaues
 	public void setContinentValues(String key, Integer value)
 	{
 		    continentValues.put(key, value);
@@ -58,6 +81,8 @@ public class WorldMap {
 	{
 		return continentValues;
 	}
+	
+	// creates the map of territory and its neighbours
 	public void setTerritoryNeighbour(Map<String,  ArrayList<String>> input)
 	{
 		for (Map.Entry<String, ArrayList<String>> entry : input.entrySet()) 
@@ -83,24 +108,8 @@ public class WorldMap {
 		return  territoryNeighbour.get(territory); 
 	}
 
-	
-	public void setContinentsInfo(Map<String,  HashMap<String,TerritoryZone>> input)
-	{
-		for (Map.Entry<String, HashMap<String,TerritoryZone>> entry : input.entrySet()) 
-		{
-		    String key = entry.getKey() ;
-		    Map<String,TerritoryZone> value = entry.getValue();
-		    Map<String, TerritoryZone> value_copy = new HashMap<String, TerritoryZone>();	
-			for (Map.Entry<String, TerritoryZone> entryforTerritory : value.entrySet()) 
-			{
-				String keyforTerritory = entryforTerritory.getKey() ;
-				TerritoryZone valueforTerritory = entryforTerritory.getValue();
-				value_copy.put(keyforTerritory, valueforTerritory);
-			}
-			continentsInfo.put(key, (HashMap<String, TerritoryZone>) value_copy);
-		}
 
-	}
+	
 	
 	public Map<String,  HashMap<String,TerritoryZone>> getContinentsInfo()
 	{
