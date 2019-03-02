@@ -152,7 +152,7 @@ public class Player {
 	 * 
 	 * @return Return Armies
 	 */
-	private int getArmies() {
+	public int getArmies() {
 		return armies;
 	}
 
