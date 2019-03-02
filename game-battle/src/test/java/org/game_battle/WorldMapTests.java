@@ -88,11 +88,11 @@ public class WorldMapTests {
 
     @Test
     public void invalidMapReturnsInvalid(){
-<<<<<<< HEAD
-        int map_connected_count = ConnectedGraph.connected_components(invalidMap.getTerritoryNeighbour());
-=======
+
+        //int map_connected_count = ConnectedGraph.connected_components(invalidMap.getTerritoryNeighbour());
+
         int map_connected_count = ConnectedGraph.connected_components(invalidMap.getTerrirotyNeighbourList());
->>>>>>> f307f79e79797372cb7bc7b2bd02e137f55512f4
+
         Assert.assertTrue(map_connected_count>1);
     }
 
@@ -102,11 +102,11 @@ public class WorldMapTests {
 
     @Test
     public void validMapReturnsValid(){
-<<<<<<< HEAD
-        int map_connected_count = ConnectedGraph.connected_components(validMap.getTerritoryNeighbour());
-=======
+
+       // int map_connected_count = ConnectedGraph.connected_components(validMap.getTerritoryNeighbour());
+
         int map_connected_count = ConnectedGraph.connected_components(validMap.getTerrirotyNeighbourList());
->>>>>>> f307f79e79797372cb7bc7b2bd02e137f55512f4
+
         Assert.assertTrue(map_connected_count<=1);
     }
 

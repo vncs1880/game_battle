@@ -28,10 +28,14 @@ public class MapValidation {
 		//connectedgraph.connected_components(worldmap);
 	}
 
+	/**
+	 * checks if the country list and continent list are stored in the WorldMap
+	 */
 
 	@Test
 	public void testMapValidation() {
 		Assert.assertEquals(true,mapdata.contains(worldmap.getContinents()));
+		Assert.assertEquals(true,mapdata.contains(worldmap.getTerritories()));
 	}
 
 
