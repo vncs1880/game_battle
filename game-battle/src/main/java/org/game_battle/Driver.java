@@ -16,6 +16,7 @@ import org.game_battle.controler.*;
  */
 
 public class Driver {
+	
 	static public void main(String[] args)
 	{
 		WorldMap model  = new WorldMap();
