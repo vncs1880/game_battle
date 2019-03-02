@@ -102,7 +102,7 @@ public class MapController {
 	public void printMap(WorldMapView view ,WorldMap map )
 	{
 		view.displayMap(map);
-        checkCorrectnessOfMap(map.getTerritoryNeighbour());
+        checkCorrectnessOfMap(map.getTerrirotyNeighbourList());
 
 	}
 		 

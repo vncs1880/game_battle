@@ -60,7 +60,7 @@ public class FileReaderWriter {
 			
 		    System.out.println("#####");
 
-		    System.out.println( wm.getTerritoryNeighbour());
+		    System.out.println( wm.getTerrirotyNeighbourList());
 
 			FileWriter fw = new FileWriter(PATH);
 			BufferedWriter bw = new BufferedWriter(fw);

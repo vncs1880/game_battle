@@ -46,7 +46,7 @@ public class MapDataExtractor {
 				setTerritorisInfo(line , wm);
 
 			}
-		}	
+		}
 	}
 	/**
 	 * setContinent method sets the continent and its control value in 
@@ -74,6 +74,7 @@ public class MapDataExtractor {
 	 private static void setTerritorisInfo(String line , WorldMap wm) {
 		Map<String, ArrayList<String>> territoryNeighbour  = new HashMap<String, ArrayList<String>>();
 		Map<String, HashMap<String,TerritoryZone>> continents  = new HashMap<String, HashMap<String,TerritoryZone>>();
+		HashMap<String,ContinentZone> ContinentZoneList = new HashMap<String,ContinentZone>();
 
 		String territoryName = null; 
 		String xcoordinates = null;
@@ -100,9 +101,11 @@ public class MapDataExtractor {
 			Integer temp = Integer.parseInt(sc.nextLine());
 			wm.setContinentValues(value[3], temp);
 		}
+		
 		territoryNeighbour.put(territoryName, CountryList);
 		wm.setTerritoryNeighbour(territoryNeighbour);
 		TerritoryZone tz = new TerritoryZone(continentName, territoryName, xcoordinates, ycoordinates, CountryList); 
+		wm.addContinentAndTerriroty(continentName, tz);
 		HashMap<String,TerritoryZone>  tz_hash= new HashMap<String,TerritoryZone>() ;
 		tz_hash.put(continentName, tz);
 		continents.put(territoryName  , tz_hash);
@@ -110,5 +113,8 @@ public class MapDataExtractor {
 	}
 
 	
-	
 }
+
+	
+	
+
