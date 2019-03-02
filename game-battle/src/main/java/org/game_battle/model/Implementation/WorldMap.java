@@ -8,12 +8,13 @@ import java.util.ArrayList;
 /**
  * WorldMap contains the metadata of the MapLoad
  * @author 91950
+ * 
  *
  */
 
 public class WorldMap {
 	private TerritoryZone TerritoryZone;
-	private ContinentZone ContinentZone;
+	private ContinentZone ContinentsZone;
 
 	private  Map<String, Integer> continentValues ;		
 	private Map<String, ArrayList<String>> territoryNeighbour ;

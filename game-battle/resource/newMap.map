@@ -1,14 +1,6 @@
 [Continents]
-Right Thruster=6
-Right Escape Pod=8
-Left Cargo=10
-Left Thruster=6
-Hyperdrive=12
-Cockpit=1211212
-Right Cargo=10
-Left Escape Pod=8
+china=10
+asia=10
 [Territories]
-Cockpit11,658,395,Cockpit,Cockpit99
-Cockpit03,658,395,Cockpit,Cockpit02,Territory85
-Cockpit01,658,355,Cockpit,Cockpit02,Territory33
-Cockpit02,658,375,Cockpit,Cockpit01,Cockpit03,Territory33,Territory85
+pak,250,300,asia,india,kaz
+india,100,200,asia,burma,aus

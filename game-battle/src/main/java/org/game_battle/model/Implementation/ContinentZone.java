@@ -5,6 +5,7 @@ import org.game_battle.model.Contract.Continent;
  * ContinentZone has the continent info
  * @author 91950
  *
+ *
  */
 
 public class ContinentZone implements Continent {

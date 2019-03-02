@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * that has the following methods
  * @author
  * @version map1.0
+ * 
  */
 
 public interface Territory {
