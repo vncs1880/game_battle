@@ -55,8 +55,18 @@ public class Board {
 		// L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
 		//// generate a list of lists, each w random countries
 		mapinterface = new MapInterface();
-		setPlayers(new LinkedList<Player>(Arrays.asList(new Player(this, "x"), new Player(this, "y"),
-				new Player(this, "z"), new Player(this, "a"))));
+		int totalPlayers = UI.askNumber("Initializing board", "How many players?", 2, 25);
+		LinkedList<Player> players = new LinkedList<Player>();
+		for (int i = 0; i < totalPlayers; i++) {
+			String name = "dummy player";
+			name = UI.askText("What is player "+(i+1)+" name?", "Initializing board - "+totalPlayers+" players");
+			players.add(new Player(this, name ));
+		}
+		setPlayers(players);
+		/*
+		 * setPlayers(new LinkedList<Player>(Arrays.asList(new Player(this, "x"), new
+		 * Player(this, "y"), new Player(this, "z"), new Player(this, "a"))));
+		 */
 		// List<List<Country>> L = getRandomCountriesLists(getPlayers().size());
 		distributeCountries(getPlayers().size());
 		// For player in PlayersTotalNumber:

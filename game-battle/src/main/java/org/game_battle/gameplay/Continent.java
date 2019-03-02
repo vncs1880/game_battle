@@ -22,6 +22,13 @@ public class Continent {
 	private String name;
 
 	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
 	 * @param ctrlValue control value associated with the continent
 	 * @param name      Name of the continent
 	 * 

@@ -36,8 +36,23 @@ public class UI {
 		System.out.println(askNumber("Select one (MANDATORY)", "pick a number", 20, 55));
 		
 		System.out.println(isUserOk("Yes/No?", "test"));
+		
+		System.out.println(askText("",""));
 
 	}
+	
+	
+
+	public static String askText(String msg, String title) {
+		// TODO Auto-generated method stub
+		String text = null;
+		do {
+			text = JOptionPane.showInputDialog(null, msg, title, JOptionPane.QUESTION_MESSAGE);
+		} while (text == null); 
+		return text;
+	}
+
+
 
 	public static boolean isUserOk(String title, String prompt) {
 		int picked = JOptionPane.showConfirmDialog(null, prompt, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);

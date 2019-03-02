@@ -18,8 +18,8 @@ public class WorldMap {
 	private Map<String, Integer> continentValues ;		
 	private Map<String, ArrayList<String>> territoryNeighbour ;
 	private HashMap<String, HashMap<String,TerritoryZone>> continentsInfo ;
-	private Map<String, ArrayList<TerritoryZone>> territoryContinents;
-	private ArrayList<ContinentZone> continents;
+	public Map<String, ArrayList<TerritoryZone>> territoryContinents;
+	public ArrayList<ContinentZone> continents;
 
 	public WorldMap()
 	{
@@ -47,7 +47,6 @@ public class WorldMap {
 			}
 			continentsInfo.put(key, (HashMap<String, TerritoryZone>) value_copy);
 		}
-
 	}
 
 	/**
@@ -66,6 +65,7 @@ public class WorldMap {
 			str = entry.getValue();
 			continentZone = new ContinentZone(name , str);
 			continents.add(continentZone);
+			
 		}
 	}
 	
@@ -73,7 +73,8 @@ public class WorldMap {
 
 	public void setContinentValues(Map<String, Integer> input)
 	{
-		for (Map.Entry<String, Integer> entry : input.entrySet()) {
+		for (Map.Entry<String, Integer> entry : input.entrySet()) 
+		{
 		    String key = entry.getKey() ;
 		    Integer value = entry.getValue();
 		    continentValues.put(key, value);
@@ -93,6 +94,9 @@ public class WorldMap {
 	{
 		return continentValues;
 	}
+	
+	
+	
 
 	/**
 	 * setTerritoryNeighbour sets the territories and its neighbours
@@ -133,10 +137,6 @@ public class WorldMap {
 	 * @param input
 	 */
 
-
-
-	
-	
 	public Map<String,  HashMap<String,TerritoryZone>> getContinentsInfo()
 	{
 		return continentsInfo; 
@@ -254,7 +254,6 @@ public class WorldMap {
 				}   
 			}
 		}
-	
 	/**
 	 * getTerritories gets all the territories
 	 * @return territories
@@ -283,7 +282,7 @@ public class WorldMap {
 	 */
 	public List<ContinentZone> getContinents()
 	{
-	
+		setContinentZone();
 		return continents;	
 	}
 		
@@ -301,7 +300,6 @@ public class WorldMap {
 			territoryContinents.put(continentName, country);
 		}
 		else
-		
 		{
 			country = territoryContinents.get(continentName);
 			country.add(territoryName);
@@ -312,10 +310,5 @@ public class WorldMap {
 	public Map<String, ArrayList<String>> getTerrirotyNeighbourList() {
 		return territoryNeighbour;
 	}
-
-	
   }
 			
-	
-	
-
