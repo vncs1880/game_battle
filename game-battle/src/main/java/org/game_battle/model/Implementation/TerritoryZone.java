@@ -1,7 +1,13 @@
 package org.game_battle.model.Implementation;
 import org.game_battle.model.Contract.Territory;
 
+
 import java.util.ArrayList;
+/**
+ * TerritoryZone has the info reg territoryName,co-ordinates,continentName,armiesCount
+ * @author 91950
+ *
+ */
 
 
 public class TerritoryZone implements Territory {

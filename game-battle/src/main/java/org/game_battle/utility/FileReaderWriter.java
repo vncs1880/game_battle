@@ -17,6 +17,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * FileReaderWriter class reads and writes the map from a file or to a file
+ * @author 91950
+ *
+ */
 public class FileReaderWriter {
 
 	File outputPath;
@@ -44,7 +49,11 @@ public class FileReaderWriter {
 		return filedData;
 
 	}
-	
+	/**
+	 * writeFile writes the output newly created map to a file
+	 * @param PATH
+	 * @param wm
+	 */
 	public static void writeFile(String PATH , WorldMap wm){		
 		try {
 			

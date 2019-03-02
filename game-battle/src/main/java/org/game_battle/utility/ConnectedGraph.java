@@ -5,13 +5,23 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 
+/**
+ * ConnectedGraph class has the methods to check the connectivity of the countries
+ * @author 91950
+ *
+ */
 
 public class ConnectedGraph
 {
     
     static ArrayList<String>discovered_ = new ArrayList<String>();
     static ArrayList<String>processed_ = new ArrayList<String>();
-
+    /**
+     * Checks the connectivity of the map by checking its neighbours,
+     * if the neighbour and the country matches.
+     * @param wm
+     * @param start
+     */
     public static void bfs(Map<String, ArrayList<String>> wm, String start)
     {
         Queue<String> queue = new LinkedList<String>();
@@ -43,7 +53,12 @@ public class ConnectedGraph
     }
     
  
-
+   /**
+    * connected_components returns the c value as one if 
+    * the maps are connected else it gives 0
+    * @param wm
+    * @return c
+    */
  
    public static int connected_components(Map<String, ArrayList<String>> wm)
     {

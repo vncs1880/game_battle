@@ -6,6 +6,13 @@ import org.game_battle.Enums.MapView.userAction;
 import org.game_battle.model.Implementation.WorldMap;
 import org.game_battle.utility.ConnectedGraph;
 
+/**
+ * WorldMapView class to display the Continents,its control values
+ * countries and their respective neighbours,connectivity of the countries
+ * and map edit option.
+ * @author 91950
+ *
+ */
 public class WorldMapView {
 	
 	private boolean isAddMap;
@@ -78,6 +85,10 @@ public class WorldMapView {
     	    System.exit(0);
     	}
 	}
+	/**
+	 * intiateMapEdit method is to display if the map is to be edited or no
+	 * @return isEditMap
+	 */
     public boolean intiateMapEdit()
     {
     	System.out.println("\nEnter 0 to edit the map, else enter 1 to proceed ");
@@ -126,7 +137,7 @@ public class WorldMapView {
 	}
 	
 	/**
-	 * printMap is to print the map to the console.
+	 * displayMap is to print the map to the console.
 	 */
 
 	public void displayMap(WorldMap map) {
@@ -140,7 +151,10 @@ public class WorldMapView {
 		System.out.println("------------------------------");
 		map.getTerritoryNeighbour().forEach((k,v)->System.out.println( "["+  k+ "]" + "  : " + v));
 	}
-	
+	/**
+	 * editMap to give the user the option for map editing
+	 * @return null
+	 */
 	public userAction editMap()
 	{
 		System.out.println("\n Enter 0 to edit Continent vlaue");
@@ -162,6 +176,11 @@ public class WorldMapView {
 		}
 		else return null; 
 	}
+	/**
+	 * editContinentValue is a method to display the option to edit continent 
+	 * and its control value
+	 * @return input+ ":"+ value
+	 */
 	
 public	String editContinentValue()
 	{
@@ -172,6 +191,11 @@ public	String editContinentValue()
 		String value = sc.nextLine().trim();
 		return input+ ":"+ value; 
 	}
+/**
+ * editNeighbours method is to display the country names and
+ * new neighbours
+ * @return input+ ":"+ value
+ */
 public	String editNeighbours()
 	{
 		sc = new Scanner(System.in);
@@ -182,7 +206,10 @@ public	String editNeighbours()
 		return input+ ":"+ value; 
 	}
 	
-
+/**
+ * removeNeighbour method displays the country name and the neighbours to be removed.
+ * @return input+ ":"+ value
+ */
 public	String removeNeighbours()
 	{
 		sc = new Scanner(System.in);

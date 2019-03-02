@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
+/**
+ * WorldMap contains the metadata of the MapLoad
+ * @author 91950
+ *
+ */
 
 public class WorldMap {
 	private TerritoryZone TerritoryZone;
@@ -21,6 +26,10 @@ public class WorldMap {
 		TerritoryZone TerritoryZone = new TerritoryZone();
 
 	}
+	/**
+	 * setContinentValues sets the continentvalues in Hashmap pair
+	 * @param input
+	 */
 	public void setContinentValues(Map<String, Integer> input)
 	{
 		for (Map.Entry<String, Integer> entry : input.entrySet()) {
@@ -42,6 +51,10 @@ public class WorldMap {
 	{
 		return continentValues;
 	}
+	/**
+	 * setTerritoryNeighbour sets the territories and its neighbours
+	 * @param input
+	 */
 	public void setTerritoryNeighbour(Map<String,  ArrayList<String>> input)
 	{
 		for (Map.Entry<String, ArrayList<String>> entry : input.entrySet()) 
@@ -67,6 +80,10 @@ public class WorldMap {
 		return  territoryNeighbour; 
 	}
 
+	/**
+	 * setContinentsInfo sets the continents its countries and its neighbouring territories
+	 * @param input
+	 */
 	
 	public void setContinentsInfo(Map<String,  HashMap<String,TerritoryZone>> input)
 	{
@@ -91,7 +108,10 @@ public class WorldMap {
 		return continentsInfo; 
 	}
 	
-	
+	/**
+	 * updateNeighboursInCountryInfo updates the newly addded neighbours
+	 * @param input
+	 */
 	public void updateNeighboursInCountryInfo(Map<String,  HashMap<String,TerritoryZone>> input)
 	{
 		for (Map.Entry<String, HashMap<String,TerritoryZone>> entry : input.entrySet()) 
@@ -110,7 +130,10 @@ public class WorldMap {
 		}
 
 	}
-	
+	/**
+	 * setUpdatedNeighbours sets the newly updated neighbour to continentsInfo
+	 * @param key
+	 */
 	public void setUpdatedNeighbours( String key)
 	{
 
@@ -135,6 +158,10 @@ public class WorldMap {
 	{
 		return continentValues.size();
 	}
+	/**
+	 * updateContinent updates the new country and its control value
+	 * @param continentVlaues
+	 */
 	public void updateContinent(String continentVlaues) {
 		if(continentVlaues.length()>0)
 		{
@@ -145,6 +172,10 @@ public class WorldMap {
 		}
 		
 	}
+	/**
+	 * updateNeighbours updates the new neighbours with its country
+	 * @param neighbourValues
+	 */
 	public void updateNeighbours(String neighbourValues) {
 		if(neighbourValues.length()>0)
 		{
@@ -166,6 +197,11 @@ public class WorldMap {
 		}	
 		
 	}
+	/**
+	 * removeNeighbours removes the neighbours listed for that particular 
+	 * country
+	 * @param removeNeighbours
+	 */
 	public void removeNeighbours(String removeNeighbours) {
 		if(removeNeighbours.length()>0)
 		{
@@ -187,7 +223,10 @@ public class WorldMap {
 			}
 		}
 	
-	
+	/**
+	 * getTerritories gets all the territories
+	 * @return territories
+	 */
 	public List<TerritoryZone> getTerritories()
 	{
 		List<TerritoryZone> territories = new ArrayList<TerritoryZone>();
@@ -205,7 +244,10 @@ public class WorldMap {
 		return territories;	
 		
 	}
-	
+	/**
+	 * getContinents gets all the continents
+	 * @return continentList
+	 */
 	public List<ContinentZone> getContinents()
 	{
 		List<ContinentZone> continentList = new ArrayList<ContinentZone>();

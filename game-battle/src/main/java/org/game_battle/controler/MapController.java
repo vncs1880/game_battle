@@ -1,6 +1,7 @@
 package org.game_battle.controler;
 
 import java.util.ArrayList;
+
 import java.util.Map;
 
 import org.game_battle.Constant;
@@ -9,13 +10,19 @@ import org.game_battle.utility.FileReaderWriter;
 import org.game_battle.utility.MapDataExtractor;
 import org.game_battle.view.WorldMapView;
 import org.game_battle.Enums.MapView.userAction;
+/**
+ * MapController Class for loadMap,printMap,
+ * EditMap and Check Map Connectivtity methods.
+ * @author 91950
+ *
+ */
 
 public class MapController {
 
 	
 	private WorldMap model;
 	private WorldMapView view;
-
+	//Constructor
 	public MapController( WorldMapView view, WorldMap model ){
 	      this.view = view;
 	      this.model = model;
@@ -45,6 +52,12 @@ public class MapController {
 		}
 	
 	}
+	/**
+	 * editMap edits the map : continent control value or editing neighbours
+	 * or deleting neighbours
+	 * @param view
+	 * @param map
+	 */
 	public void editMap(WorldMapView view ,WorldMap map ) 
 	{
 		userAction value = view.editMap();

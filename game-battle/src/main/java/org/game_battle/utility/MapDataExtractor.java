@@ -47,7 +47,12 @@ public class MapDataExtractor {
 			}
 		}	
 	}
-	
+	/**
+	 * setContinent method sets the continent and its control value in 
+	 * World Map.
+	 * @param line
+	 * @param wm
+	 */
 	 private static void setContinent(String line , WorldMap wm)
 	 {
 		 Map<String, Integer> continentValues = new HashMap<String, Integer> ();
@@ -60,6 +65,11 @@ public class MapDataExtractor {
 			wm.setContinentValues(continentValues);
 
 	 }
+	 /**
+	  * setTerritorisInfo sets the territory name,continnet and its neighbouring countries
+	  * @param line
+	  * @param wm
+	  */
 	 private static void setTerritorisInfo(String line , WorldMap wm) {
 		Map<String, ArrayList<String>> territoryNeighbour  = new HashMap<String, ArrayList<String>>();
 		Map<String, HashMap<String,TerritoryZone>> continents  = new HashMap<String, HashMap<String,TerritoryZone>>();
