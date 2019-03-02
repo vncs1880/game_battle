@@ -67,6 +67,7 @@ public class CountryContinentTests {
      *  Validate the control values of continents are correctly assigned on construction of continents.
      */
 
+    @Test
     public void verifyContorlValue(){
         Assert.assertEquals(10,cont1.getControlValue());
         Assert.assertEquals(10,cont2.getControlValue());
