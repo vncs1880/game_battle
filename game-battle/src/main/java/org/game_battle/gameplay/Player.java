@@ -225,53 +225,58 @@ public class Player {
 					neighbours.remove(country);
 				}
 			}
-			Country DeffendingCountry = UI.selectCountry("Attack phase", "Select target country",
-					neighbours /* board.getElligibleTargets(OffendingCountry) */);
+			
+			if (!neighbours.isEmpty()) {
+				Country DeffendingCountry = UI.selectCountry("Attack phase", "Select target country",
+						neighbours /* board.getElligibleTargets(OffendingCountry) */);
 
-			// The attacker can choose to continue attacking until either all his armies or
-			// all the defending armies have been eliminated.
-			//
-			// While (OffendingCountry.getTotalArmies() > 0) AND
-			// (DeffendingCountry.getTotalArmies() > 0) do {
-			// <<Board.Battle()>>
-			// }
-			LOG.info("Checking if enough armies in both attacker/target countries to allow attack...");
-			while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
-				String attacker = board.getOwner(OffendingCountry).name;
-				String deffender = board.getOwner(DeffendingCountry).name;
-				if (!UI.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
-					break;
-				}
-				LOG.info("Enough armies in both countries(>0). Starting Battle. " + attacker + " attacking " + deffender
-						+ ".");
-				// Board.Battle(OffendingCountry, DeffendingCountry)
-				board.doBattle(OffendingCountry, DeffendingCountry);
-				// If all the defender's armies are eliminated the attacker captures the
-				// territory.
+				// The attacker can choose to continue attacking until either all his armies or
+				// all the defending armies have been eliminated.
 				//
-				// Board.updateTerritories(DeffendingCountry)
-				//// just change ownership if DeffendingCountry.getTotalArmies() == 0
-				//
+				// While (OffendingCountry.getTotalArmies() > 0) AND
+				// (DeffendingCountry.getTotalArmies() > 0) do {
+				// <<Board.Battle()>>
+				// }
+				LOG.info("Checking if enough armies in both attacker/target countries to allow attack...");
+				while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
+					String attacker = board.getOwner(OffendingCountry).name;
+					String deffender = board.getOwner(DeffendingCountry).name;
+					if (!UI.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
+						break;
+					}
+					LOG.info("Enough armies in both countries(>0). Starting Battle. " + attacker + " attacking " + deffender
+							+ ".");
+					// Board.Battle(OffendingCountry, DeffendingCountry)
+					board.doBattle(OffendingCountry, DeffendingCountry);
+					// If all the defender's armies are eliminated the attacker captures the
+					// territory.
+					//
+					// Board.updateTerritories(DeffendingCountry)
+					//// just change ownership if DeffendingCountry.getTotalArmies() == 0
+					//
 
-				if (DeffendingCountry.getArmies() == 0) {
-					board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
-					LOG.info("All the defender's armies are eliminated." + attacker + " captured " + DeffendingCountry);
-					/*
-					 * The attacking player must then place a number of armies in the conquered
-					 * country which is greater or equal than the number of dice that was used in
-					 * the attack that resulted in conquering the country. A player may do as many
-					 * attacks as he wants during his turn.
-					 */
-					int minimumArmies = board.getLastDiceRollResult();
-					int armies_to_occupy = UI.askNumber("Attack phase", "How many armies to occupy defeated country?",
-							minimumArmies, armies);
-					DeffendingCountry.setArmyQty(armies_to_occupy);
-					LOG.info(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
-				} else {
-					LOG.info(attacker + " lost battle.");
+					if (DeffendingCountry.getArmies() == 0) {
+						board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
+						LOG.info("All the defender's armies are eliminated." + attacker + " captured " + DeffendingCountry);
+						/*
+						 * The attacking player must then place a number of armies in the conquered
+						 * country which is greater or equal than the number of dice that was used in
+						 * the attack that resulted in conquering the country. A player may do as many
+						 * attacks as he wants during his turn.
+						 */
+						int minimumArmies = board.getLastDiceRollResult();
+						int armies_to_occupy = UI.askNumber("Attack phase", "How many armies to occupy defeated country?",
+								minimumArmies, armies);
+						DeffendingCountry.setArmyQty(armies_to_occupy);
+						LOG.info(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
+					} else {
+						LOG.info(attacker + " lost battle.");
+					}
 				}
-
+			} else {
+				LOG.info("No elligible target countries (no neighbours belonging to others).");
 			}
+			
 		}
 	}
 

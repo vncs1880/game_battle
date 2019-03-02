@@ -5,6 +5,8 @@ package org.game_battle.gameplay;
 
 import java.util.List;
 
+import org.game_battle.model.Implementation.TerritoryZone;
+
 /**
  * Allows the creation of Country objects.
  * 
@@ -25,17 +27,22 @@ public class Country {
 
 	private int armies;
 	private String name;
+	//private TerritoryZone territoryZone = null;
 
 	/**
 	 * 
 	 * @return name of the country
 	 */
 	public String getName() {
-		return name;
+		/*if (territoryZone != null) {
+			return territoryZone.getTerritoryName();
+		}else */return name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		/*if (territoryZone != null) {
+			territoryZone.setTerritoryName(name);
+		}else */this.name = name;
 	}
 
 	/**
@@ -45,6 +52,11 @@ public class Country {
 	public Country(String name) {
 		this.name = name;
 	}
+
+	/*
+	 * public Country(TerritoryZone t) { // TODO Auto-generated constructor stub
+	 * this.territoryZone = t; }
+	 */
 
 	/**
 	 * Used to set the number of armies currently stationed in this country
