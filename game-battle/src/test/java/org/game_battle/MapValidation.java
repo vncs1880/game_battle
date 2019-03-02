@@ -26,8 +26,6 @@ public class MapValidation {
 		filereadwrie = new FileReaderWriter();
 		mapdata = filereadwrie.readFile(Constant.ReadFilePATH);
 		//connectedgraph.connected_components(worldmap);
-		
-		
 	}
 
 
@@ -38,5 +36,3 @@ public class MapValidation {
 
 
 }
-
-
