@@ -7,19 +7,35 @@ import java.util.ArrayList;
 
 
 public class WorldMap {
-	private TerritoryZone TerritoryZone;
 	private ContinentZone ContinentZone;
-
-	private  Map<String, Integer> continentValues ;		
+	private TerritoryZone TerritoryZone;
+	private Map<String, Integer> continentValues ;		
 	private Map<String, ArrayList<String>> territoryNeighbour ;
-	private  HashMap<String, HashMap<String,TerritoryZone>> continentsInfo ;
+	private Map<String, ArrayList<TerritoryZone>> neighbourList ;
+	private HashMap<String, HashMap<String,TerritoryZone>> continentsInfo ;
+	private Map<String, ArrayList<TerritoryZone>> territoryContinents;
+	private ArrayList<ContinentZone> continents;
+
 	public WorldMap()
 	{
 		continentValues = new HashMap<String, Integer>();	
 		territoryNeighbour = new HashMap<String, ArrayList<String>> ();
 		continentsInfo = new HashMap<String, HashMap<String,TerritoryZone>>();
-		TerritoryZone TerritoryZone = new TerritoryZone();
-
+		territoryContinents = new HashMap<String, ArrayList<TerritoryZone>>();
+		continents = new ArrayList<ContinentZone>();
+		neighbourList =new HashMap<String, ArrayList<TerritoryZone>>();
+	}
+	
+	public void setContinentZone()
+	{
+		for(Map.Entry<String, ArrayList<TerritoryZone>> entry : territoryContinents.entrySet())
+		{
+			String name = entry.getKey();
+			ArrayList<TerritoryZone> str = new ArrayList<TerritoryZone>();
+			str = entry.getValue();
+			ContinentZone = new ContinentZone(name , str);
+			continents.add(ContinentZone);
+		}
 	}
 	public void setContinentValues(Map<String, Integer> input)
 	{
@@ -62,9 +78,9 @@ public class WorldMap {
 	 * getTerritoryNeighbour gets the neighbours of the territories.
 	 * @return territoryNeighbour
 	 */
-	public Map<String,  ArrayList<String>> getTerritoryNeighbour( )
+	public  ArrayList<String> getTerritoryNeighbour(String territory )
 	{
-		return  territoryNeighbour; 
+		return  territoryNeighbour.get(territory); 
 	}
 
 	
@@ -113,13 +129,11 @@ public class WorldMap {
 	
 	public void setUpdatedNeighbours( String key)
 	{
-
 		 HashMap<String,TerritoryZone> temp =  continentsInfo.get(key) ;
 		 TerritoryZone tz = temp.get(key);
 		 tz.setAdjacentTerritories(territoryNeighbour.get(key) ); 
 		 temp.put(key, tz);
 		 continentsInfo.put(key, temp);
-
 	}
 	
 	public Map<String,TerritoryZone> getContinentInfo(String continent)
@@ -197,6 +211,7 @@ public class WorldMap {
 		    Map<String,TerritoryZone> value = entry.getValue();
 			for (Map.Entry<String, TerritoryZone> entryforTerritory : value.entrySet()) 
 			{
+				TerritoryZone TerritoryZone = new TerritoryZone(); 
 				TerritoryZone = entryforTerritory.getValue();
 				territories.add(TerritoryZone);
 			}
@@ -208,19 +223,39 @@ public class WorldMap {
 	
 	public List<ContinentZone> getContinents()
 	{
-		List<ContinentZone> continentList = new ArrayList<ContinentZone>();
+	
+		return continents;	
+	}
 		
-		for (Map.Entry<String , Integer> entry : this.continentValues.entrySet()) 
+    public  List<TerritoryZone> getCountriesByContinent(String continent ) {
+    	
+    	return territoryContinents.get(continent) ;
+    	
+    }
+	public void addContinentAndTerriroty(String continentName, TerritoryZone territoryName) {
+		ArrayList<TerritoryZone> country = new ArrayList<TerritoryZone>();
+
+		if (!territoryContinents.containsKey(continentName))
 		{
-			ContinentZone ContinentZone = new ContinentZone(); 
-			String value = entry.getKey();
-			ContinentZone.setContinentName(value);	
-			continentList.add(ContinentZone);
+			country.add(territoryName);
+			territoryContinents.put(continentName, country);
 		}
-		return continentList;	
-	}
+		else
 		
-		
+		{
+			country = territoryContinents.get(continentName);
+			country.add(territoryName);
+			territoryContinents.put(continentName, country);
+		}
 	}
+
+	public Map<String, ArrayList<String>> getTerrirotyNeighbourList() {
+		return territoryNeighbour;
+	}
+
+	
+  }
+			
+	
 	
 

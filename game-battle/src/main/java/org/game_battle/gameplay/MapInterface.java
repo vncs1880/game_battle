@@ -85,3 +85,14 @@ public class MapInterface {
 	}
 
 }
+
+
+/*
+
+public static List<Country> getCountries()   							=> 	public List<TerritoryZone> getTerritories()
+public static List<Continent> getContinents() 							=>	public List<ContinentZone> getContinents()
+public static List<Country> getCountriesByContinent(Continent continent)=>	public List<TerritoryZone> getCountriesByContinent(String continent) 
+public static List<Country> getNeighbours(Country country) 				=>  public  ArrayList<String> getTerritoryNeighbour(String territory )
+
+*/	
+

@@ -138,7 +138,7 @@ public class WorldMapView {
 		System.out.println("\n=> Countires and their respective neighbours");
 		System.out.println("[Country]    : [Neighbours] ");
 		System.out.println("------------------------------");
-		map.getTerritoryNeighbour().forEach((k,v)->System.out.println( "["+  k+ "]" + "  : " + v));
+		map.getTerrirotyNeighbourList().forEach((k,v)->System.out.println( "["+  k+ "]" + "  : " + v));
 	}
 	
 	public userAction editMap()
