@@ -41,4 +41,9 @@ public class ContinentZone implements Continent {
 	{
 		this.countrylist = countrylist;
 	}
+	
+	public ArrayList<TerritoryZone> setContinentList()
+	{
+		return(countrylist);
+	}
 }

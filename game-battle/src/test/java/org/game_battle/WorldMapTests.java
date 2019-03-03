@@ -10,21 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 import java.io.*;
 
-/**
- * A series of unit tests responsible for ensuring correct functionality of WorldMap and WorldMapView classes,
- * including some related methods such as map validation  which located in the 'ConnectedGraph' class.
- */
 
 public class WorldMapTests {
 
-    WorldMapView wmv;
+    WorldMapView worldmapview;
     WorldMap invalidMap, validMap;
     private int continentCount, territoryCount;
 
-    /**
-     * Prior to executing tests data extracted from test map file, counts the number of territories and continents within
-     * the test map.
-     */
 
     @Before
     public void setup() throws IOException {
