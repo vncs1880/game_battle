@@ -45,7 +45,7 @@ public class Board {
 	private static final Random RANDOM = new Random();
 
 	/**
-	 * 
+	 * Board Constructor
 	 */
 	public Board() {
 		// Board LOADS Graph
@@ -93,6 +93,11 @@ public class Board {
 		// User chooses the number of players,
 	}
 
+	/**
+	 * Method distribute countries to players
+	 * 
+	 * @param playersCount
+	 */
 	public void distributeCountries(int playersCount) {
 		List<Country> countriesToDistribute = MapInterface.getCountries();
 		Collections.shuffle(countriesToDistribute);
@@ -117,8 +122,10 @@ public class Board {
 	}
 
 	/**
+	 * Method to get armies from cards
+	 * 
 	 * @param cards
-	 * @return cards to give depends upon type of army
+	 * @return armies from type of card
 	 */
 	public int getArmiesFromCards(List<Card> cards) {
 		HashMap<Card.Sort, Integer> cardsCount = new HashMap<Card.Sort, Integer>() {
@@ -186,6 +193,8 @@ public class Board {
 	 */
 
 	/**
+	 * Method to do battle between two countries
+	 * 
 	 * @param offendingCountry  attacking country
 	 * @param deffendingcountry defending country
 	 * @return winner of the battle
@@ -216,9 +225,20 @@ public class Board {
 		return winner;
 	}
 
+	/**
+	 * @param attacker attacking player
+	 * @return result of the dice roll
+	 */
 	private int getDiceRollResult(Player attacker) {// TODO doesnt really need parameter for now
 		return RANDOM.nextInt(6);
 	}
+
+	/**
+	 * Method return owner of the country
+	 * 
+	 * @param country
+	 * @return owner of the country
+	 */
 
 	public Player getOwner(Country country) {
 		for (Player player : getPlayers()) {
@@ -230,6 +250,8 @@ public class Board {
 	}
 
 	/**
+	 * Method gives loser country to winning player
+	 * 
 	 * @param OffendingCountry
 	 * @param DeffendingCountry
 	 */
@@ -248,6 +270,8 @@ public class Board {
 	}
 
 	/**
+	 * Method to get result of last dice roll
+	 * 
 	 * @return result of last dice roll
 	 */
 	public int getLastDiceRollResult() {
@@ -255,6 +279,8 @@ public class Board {
 	}
 
 	/**
+	 * Method to set list of players on board
+	 * 
 	 * @param asList list of players
 	 */
 
@@ -263,6 +289,8 @@ public class Board {
 	}
 
 	/**
+	 * Method to get list of players
+	 * 
 	 * @return list of players
 	 */
 
@@ -271,6 +299,8 @@ public class Board {
 	}
 
 	/**
+	 * Method list of countries from a specific continent
+	 * 
 	 * @param continent
 	 * @return the countriesByContinent
 	 */
@@ -279,6 +309,8 @@ public class Board {
 	}
 
 	/**
+	 * Method get list of continents
+	 * 
 	 * @return list of continents
 	 */
 	public List<Continent> getContinents() {
@@ -287,6 +319,8 @@ public class Board {
 	}
 
 	/**
+	 * Method to get list of continents
+	 * 
 	 * @return list of countries
 	 */
 	public List<Country> getCountries() {
@@ -295,6 +329,8 @@ public class Board {
 	}
 
 	/**
+	 * Method to get random cards
+	 * 
 	 * @return random cards
 	 */
 	public Card getRandomCard() {

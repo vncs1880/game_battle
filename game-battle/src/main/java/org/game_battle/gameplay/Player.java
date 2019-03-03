@@ -39,17 +39,30 @@ public class Player {
 	private int previousCountriesQty = 0;
 	private String name;
 
+	/**
+	 * Method to get name of the player
+	 * 
+	 * @return name of the player
+	 */
 	public String getName() {
 		return name;
 	}
+
+	/**
+	 * Method to set name of the player
+	 * 
+	 * @param name
+	 */
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
+	 * Player Constructor
+	 * 
 	 * @param board game board
-	 * @param name
+	 * @param name  name
 	 * 
 	 */
 	public Player(Board board, String name) {
@@ -59,6 +72,8 @@ public class Player {
 	}
 
 	/**
+	 * Method to distribute cards to players
+	 * 
 	 * @param board
 	 * @return Return Random List of Cards
 	 */
@@ -67,6 +82,8 @@ public class Player {
 	}
 
 	/**
+	 * Method to set countries of a player
+	 * 
 	 * @param list list of countries
 	 */
 	public void setCountries(List<Country> list) {
@@ -155,16 +172,18 @@ public class Player {
 	}
 
 	/**
+	 * Method to get Armies
 	 * 
-	 * @return Return Armies
+	 * @return Armies
 	 */
 	public int getArmies() {
 		return armies;
 	}
 
 	/**
+	 * Method to get cards
 	 * 
-	 * @return Return list of Cards
+	 * @return list of Cards
 	 */
 
 	public List<Card> getCards() {
@@ -172,6 +191,7 @@ public class Player {
 	}
 
 	/**
+	 * Method to set armies quantity depending upon countries owned and total armies
 	 * 
 	 * @param totalCountriesOwned countries owned by the player
 	 * @param totalArmies         totalArmies belongs to a player
@@ -185,6 +205,8 @@ public class Player {
 	}
 
 	/**
+	 * Method to set armies belongs to a player
+	 * 
 	 * @param i number of armies
 	 */
 	private void setArmies(int i) {
@@ -307,6 +329,8 @@ public class Player {
 	}
 
 	/**
+	 * Method to get countries
+	 * 
 	 * @return list of countries
 	 */
 
@@ -369,6 +393,7 @@ public class Player {
 	}
 
 	/**
+	 * Method to get previous countries owned by player
 	 * 
 	 * @return number of countries before attack
 	 */
@@ -377,6 +402,8 @@ public class Player {
 	}
 
 	/**
+	 * Method to set countries quantity
+	 * 
 	 * @param currentCountriesQty
 	 */
 	public void setPreviousCountriesQty(int currentCountriesQty) {

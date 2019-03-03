@@ -30,6 +30,7 @@ public class Country {
 	// private TerritoryZone territoryZone = null;
 
 	/**
+	 * Method to get name of the country
 	 * 
 	 * @return name of the country
 	 */
@@ -40,6 +41,8 @@ public class Country {
 	}
 
 	/**
+	 * Method to set name of the country
+	 * 
 	 * @param name name of the country
 	 */
 	public void setName(String name) {
@@ -49,6 +52,8 @@ public class Country {
 	}
 
 	/**
+	 * Country Constructor
+	 * 
 	 * @param name name of the country
 	 **/
 	public Country(String name) {
@@ -70,6 +75,8 @@ public class Country {
 	}
 
 	/**
+	 * Get number of armies stationed in this country
+	 * 
 	 * @return the number of armies currently stationed in this country
 	 **/
 	public int getArmies() {
@@ -77,6 +84,8 @@ public class Country {
 	}
 
 	/**
+	 * Method to get neigbouring countries
+	 * 
 	 * @return a list of the country objects that are neighbor to this country on
 	 *         the board
 	 **/
