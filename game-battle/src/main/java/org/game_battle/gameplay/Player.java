@@ -66,10 +66,16 @@ public class Player {
 		return Arrays.asList(board.getRandomCard(), board.getRandomCard(), board.getRandomCard());
 	}
 
+	/**
+	 * @param list list of countries
+	 */
 	public void setCountries(List<Country> list) {
 		countries = list;
 	}
 
+	/**
+	 * Reinforcement phase of the game
+	 */
 	public void Reinforcement() {
 		// In the reinforcements phase, the player is given a number of armies that
 		// depends on the number of countries he owns (# of countries owned divided by
@@ -198,6 +204,9 @@ public class Player {
 
 	}
 
+	/**
+	 * Attacking phase of the game
+	 */
 	public void Attack() {
 		/*
 		 * Once all the reinforcement armies have been placed by the player, the attacks
@@ -225,7 +234,7 @@ public class Player {
 					neighbours.remove(country);
 				}
 			}
-			
+
 			if (!neighbours.isEmpty()) {
 				Country DeffendingCountry = UI.selectCountry("Attack phase", "Select target country",
 						neighbours /* board.getElligibleTargets(OffendingCountry) */);
@@ -244,8 +253,8 @@ public class Player {
 					if (!UI.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
 						break;
 					}
-					LOG.info("Enough armies in both countries(>0). Starting Battle. " + attacker + " attacking " + deffender
-							+ ".");
+					LOG.info("Enough armies in both countries(>0). Starting Battle. " + attacker + " attacking "
+							+ deffender + ".");
 					// Board.Battle(OffendingCountry, DeffendingCountry)
 					board.doBattle(OffendingCountry, DeffendingCountry);
 					// If all the defender's armies are eliminated the attacker captures the
@@ -257,7 +266,8 @@ public class Player {
 
 					if (DeffendingCountry.getArmies() == 0) {
 						board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
-						LOG.info("All the defender's armies are eliminated." + attacker + " captured " + DeffendingCountry);
+						LOG.info("All the defender's armies are eliminated." + attacker + " captured "
+								+ DeffendingCountry);
 						/*
 						 * The attacking player must then place a number of armies in the conquered
 						 * country which is greater or equal than the number of dice that was used in
@@ -265,8 +275,8 @@ public class Player {
 						 * attacks as he wants during his turn.
 						 */
 						int minimumArmies = board.getLastDiceRollResult();
-						int armies_to_occupy = UI.askNumber("Attack phase", "How many armies to occupy defeated country?",
-								minimumArmies, armies);
+						int armies_to_occupy = UI.askNumber("Attack phase",
+								"How many armies to occupy defeated country?", minimumArmies, armies);
 						DeffendingCountry.setArmyQty(armies_to_occupy);
 						LOG.info(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
 					} else {
@@ -276,7 +286,7 @@ public class Player {
 			} else {
 				LOG.info("No elligible target countries (no neighbours belonging to others).");
 			}
-			
+
 		}
 	}
 
@@ -297,7 +307,6 @@ public class Player {
 	}
 
 	/**
-	 * 
 	 * @return list of countries
 	 */
 
@@ -305,6 +314,9 @@ public class Player {
 		return countries;
 	}
 
+	/**
+	 * Fortification phase of the game
+	 */
 	public void Fortification() {
 		/*
 		 * Once he declares that he will not attack anymore (or cannot attack because
@@ -364,6 +376,9 @@ public class Player {
 		return previousCountriesQty;
 	}
 
+	/**
+	 * @param currentCountriesQty
+	 */
 	public void setPreviousCountriesQty(int currentCountriesQty) {
 		previousCountriesQty = currentCountriesQty;
 	}

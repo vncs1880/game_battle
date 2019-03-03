@@ -48,30 +48,26 @@ public class MapInterface {
 		 * Arrays.asList(countries.get(6), countries.get(7), countries.get(8),
 		 * countries.get(9)));
 		 */
-		
-		
-		
-		model  = new WorldMap();
+
+		model = new WorldMap();
 		WorldMapView view = new WorldMapView();
 		MapController controller = new MapController(view, model);
-		//Load Map Method
+		// Load Map Method
 		controller.loadMap(view);
-		//Print Map Method
+		// Print Map Method
 		controller.printMap(view, model);
-		//Edit Map condition
-		if(!view.isAddMap())
-		{
-			if(view.intiateMapEdit())
-			{
-				//Edit Map Method
+		// Edit Map condition
+		if (!view.isAddMap()) {
+			if (view.intiateMapEdit()) {
+				// Edit Map Method
 				controller.editMap(view, model);
-				//Print Map Mathod
+				// Print Map Mathod
 				controller.printMap(view, model);
 			}
 		}
 		countries = getCountriesFromTerritories(model.getTerritories());
 		continents = getContinentFromContinentZone(model.getContinents());
-		
+
 	}
 
 	private LinkedList<Continent> getContinentFromContinentZone(List<ContinentZone> continents2) {
@@ -90,12 +86,13 @@ public class MapInterface {
 		LinkedList<Country> countries = new LinkedList<Country>();
 		for (TerritoryZone t : territories) {
 			Country c = new Country(t.getTerritoryName());
-			
+
 			countries.add(c);
-			//c.add(new Country(t));
+			// c.add(new Country(t));
 		}
 		return countries;
 	}
+
 	/**
 	 * 
 	 * @return list of countries
@@ -121,11 +118,15 @@ public class MapInterface {
 
 	public static List<Country> getCountriesByContinent(Continent continent) {
 		// TODO return all countries in a given continent
-		return  getCountriesByContinentFromTerritoryZone(continent.getName());//countriesByContinent.get(continents.indexOf(continent));
+		return getCountriesByContinentFromTerritoryZone(continent.getName());// countriesByContinent.get(continents.indexOf(continent));
 	}
 
+	/**
+	 * @param name
+	 * @return return country list form territory zone
+	 */
 	private static List<Country> getCountriesByContinentFromTerritoryZone(String name) {
-		List<Country> countrylist =  new LinkedList<Country>();
+		List<Country> countrylist = new LinkedList<Country>();
 		List<TerritoryZone> l = model.getCountriesByContinent(name);
 		for (TerritoryZone territoryZone : l) {
 			countrylist.add(getCountryByName(territoryZone.getTerritoryName()));
@@ -135,7 +136,7 @@ public class MapInterface {
 
 	/**
 	 * @param name
-	 * @return 
+	 * @return name of the country
 	 */
 	private static Country getCountryByName(String name) {
 		for (Country c : countries) {
@@ -145,7 +146,7 @@ public class MapInterface {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @param country country name
 	 * @return neighbouring country associated with the country passed
@@ -157,19 +158,20 @@ public class MapInterface {
 		for (String countryname : l) {
 			countrylist.add(getCountryByName(countryname));
 		}
-		
+
 		return countrylist;
 	}
 
 }
 
-
 /*
-
-public static List<Country> getCountries()   							=> 	public List<TerritoryZone> getTerritories()
-public static List<Continent> getContinents() 							=>	public List<ContinentZone> getContinents()
-public static List<Country> getCountriesByContinent(Continent continent)=>	public List<TerritoryZone> getCountriesByContinent(String continent) 
-public static List<Country> getNeighbours(Country country) 				=>  public  ArrayList<String> getTerritoryNeighbour(String territory )
-
-*/	
-
+ * 
+ * public static List<Country> getCountries() => public List<TerritoryZone>
+ * getTerritories() public static List<Continent> getContinents() => public
+ * List<ContinentZone> getContinents() public static List<Country>
+ * getCountriesByContinent(Continent continent)=> public List<TerritoryZone>
+ * getCountriesByContinent(String continent) public static List<Country>
+ * getNeighbours(Country country) => public ArrayList<String>
+ * getTerritoryNeighbour(String territory )
+ * 
+ */

@@ -59,8 +59,9 @@ public class Board {
 		LinkedList<Player> players = new LinkedList<Player>();
 		for (int i = 0; i < totalPlayers; i++) {
 			String name = "dummy player";
-			name = UI.askText("What is player "+(i+1)+" name?", "Initializing board - "+totalPlayers+" players");
-			players.add(new Player(this, name ));
+			name = UI.askText("What is player " + (i + 1) + " name?",
+					"Initializing board - " + totalPlayers + " players");
+			players.add(new Player(this, name));
 		}
 		setPlayers(players);
 		/*
@@ -109,12 +110,16 @@ public class Board {
 			List<Country> countries = player.getCountries();
 			countries.add(c);
 			player.setPreviousCountriesQty(countries.size());
-			//countriesToDistribute.remove(c);
-			k = (++k==players.size())?0:k;
+			// countriesToDistribute.remove(c);
+			k = (++k == players.size()) ? 0 : k;
 
 		}
 	}
 
+	/**
+	 * @param cards
+	 * @return cards to give depends upon type of army
+	 */
 	public int getArmiesFromCards(List<Card> cards) {
 		HashMap<Card.Sort, Integer> cardsCount = new HashMap<Card.Sort, Integer>() {
 			{
@@ -150,15 +155,15 @@ public class Board {
 		//// by 5 every time any player does so (i.e. 5, 10, 15, …). In any case, the
 		//// minimal number of reinforcement armies is 3.
 
-		//boolean equals = cardsCount.values().contains(CARDS_EQUAL_DIFFERENT_AMOUNT);
+		// boolean equals = cardsCount.values().contains(CARDS_EQUAL_DIFFERENT_AMOUNT);
 		Collection<Integer> eqs = cardsCount.values();
 		eqs.removeIf(new Predicate<Integer>() {
 			public boolean test(Integer i) {
 				return i < CARDS_EQUAL_DIFFERENT_AMOUNT;
 			}
 		});
-		boolean equals = eqs.size()>0; 
-				
+		boolean equals = eqs.size() > 0;
+
 		Collection<Integer> diffs = cardsCount.values();
 		diffs.removeIf(new Predicate<Integer>() {
 			public boolean test(Integer i) {
@@ -180,6 +185,11 @@ public class Board {
 	 * null; }
 	 */
 
+	/**
+	 * @param offendingCountry  attacking country
+	 * @param deffendingcountry defending country
+	 * @return winner of the battle
+	 */
 	public Player doBattle(Country offendingCountry, Country deffendingCountry) {
 		// TODO updates players armies numbers according to logic below
 		/*
@@ -226,24 +236,35 @@ public class Board {
 	void giveLoserCountryToWinnerPlayer(Country OffendingCountry, Country DeffendingCountry) {
 		Player attacker = getOwner(OffendingCountry);
 		Player deffender = getOwner(DeffendingCountry);
-		LOG.info("ANNEXING COUNTRY START\r\nattacker: "+attacker+"\r\ndefender: "+deffender);
-		
+		LOG.info("ANNEXING COUNTRY START\r\nattacker: " + attacker + "\r\ndefender: " + deffender);
+
 		List<Country> attacker_countries = new CopyOnWriteArrayList<Country>(attacker.getCountries());
 		attacker_countries.add(DeffendingCountry);
 		attacker.setCountries(attacker_countries);
 		List<Country> deffender_countries = new CopyOnWriteArrayList<Country>(deffender.getCountries());
 		deffender_countries.remove(DeffendingCountry);
 		deffender.setCountries(deffender_countries);
-		LOG.info("ANNEXING COUNTRY END\r\nattacker: "+attacker+"\r\ndefender: "+deffender);
+		LOG.info("ANNEXING COUNTRY END\r\nattacker: " + attacker + "\r\ndefender: " + deffender);
 	}
 
+	/**
+	 * @return result of last dice roll
+	 */
 	public int getLastDiceRollResult() {
 		return lastDiceRollResult;
 	}
 
+	/**
+	 * @param asList list of players
+	 */
+
 	public void setPlayers(List<Player> asList) {
 		players = asList;
 	}
+
+	/**
+	 * @return list of players
+	 */
 
 	public List<Player> getPlayers() {
 		return players;
@@ -257,16 +278,25 @@ public class Board {
 		return MapInterface.getCountriesByContinent(continent); // countriesByContinent.get(countriesByContinent.indexOf(continent));
 	}
 
+	/**
+	 * @return list of continents
+	 */
 	public List<Continent> getContinents() {
 		List<Continent> continents = MapInterface.getContinents();
 		return continents;
 	}
 
+	/**
+	 * @return list of countries
+	 */
 	public List<Country> getCountries() {
 		List<Country> countries = MapInterface.getCountries();
 		return countries;
 	}
 
+	/**
+	 * @return random cards
+	 */
 	public Card getRandomCard() {
 		Sort[] card_types = Sort.values();
 		return new Card(card_types[RANDOM.nextInt(card_types.length)]);
