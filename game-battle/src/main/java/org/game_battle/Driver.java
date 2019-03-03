@@ -39,13 +39,6 @@ public class Driver {
 			}
 		}
 		
-		for (ContinentZone x:  model.getContinents() )
-		{
-			System.out.println(x.getContinentName());
-		}
-
-	
-
 	}
 
 }
