@@ -25,6 +25,8 @@ public class Card {
 	}
 
 	/**
+	 * Card Constructor
+	 * 
 	 * @param type card type
 	 */
 	public Card(Sort type) {
@@ -43,6 +45,8 @@ public class Card {
 	private Sort type;
 
 	/**
+	 * Method to get the type of the card
+	 * 
 	 * @return type of the card
 	 *
 	 */
