@@ -15,6 +15,7 @@ public class CountryContinentTests {
 
     Continent cont1, cont2;
     Country c1,c2,c3;
+    
 
     /**
      *  Executed before executing unit tests.
@@ -24,7 +25,7 @@ public class CountryContinentTests {
     public void setupCountriesandContinents(){
 
         cont1 = new Continent(10,"Cont1");
-        cont2 = new Continent(10,"Cont2");
+        cont2 = new Continent(20,"Cont2");
 
         c1 = new Country("c1");
         c2 = new Country("c2");
@@ -70,7 +71,7 @@ public class CountryContinentTests {
     @Test
     public void verifyContorlValue(){
         Assert.assertEquals(10,cont1.getControlValue());
-        Assert.assertEquals(10,cont2.getControlValue());
+        Assert.assertEquals(20,cont2.getControlValue());
     }
 
 

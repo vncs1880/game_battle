@@ -119,7 +119,7 @@ public class Player {
 		// Player.updateNumberArmies(Cards.getEligibleArmies(Player.getCards()))
 		//// if not eligible, Cards.getEligibleArmies = 0
 		List<Card> player_cards = getCards();
-		if (UI.isUserOk("Reinforcement phase", /* this.getClass().getEnclosingMethod().getName()+ */
+		if (player_cards.size()>4 || UI.isUserOk("Reinforcement phase", /* this.getClass().getEnclosingMethod().getName()+ */
 				"Do you wanna try to get MORE armies from your cards? " + player_cards)) {
 
 			setArmies(getArmies() + board.getArmiesFromCards(player_cards));
@@ -219,13 +219,15 @@ public class Player {
 			Country OffendingCountry = UI.selectCountry("Attack phase", "Select attacker country",
 					elligibleAttackerCountries);
 			List<Country> neighbours = new CopyOnWriteArrayList<>(OffendingCountry.getNeighbours());
+			//LOG.info("neighbours before filtering: "+neighbours);
 			neighbours.remove(OffendingCountry);
 			for (Country country : neighbours) {
 				if (board.getOwner(OffendingCountry) == board.getOwner(country)) {
 					neighbours.remove(country);
 				}
 			}
-			
+			//LOG.info("neighbours after filtering: "+neighbours); //TODO currently showing adjacent, should look for connected 
+			LOG.info("connected countries/elligible targets: " + neighbours);
 			if (!neighbours.isEmpty()) {
 				Country DeffendingCountry = UI.selectCountry("Attack phase", "Select target country",
 						neighbours /* board.getElligibleTargets(OffendingCountry) */);
@@ -237,10 +239,11 @@ public class Player {
 				// (DeffendingCountry.getTotalArmies() > 0) do {
 				// <<Board.Battle()>>
 				// }
-				LOG.info("Checking if enough armies in both attacker/target countries to allow attack...");
+				LOG.info(OffendingCountry +" vs "+DeffendingCountry+" - Checking if enough armies in both attacker/target countries to allow attack...");
+				String attacker = board.getOwner(OffendingCountry).name;
+				String deffender = board.getOwner(DeffendingCountry).name;
 				while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
-					String attacker = board.getOwner(OffendingCountry).name;
-					String deffender = board.getOwner(DeffendingCountry).name;
+					
 					if (!UI.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
 						break;
 					}
@@ -254,29 +257,30 @@ public class Player {
 					// Board.updateTerritories(DeffendingCountry)
 					//// just change ownership if DeffendingCountry.getTotalArmies() == 0
 					//
-
-					if (DeffendingCountry.getArmies() == 0) {
-						board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
-						LOG.info("All the defender's armies are eliminated." + attacker + " captured " + DeffendingCountry);
-						/*
-						 * The attacking player must then place a number of armies in the conquered
-						 * country which is greater or equal than the number of dice that was used in
-						 * the attack that resulted in conquering the country. A player may do as many
-						 * attacks as he wants during his turn.
-						 */
-						int minimumArmies = board.getLastDiceRollResult();
-						int armies_to_occupy = UI.askNumber("Attack phase", "How many armies to occupy defeated country?",
-								minimumArmies, armies);
-						DeffendingCountry.setArmyQty(armies_to_occupy);
-						LOG.info(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
-					} else {
-						LOG.info(attacker + " lost battle.");
-					}
+				}
+				if (DeffendingCountry.getArmies() == 0) {
+					board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
+					LOG.info("All the defender's armies are eliminated." + attacker + " captured " + DeffendingCountry);
+					/*
+					 * The attacking player must then place a number of armies in the conquered
+					 * country which is greater or equal than the number of dice that was used in
+					 * the attack that resulted in conquering the country. A player may do as many
+					 * attacks as he wants during his turn.
+					 */
+					int minimumArmies = board.getLastDiceRollResult();
+					int armies_to_occupy = UI.askNumber("Attack phase", "How many armies to occupy defeated country?",
+							minimumArmies, armies);
+					DeffendingCountry.setArmyQty(armies_to_occupy);
+					LOG.info(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
+				} else {
+					LOG.info(attacker + " lost battle.");
 				}
 			} else {
-				LOG.info("No elligible target countries (no neighbours belonging to others).");
+				LOG.info("No elligible target countries.");
 			}
 			
+		} else {
+			LOG.info("No elligible attacker countries.");
 		}
 	}
 
@@ -313,7 +317,8 @@ public class Player {
 		 * the fortification phase, the player may move any number of armies from one of
 		 * his owed countries to the other, provided that there is a path between these
 		 * two countries that is composed of countries that he owns. Only one such move
-		 * is allowed per fortification phase.
+		 * is allowed per fortification phase. 
+		 * TODO BUILD2 not really just neighbours. add path logic
 		 */
 
 		// For each country in Player.getCountryList():

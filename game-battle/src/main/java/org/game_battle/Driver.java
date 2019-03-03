@@ -3,7 +3,9 @@ package org.game_battle;
 import org.game_battle.model.Implementation.*;
 import org.game_battle.view.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.game_battle.controler.*;
 /**
@@ -14,6 +16,7 @@ import org.game_battle.controler.*;
  */
 
 public class Driver {
+	
 	static public void main(String[] args)
 	{
 		WorldMap model  = new WorldMap();
@@ -35,9 +38,7 @@ public class Driver {
 
 			}
 		}
-
-
-
+		
 	}
 
 }

@@ -27,34 +27,41 @@ public class Country {
 
 	private int armies;
 	private String name;
-	//private TerritoryZone territoryZone = null;
+	// private TerritoryZone territoryZone = null;
 
 	/**
+	 * Method to get name of the country
 	 * 
 	 * @return name of the country
 	 */
 	public String getName() {
-		/*if (territoryZone != null) {
-			return territoryZone.getTerritoryName();
-		}else */return name;
-	}
-
-	public void setName(String name) {
-		/*if (territoryZone != null) {
-			territoryZone.setTerritoryName(name);
-		}else */this.name = name;
+		/*
+		 * if (territoryZone != null) { return territoryZone.getTerritoryName(); }else
+		 */return name;
 	}
 
 	/**
+	 * Method to set name of the country
+	 * 
 	 * @param name name of the country
-	 *
+	 */
+	public void setName(String name) {
+		/*
+		 * if (territoryZone != null) { territoryZone.setTerritoryName(name); }else
+		 */this.name = name;
+	}
+
+	/**
+	 * Country Constructor
+	 * 
+	 * @param name name of the country
 	 **/
 	public Country(String name) {
 		this.name = name;
 	}
 
 	/*
-	 * public Country(TerritoryZone t) { // TODO Auto-generated constructor stub
+	 * public Country(TerritoryZone t) {
 	 * this.territoryZone = t; }
 	 */
 
@@ -68,15 +75,19 @@ public class Country {
 	}
 
 	/**
-	 * Returns the number of armies currently stationed in this country
+	 * Get number of armies stationed in this country
+	 * 
+	 * @return the number of armies currently stationed in this country
 	 **/
 	public int getArmies() {
 		return armies;
 	}
 
 	/**
-	 * Returns a list of the country objects that are neighbor to this country on
-	 * the board
+	 * Method to get neigbouring countries
+	 * 
+	 * @return a list of the country objects that are neighbor to this country on
+	 *         the board
 	 **/
 	public List<Country> getNeighbours() {
 		return MapInterface.getNeighbours(this);

@@ -44,7 +44,6 @@ public class UI {
 	
 
 	public static String askText(String msg, String title) {
-		// TODO Auto-generated method stub
 		String text = null;
 		do {
 			text = JOptionPane.showInputDialog(null, msg, title, JOptionPane.QUESTION_MESSAGE);

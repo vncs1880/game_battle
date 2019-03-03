@@ -1,13 +1,17 @@
+
 package org.game_battle;
 import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.game_battle.model.Implementation.ContinentZone;
 import org.game_battle.model.Implementation.WorldMap;
 import org.game_battle.utility.ConnectedGraph;
 import org.game_battle.utility.FileReaderWriter;
 import org.game_battle.utility.MapDataExtractor;
+import org.hamcrest.Matcher;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,13 +32,23 @@ public class MapValidation {
 		//connectedgraph.connected_components(worldmap);
 	}
 
+	/**
+	 * checks if the country list and continent list are stored in the WorldMap
+	 */
 
 	@Test
 	public void testMapValidation() {
 		Assert.assertEquals(true,mapdata.contains(worldmap.getContinents()));
+		
+		Assert.assertEquals(true,mapdata.contains(worldmap.getTerritories()));
 	}
+
+	
 
 
 }
+
+
+
 
 

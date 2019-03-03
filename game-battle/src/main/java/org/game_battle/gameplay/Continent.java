@@ -22,6 +22,8 @@ public class Continent {
 	private String name;
 
 	/**
+	 * Method to get name of the continent
+	 * 
 	 * @return the name
 	 */
 	public String getName() {
@@ -29,6 +31,8 @@ public class Continent {
 	}
 
 	/**
+	 * Continent Constructor
+	 * 
 	 * @param ctrlValue control value associated with the continent
 	 * @param name      Name of the continent
 	 * 
@@ -39,7 +43,9 @@ public class Continent {
 	}
 
 	/**
-	 * @ return Returns the control value associated with a continent
+	 * Method to get control value belongs to a continent
+	 * 
+	 * @return Returns the control value associated with a continent
 	 * 
 	 **/
 	public int getControlValue() {

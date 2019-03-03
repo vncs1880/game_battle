@@ -122,23 +122,25 @@ public class Board {
 				put(Card.Sort.CAVALRY, 0);
 				put(Card.Sort.ARTILLERY, 0);
 			}
-		}; // TODO getArmiesFromCards is not working
+		};
 
 		for (Card card : cards) {
-			Integer new_qty = cardsCount.get(card.getType());
-			cardsCount.put(card.getType(), new_qty++);
+			Sort cardtype = card.getType();
+			cardsCount.replace(cardtype, cardsCount.get(cardtype) + 1);
 		}
+		LOG.info("cards: " + cards + " cardtype: "+" cardscount: "+cardsCount);
+		//LOG.info("cards: " +cards+" cardscount: "+cardsCount);
 		// Finally, if the player owns three cards of different sorts or the same sorts,
 		// he can exchange them for armies.
 
 		// Each card is either an infantry, cavalry, or artillery card. During a
 		// player’s reinforcement phase, a player can exchange a set of three cards of
-		// the same kind,
+		// the same kind, TODO exchange here means these cards are deleted from players hand
 		// or a set of three cards of all different kinds for a number of armies that
 		// increases every time any player does so. The number of armies a player will
 		// get for
 		// cards is first 5, then increases by 5 every time any player does so (i.e. 5,
-		// 10, 15, …). A player that conquers the last country owned by another player
+		// 10, 15, …). TODO A player that conquers the last country owned by another player
 		// receives
 		// all the cards held by that player. If a player holds five cards during his
 		// reinforcement phase, he must exchange three of them for armies.
@@ -151,26 +153,42 @@ public class Board {
 		//// minimal number of reinforcement armies is 3.
 
 		//boolean equals = cardsCount.values().contains(CARDS_EQUAL_DIFFERENT_AMOUNT);
-		Collection<Integer> eqs = cardsCount.values();
-		eqs.removeIf(new Predicate<Integer>() {
-			public boolean test(Integer i) {
-				return i < CARDS_EQUAL_DIFFERENT_AMOUNT;
+		
+		Collection<Integer> cardsCountValues = cardsCount.values();
+		int equals = 0, diffs = 0;
+		for (Integer count : cardsCountValues) {
+			if (count==CARDS_EQUAL_DIFFERENT_AMOUNT) {
+				equals=CARDS_EQUAL_DIFFERENT_AMOUNT;
+				LOG.info("detected "+CARDS_EQUAL_DIFFERENT_AMOUNT+" cards of equal type.");
+				break;
+			} else if (count!=0) {
+				diffs++;
+				if (diffs==CARDS_EQUAL_DIFFERENT_AMOUNT) {
+					LOG.info("detected "+CARDS_EQUAL_DIFFERENT_AMOUNT+" cards of different type.");
+					break;
+				}
 			}
-		});
-		boolean equals = eqs.size()>0; 
-				
-		Collection<Integer> diffs = cardsCount.values();
-		diffs.removeIf(new Predicate<Integer>() {
-			public boolean test(Integer i) {
-				return i != 1;
-			}
-		});
-		boolean differents = diffs.size() >= CARDS_EQUAL_DIFFERENT_AMOUNT;
+		}
+		
+		/*
+		 * Collection<Integer> eqs = cardsCount.values(); LOG.info(" eqs: "+eqs);
+		 * eqs.removeIf(new Predicate<Integer>() { public boolean test(Integer i) {
+		 * return i < CARDS_EQUAL_DIFFERENT_AMOUNT; } }); boolean equals = eqs.size()>0;
+		 * 
+		 * Collection<Integer> diffs = cardsCount.values(); LOG.info(" diffs: "+diffs);
+		 * diffs.removeIf(new Predicate<Integer>() { public boolean test(Integer i) {
+		 * return i != 1; } }); boolean differents = diffs.size() >=
+		 * CARDS_EQUAL_DIFFERENT_AMOUNT;
+		 */
 
-		if (equals || differents) {
+		//LOG.info("equals: " + equals +" diffs: "+diffs);
+		
+		if (equals>=CARDS_EQUAL_DIFFERENT_AMOUNT || diffs>=CARDS_EQUAL_DIFFERENT_AMOUNT) {
 			cardsToGive += 5;
+			LOG.info("player gained "+cardsToGive+" armies from their cards.");
 			return cardsToGive;
 		} else {
+			LOG.info("player didnt get any armies from their cards.");
 			return 0;
 		}
 	}
@@ -181,7 +199,7 @@ public class Board {
 	 */
 
 	public Player doBattle(Country offendingCountry, Country deffendingCountry) {
-		// TODO updates players armies numbers according to logic below
+		// TODO BUILD2 update players armies numbers according to logic below
 		/*
 		 * A battle is then simulated by the attacker rolling at most 3 dice (which
 		 * should not be more than the number of armies contained in the attacking
