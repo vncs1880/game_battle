@@ -155,7 +155,7 @@ public class MapInterface {
 	public static List<Country> getNeighbours(Country country) {
 		List<Country> countrylist = new LinkedList<Country>();
 		ArrayList<String> l = model.getTerritoryNeighbour(country.getName());
-		LOG.info("Territory Neighbours: "+l);
+		LOG.info("Territory neighbours: "+l);
 		for (String countryname : l) {
 			Country countryByName = getCountryByName(countryname);
 			if (countryByName != null) {

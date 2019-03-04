@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -46,7 +48,7 @@ public class UI {
 	public static String askText(String msg, String title) {
 		String text = null;
 		do {
-			text = JOptionPane.showInputDialog(null, msg, title, JOptionPane.QUESTION_MESSAGE);
+	        text = JOptionPane.showInputDialog(null, msg, title, JOptionPane.QUESTION_MESSAGE);
 		} while (text == null); 
 		return text;
 	}

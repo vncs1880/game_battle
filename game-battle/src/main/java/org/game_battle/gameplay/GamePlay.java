@@ -61,7 +61,8 @@ public class GamePlay {
 		boolean gameOver = false;
 		int i=0;
 		while (!gameOver/* players.size() > 1 */) {
-			game.getBoard().setTurn(i++);
+			i++;
+			game.getBoard().setTurn(i);
 			for (Player player : players) {
 				LOG.info("\r\n" + game.board + "\r\n\r\n<<PLAYER " + player.getName()
 						+ " TURN>>\r\n\r\nReinforcement START");

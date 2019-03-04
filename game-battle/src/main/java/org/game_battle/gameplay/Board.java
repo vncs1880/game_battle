@@ -136,7 +136,7 @@ public class Board {
 
 		// Each card is either an infantry, cavalry, or artillery card. During a
 		// player’s reinforcement phase, a player can exchange a set of three cards of
-		// the same kind, TODO exchange here means these cards are deleted from players hand
+		// the same kind, 
 		// or a set of three cards of all different kinds for a number of armies that
 		// increases every time any player does so. The number of armies a player will
 		// get for
@@ -160,7 +160,8 @@ public class Board {
 		for (Integer count : cardsCountValues) {
 			if (count==CARDS_EQUAL_DIFFERENT_AMOUNT) {
 				equals=CARDS_EQUAL_DIFFERENT_AMOUNT;
-				LOG.info("detected "+CARDS_EQUAL_DIFFERENT_AMOUNT+" cards of equal type.");
+				LOG.info("detected " + CARDS_EQUAL_DIFFERENT_AMOUNT + " cards of equal type.");
+				
 				break;
 			} else if (count!=0) {
 				diffs++;
