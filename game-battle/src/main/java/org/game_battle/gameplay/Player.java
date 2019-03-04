@@ -273,7 +273,7 @@ public class Player {
 					board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
 					LOG.info("All the defender's armies are eliminated." + attacker + " captured " + DeffendingCountry);
 					/*
-					 * TODO The attacking player must then place a number of armies in the conquered
+					 * The attacking player must then place a number of armies in the conquered
 					 * country which is greater or equal than the number of dice that was used in
 					 * the attack that resulted in conquering the country. A player may do as many
 					 * attacks as he wants during his turn.
