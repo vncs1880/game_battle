@@ -336,6 +336,7 @@ public class Player {
 					neighbours.remove(neighbour);
 				}
 			}
+			LOG.info("Territory Neighbours that belong to "+board.getOwner(country)+": "+neighbours);
 			if (country.getArmies() > 0 && neighbours.size() > 0) {
 				Country selected = UI.selectCountry("Fortification phase",
 						"Want to move armies from " + country + " to a neighbour?", neighbours);
@@ -345,7 +346,7 @@ public class Player {
 					country.setArmyQty(country.getArmies() - n_armies);
 					LOG.info("Player " + this.name + " moved " + n_armies + " army from " + country.getName() + " to "
 							+ selected.getName() + " previous army qty was " + selected.getArmies());
-					selected.setArmyQty(selected.getArmies() + n_armies);// TODO bug here. not really updating selected
+					selected.setArmyQty(selected.getArmies() + n_armies);//DONE bug here. not really updating selected
 																			// army qty
 					break;
 				}

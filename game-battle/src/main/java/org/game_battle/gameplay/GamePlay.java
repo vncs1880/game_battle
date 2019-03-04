@@ -59,14 +59,18 @@ public class GamePlay {
 		 */
 		GamePlay game = new GamePlay();
 		boolean gameOver = false;
+		int i=0;
 		while (!gameOver/* players.size() > 1 */) {
+			game.getBoard().setTurn(i++);
 			for (Player player : players) {
 				LOG.info("\r\n" + game.board + "\r\n\r\n<<PLAYER " + player.getName()
 						+ " TURN>>\r\n\r\nReinforcement START");
 				player.Reinforcement();
 				LOG.info("\r\nReinforcement END: \r\n\r\n" + player + "\r\n\r\nAttack START");
-				player.Attack();
-				LOG.info("\r\nAttack END: \r\n\r\n" + player + "\r\n\r\nFortification START");
+				if (game.getBoard().getTurn() > 1) {
+					player.Attack();
+					LOG.info("\r\nAttack END: \r\n\r\n" + player + "\r\n\r\nFortification START");
+				} else LOG.info("First turn, skipping attack phase \r\n\r\n"+ player + "\r\n\r\nFortification START");
 				player.Fortification();
 				LOG.info("\r\nFortification END: \r\n\r\n" + player);
 				/*

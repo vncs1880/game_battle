@@ -41,6 +41,7 @@ public class Board {
 	private int cardsToGive;
 	private int lastDiceRollResult;
 	private MapInterface mapinterface;
+	private int turn = 0;
 
 	private static final Random RANDOM = new Random();
 
@@ -288,6 +289,14 @@ public class Board {
 	public Card getRandomCard() {
 		Sort[] card_types = Sort.values();
 		return new Card(card_types[RANDOM.nextInt(card_types.length)]);
+	}
+
+	public void setTurn(int i) {
+		this.turn  = i;
+	}
+
+	public int getTurn() {
+		return this.turn;
 	}
 
 }
