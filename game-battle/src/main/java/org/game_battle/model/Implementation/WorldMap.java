@@ -50,12 +50,9 @@ public class WorldMap {
 	}
 
 	/**
-	 * setContinentValues sets the continentvalues in Hashmap pair
-	 * @param input
+	 * setContinentValues creates a list of continent objects
+	 * @param null
 	 */
-
-	
-	// the method creates list of continent objects
 	public void setContinentZone()
 	{
 		for(Map.Entry<String, ArrayList<TerritoryZone>> entry : territoryContinents.entrySet())
@@ -69,7 +66,10 @@ public class WorldMap {
 		}
 	}
 	
-	// this method creates the list of continent and its values
+	/** setContinentValues  creates the list of continent and its values
+	 * 
+	 * @param null
+	 */
 
 	public void setContinentValues(Map<String, Integer> input)
 	{
@@ -81,7 +81,11 @@ public class WorldMap {
 		}
 	}
 	
-	// the setter method to set continentVlaues
+	/** setContinentValues the setter method to set continentVlaues
+	 * 
+	 * @param key name of the continent
+	 * @param value control value of the continent
+	 */
 	public void setContinentValues(String key, Integer value)
 	{
 		    continentValues.put(key, value);
@@ -96,15 +100,10 @@ public class WorldMap {
 	}
 	
 	
-	
-
 	/**
 	 * setTerritoryNeighbour sets the territories and its neighbours
 	 * @param input
 	 */
-
-	
-	// creates the map of territory and its neighbours
 
 	public void setTerritoryNeighbour(Map<String,  ArrayList<String>> input)
 	{
