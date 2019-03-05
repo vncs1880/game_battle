@@ -48,6 +48,8 @@ public class UI {
 	public static String askText(String msg, String title) {
 		String text = null;
 		do {
+	        //JFrame frame = new JFrame();            
+
 	        text = JOptionPane.showInputDialog(null, msg, title, JOptionPane.QUESTION_MESSAGE);
 		} while (text == null); 
 		return text;
@@ -80,6 +82,8 @@ public class UI {
 		
 		Country picked;
 		do {
+	        //JFrame frame = new JFrame();  frame.toFront();          
+
 			picked = (Country) JOptionPane.showInputDialog(null, prompt
 					, title, JOptionPane.QUESTION_MESSAGE
 					, null, countries_array, countries_array[0]);
