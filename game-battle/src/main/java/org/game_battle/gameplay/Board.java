@@ -56,12 +56,14 @@ public class Board {
 		// L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
 		//// generate a list of lists, each w random countries
 		mapinterface = new MapInterface();
+		LOG.info("\r\n\r\n<<UI prompt in the background. Please use ALT-TAB>>");// TODO make the UI come to foreground
 		int totalPlayers = UI.askNumber("Initializing board", "How many players?", 2, 25);
 		LinkedList<Player> players = new LinkedList<Player>();
 		for (int i = 0; i < totalPlayers; i++) {
 			String name = "dummy player";
-			name = UI.askText("What is player "+(i+1)+" name?", "Initializing board - "+totalPlayers+" players");
-			players.add(new Player(this, name ));
+			name = UI.askText("What is player " + (i + 1) + " name?",
+					"Initializing board - " + totalPlayers + " players");
+			players.add(new Player(this, name));
 		}
 		setPlayers(players);
 		/*
@@ -110,8 +112,8 @@ public class Board {
 			List<Country> countries = player.getCountries();
 			countries.add(c);
 			player.setPreviousCountriesQty(countries.size());
-			//countriesToDistribute.remove(c);
-			k = (++k==players.size())?0:k;
+			// countriesToDistribute.remove(c);
+			k = (++k == players.size()) ? 0 : k;
 
 		}
 	}
@@ -129,19 +131,20 @@ public class Board {
 			Sort cardtype = card.getType();
 			cardsCount.replace(cardtype, cardsCount.get(cardtype) + 1);
 		}
-		LOG.info("cards: " + cards + " cardtype: "+" cardscount: "+cardsCount);
-		//LOG.info("cards: " +cards+" cardscount: "+cardsCount);
+		LOG.info("cards: " + cards + " cardtype: " + " cardscount: " + cardsCount);
+		// LOG.info("cards: " +cards+" cardscount: "+cardsCount);
 		// Finally, if the player owns three cards of different sorts or the same sorts,
 		// he can exchange them for armies.
 
 		// Each card is either an infantry, cavalry, or artillery card. During a
 		// player’s reinforcement phase, a player can exchange a set of three cards of
-		// the same kind, 
+		// the same kind,
 		// or a set of three cards of all different kinds for a number of armies that
 		// increases every time any player does so. The number of armies a player will
 		// get for
 		// cards is first 5, then increases by 5 every time any player does so (i.e. 5,
-		// 10, 15, …). TODO A player that conquers the last country owned by another player
+		// 10, 15, …). TODO A player that conquers the last country owned by another
+		// player
 		// receives
 		// all the cards held by that player. If a player holds five cards during his
 		// reinforcement phase, he must exchange three of them for armies.
@@ -153,25 +156,25 @@ public class Board {
 		//// by 5 every time any player does so (i.e. 5, 10, 15, …). In any case, the
 		//// minimal number of reinforcement armies is 3.
 
-		//boolean equals = cardsCount.values().contains(CARDS_EQUAL_DIFFERENT_AMOUNT);
-		
+		// boolean equals = cardsCount.values().contains(CARDS_EQUAL_DIFFERENT_AMOUNT);
+
 		Collection<Integer> cardsCountValues = cardsCount.values();
 		int equals = 0, diffs = 0;
 		for (Integer count : cardsCountValues) {
-			if (count==CARDS_EQUAL_DIFFERENT_AMOUNT) {
-				equals=CARDS_EQUAL_DIFFERENT_AMOUNT;
+			if (count == CARDS_EQUAL_DIFFERENT_AMOUNT) {
+				equals = CARDS_EQUAL_DIFFERENT_AMOUNT;
 				LOG.info("detected " + CARDS_EQUAL_DIFFERENT_AMOUNT + " cards of equal type.");
-				
+
 				break;
-			} else if (count!=0) {
+			} else if (count != 0) {
 				diffs++;
-				if (diffs==CARDS_EQUAL_DIFFERENT_AMOUNT) {
-					LOG.info("detected "+CARDS_EQUAL_DIFFERENT_AMOUNT+" cards of different type.");
+				if (diffs == CARDS_EQUAL_DIFFERENT_AMOUNT) {
+					LOG.info("detected " + CARDS_EQUAL_DIFFERENT_AMOUNT + " cards of different type.");
 					break;
 				}
 			}
 		}
-		
+
 		/*
 		 * Collection<Integer> eqs = cardsCount.values(); LOG.info(" eqs: "+eqs);
 		 * eqs.removeIf(new Predicate<Integer>() { public boolean test(Integer i) {
@@ -183,11 +186,11 @@ public class Board {
 		 * CARDS_EQUAL_DIFFERENT_AMOUNT;
 		 */
 
-		//LOG.info("equals: " + equals +" diffs: "+diffs);
-		
-		if (equals>=CARDS_EQUAL_DIFFERENT_AMOUNT || diffs>=CARDS_EQUAL_DIFFERENT_AMOUNT) {
+		// LOG.info("equals: " + equals +" diffs: "+diffs);
+
+		if (equals >= CARDS_EQUAL_DIFFERENT_AMOUNT || diffs >= CARDS_EQUAL_DIFFERENT_AMOUNT) {
 			cardsToGive += 5;
-			LOG.info("player gained "+cardsToGive+" armies from their cards.");
+			LOG.info("player gained " + cardsToGive + " armies from their cards.");
 			return cardsToGive;
 		} else {
 			LOG.info("player didnt get any armies from their cards.");
@@ -246,15 +249,15 @@ public class Board {
 	void giveLoserCountryToWinnerPlayer(Country OffendingCountry, Country DeffendingCountry) {
 		Player attacker = getOwner(OffendingCountry);
 		Player deffender = getOwner(DeffendingCountry);
-		LOG.info("ANNEXING COUNTRY START\r\nattacker: "+attacker+"\r\ndefender: "+deffender);
-		
+		LOG.info("ANNEXING COUNTRY START\r\nattacker: " + attacker + "\r\ndefender: " + deffender);
+
 		List<Country> attacker_countries = new CopyOnWriteArrayList<Country>(attacker.getCountries());
 		attacker_countries.add(DeffendingCountry);
 		attacker.setCountries(attacker_countries);
 		List<Country> deffender_countries = new CopyOnWriteArrayList<Country>(deffender.getCountries());
 		deffender_countries.remove(DeffendingCountry);
 		deffender.setCountries(deffender_countries);
-		LOG.info("ANNEXING COUNTRY END\r\nattacker: "+attacker+"\r\ndefender: "+deffender);
+		LOG.info("ANNEXING COUNTRY END\r\nattacker: " + attacker + "\r\ndefender: " + deffender);
 	}
 
 	public int getLastDiceRollResult() {
@@ -293,7 +296,7 @@ public class Board {
 	}
 
 	public void setTurn(int i) {
-		this.turn  = i;
+		this.turn = i;
 	}
 
 	public int getTurn() {

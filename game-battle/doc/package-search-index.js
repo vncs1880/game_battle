@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"org.game_battle"},{"l":"org.game_battle.controler"},{"l":"org.game_battle.gameplay"},{"l":"org.game_battle.model.Contract"},{"l":"org.game_battle.model.Implementation"},{"l":"org.game_battle.utility"},{"l":"org.game_battle.view"}]
