@@ -10,97 +10,117 @@ import org.junit.Before;
 import org.junit.Test;
 import java.io.*;
 
-
+/**
+ * WorldMapTests tests the connectivity of the map and checks whether the map
+ * format is valid or invalid
+ * 
+ * @author Reshma
+ * @version Alpha
+ *
+ */
 public class WorldMapTests {
 
-    WorldMapView worldmapview;
-    WorldMap invalidMap, validMap;
-    private int continentCount, territoryCount;
+	WorldMapView worldmapview;
+	WorldMap invalidMap, validMap;
+	private int continentCount, territoryCount;
 
+	/**
+	 * setup phase initilaises the map and file data
+	 * 
+	 * @throws IOException
+	 */
 
-    @Before
-    public void setup() throws IOException {
-        validMap = new WorldMap();
-        MapDataExtractor.extractData(FileReaderWriter.readFile(TestingConstants.MAP_PATH+TestingConstants.EXISTING_NAME),validMap);
+	@Before
+	public void setup() throws IOException {
+		validMap = new WorldMap();
+		MapDataExtractor.extractData(
+				FileReaderWriter.readFile(TestingConstants.MAP_PATH + TestingConstants.EXISTING_NAME), validMap);
 
-        invalidMap = new WorldMap();
-        MapDataExtractor.extractData(FileReaderWriter.readFile(TestingConstants.MAP_PATH+TestingConstants.INVALID_STRCUTURE_MAP),invalidMap);
+		invalidMap = new WorldMap();
+		MapDataExtractor.extractData(
+				FileReaderWriter.readFile(TestingConstants.MAP_PATH + TestingConstants.INVALID_STRCUTURE_MAP),
+				invalidMap);
 
-        BufferedReader reader = new BufferedReader(new FileReader(TestingConstants.MAP_PATH+TestingConstants.EXISTING_NAME));
-        String currentLine = reader.readLine();
-        boolean countingCont = false;
-        boolean countingTerro = false;
+		BufferedReader reader = new BufferedReader(
+				new FileReader(TestingConstants.MAP_PATH + TestingConstants.EXISTING_NAME));
+		String currentLine = reader.readLine();
+		boolean countingCont = false;
+		boolean countingTerro = false;
 
-        int contCount = 0;
-        int terroCount = 0;
+		int contCount = 0;
+		int terroCount = 0;
 
-        while(currentLine!=null){
-            currentLine = currentLine.trim();
-            if(currentLine.equals("[Continents]")){
-                countingCont=true;
-                countingTerro=false;
-            }
-            else if(currentLine.equals("[Territories]")){
-                countingTerro=true;
-                countingCont=false;
-            }
-            else if(currentLine.length()>0){
-                if(countingCont) contCount++;
-                if(countingTerro) terroCount++;
-            }
-            currentLine = reader.readLine();
-        }
-        continentCount = contCount;
-        territoryCount = terroCount;
-    }
+		while (currentLine != null) {
+			currentLine = currentLine.trim();
+			if (currentLine.equals("[Continents]")) {
+				countingCont = true;
+				countingTerro = false;
+			} else if (currentLine.equals("[Territories]")) {
+				countingTerro = true;
+				countingCont = false;
+			} else if (currentLine.length() > 0) {
+				if (countingCont)
+					contCount++;
+				if (countingTerro)
+					terroCount++;
+			}
+			currentLine = reader.readLine();
+		}
+		continentCount = contCount;
+		territoryCount = terroCount;
+	}
 
+	/**
+	 * Ensure valid WorldMap contains correct number of continents based on
+	 * calculated value at start.
+	 */
 
-    /**
-     * Ensure valid WorldMap contains correct number of continents based on calculated value at start.
-     */
+	@Test
+	public void ensureContinentSize() {
+		Assert.assertEquals(validMap.getContinentValues().entrySet().size(), continentCount);
+	}
 
-    @Test
-    public void ensureContinentSize(){
-        Assert.assertEquals(validMap.getContinentValues().entrySet().size(),continentCount);
-    }
+	/**
+	 * Ensure valid WorldMap contains correct number of territories based on
+	 * calculated value at start.
+	 */
 
-    /**
-     * Ensure valid WorldMap contains correct number of territories based on calculated value at start.
-     */
+	@Test
+	public void ensureTerritoriesSize() {
+		Assert.assertEquals(validMap.getContinentsInfo().entrySet().size(), territoryCount);
+	}
 
-    @Test
-    public void ensureTerritoriesSize(){
-        Assert.assertEquals(validMap.getContinentsInfo().entrySet().size(),territoryCount);
-    }
+	/**
+	 * Ensure that the loaded invalid map, which contains disconnected territories,
+	 * is given the correct number when passed to ConnectedGraph, used when
+	 * validating maps.
+	 */
 
-    /**
-     * Ensure that the loaded invalid map, which contains disconnected territories, is given the correct
-     * number when passed to ConnectedGraph, used when validating maps.
-     */
+	@Test
+	public void invalidMapReturnsInvalid() {
 
-    @Test
-    public void invalidMapReturnsInvalid(){
+		// int map_connected_count =
+		// ConnectedGraph.connected_components(invalidMap.getTerritoryNeighbour());
 
-        //int map_connected_count = ConnectedGraph.connected_components(invalidMap.getTerritoryNeighbour());
+		int map_connected_count = ConnectedGraph.connected_components(invalidMap.getTerrirotyNeighbourList());
 
-        int map_connected_count = ConnectedGraph.connected_components(invalidMap.getTerrirotyNeighbourList());
+		Assert.assertTrue(map_connected_count > 1);
+	}
 
-        Assert.assertTrue(map_connected_count>1);
-    }
+	/**
+	 * Ensure that the correct map returns correct number when passed to
+	 * ConnectedGraph.
+	 */
 
-    /**
-     * Ensure that the correct map returns correct number when passed to ConnectedGraph.
-     */
+	@Test
+	public void validMapReturnsValid() {
 
-    @Test
-    public void validMapReturnsValid(){
+		// int map_connected_count =
+		// ConnectedGraph.connected_components(validMap.getTerritoryNeighbour());
 
-       // int map_connected_count = ConnectedGraph.connected_components(validMap.getTerritoryNeighbour());
+		int map_connected_count = ConnectedGraph.connected_components(validMap.getTerrirotyNeighbourList());
 
-        int map_connected_count = ConnectedGraph.connected_components(validMap.getTerrirotyNeighbourList());
-
-        Assert.assertTrue(map_connected_count<=1);
-    }
-
+		Assert.assertTrue(map_connected_count <= 1);
+	}
 
 }

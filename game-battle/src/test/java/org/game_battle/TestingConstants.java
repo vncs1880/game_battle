@@ -2,6 +2,8 @@ package org.game_battle;
 
 /**
  *  A class encapsulating static variables shared between Test classes
+ *  @author Reshma
+ *  @version Alpha
  */
 
 public class TestingConstants {

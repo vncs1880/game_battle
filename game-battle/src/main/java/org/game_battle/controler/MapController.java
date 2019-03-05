@@ -10,101 +10,100 @@ import org.game_battle.utility.FileReaderWriter;
 import org.game_battle.utility.MapDataExtractor;
 import org.game_battle.view.WorldMapView;
 import org.game_battle.Enums.MapView.userAction;
+
 /**
- * MapController Class for loadMap,printMap,
- * EditMap and Check Map Connectivtity methods.
- * @author 91950
- *
+ * MapController Class for loadMap,printMap, EditMap and Check Map Connectivtity
+ * methods.
+ * 
+ * @author basant
+ * @version Alpha
  *
  */
 
 public class MapController {
 
-	
 	private WorldMap model;
 	private WorldMapView view;
-	//Constructor
-	public MapController( WorldMapView view, WorldMap model ){
-	      this.view = view;
-	      this.model = model;
-	   }	
+
 	/**
-	 * loadMap is to load the existing Map or to create a new map and
-	 * display the new created Map.
+	 * Mapcontroller Constructor
 	 * 
+	 * @param view
+	 * @param model
 	 */
-	public void loadMap(WorldMapView view)
-	{
+	public MapController(WorldMapView view, WorldMap model) {
+		this.view = view;
+		this.model = model;
+	}
+
+	/**
+	 * loadMap is to load the existing Map or to create a new map and display the
+	 * new created Map.
+	 * 
+	 * @param view
+	 */
+	public void loadMap(WorldMapView view) {
 		view.initiateMapLoad();
 		boolean isAddMap = view.isAddMap();
 		ArrayList<String> mapData = new ArrayList<String>();
-		if(isAddMap)
-		{
+		if (isAddMap) {
 			view.setInputMapData();
-			mapData = view.getInputMapData();	
-		}
-		else mapData = FileReaderWriter.readFile(Constant.ReadFilePATH); 
-		
+			mapData = view.getInputMapData();
+		} else
+			mapData = FileReaderWriter.readFile(Constant.ReadFilePATH);
+
 		MapDataExtractor.extractData(mapData, model);
-		 
-		if(isAddMap)
-		{
-			FileReaderWriter.writeFile(Constant.WriteFilePATH, model );
+
+		if (isAddMap) {
+			FileReaderWriter.writeFile(Constant.WriteFilePATH, model);
 		}
-	
+
 	}
+
 	/**
-	 * editMap edits the map : continent control value or editing neighbours
-	 * or deleting neighbours
+	 * editMap edits the map : continent control value or editing neighbours or
+	 * deleting neighbours
+	 * 
 	 * @param view
 	 * @param map
 	 */
-	public void editMap(WorldMapView view ,WorldMap map ) 
-	{
+	public void editMap(WorldMapView view, WorldMap map) {
 		userAction value = view.editMap();
-		if (value== userAction.EDIT_CONTINENT_VALUE)
-			{
-				map.updateContinent(view.editContinentValue()) ;
-			}
-		else if (value== userAction.ADD_NEIGHBOURS)
-			{
-				map.updateNeighbours(view.editNeighbours());
-			}
-		else if (value==userAction.REMOVE_NEIGHBOURS)
-			{
-				map.removeNeighbours(view.removeNeighbours());
-				
-			}
+		if (value == userAction.EDIT_CONTINENT_VALUE) {
+			map.updateContinent(view.editContinentValue());
+		} else if (value == userAction.ADD_NEIGHBOURS) {
+			map.updateNeighbours(view.editNeighbours());
+		} else if (value == userAction.REMOVE_NEIGHBOURS) {
+			map.removeNeighbours(view.removeNeighbours());
 
-		else System.out.println("error");
-	
+		}
 
-		FileReaderWriter.writeFile(Constant.ReadFilePATH, map );
+		else
+			System.out.println("error");
+
+		FileReaderWriter.writeFile(Constant.ReadFilePATH, map);
 
 	}
-			
-		
 
-	
-	
 	/**
-	 * checkcorrectnessOfMap is to validate the map with respect to 
-	 * its neighbours.
-	 * @param tn
+	 * checkcorrectnessOfMap is to validate the map with respect to its neighbours.
+	 * 
+	 * @param tn map values
 	 */
-	public void checkCorrectnessOfMap( Map<String, ArrayList<String>> tn)
-	{
+	public void checkCorrectnessOfMap(Map<String, ArrayList<String>> tn) {
 		view.validateMap(tn);
 	}
+
 	/**
 	 * printMap is to print the map to the console.
+	 * 
+	 * @param view
+	 * @param map
 	 */
-	public void printMap(WorldMapView view ,WorldMap map )
-	{
+	public void printMap(WorldMapView view, WorldMap map) {
 		view.displayMap(map);
-        checkCorrectnessOfMap(map.getTerrirotyNeighbourList());
+		checkCorrectnessOfMap(map.getTerrirotyNeighbourList());
 
 	}
-		 
-	
+
 }
