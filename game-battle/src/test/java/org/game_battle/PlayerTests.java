@@ -1,6 +1,6 @@
 package org.game_battle;
 
-import org.game_battle.gameplay.*;
+import org.game_battle.model.Implementation.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;

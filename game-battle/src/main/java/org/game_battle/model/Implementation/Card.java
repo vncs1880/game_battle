@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.game_battle.gameplay;
+package org.game_battle.model.Implementation;
 
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package org.game_battle;
 
-import org.game_battle.gameplay.MapInterface;
 
 import org.game_battle.model.Implementation.WorldMap;
 import org.game_battle.utility.FileReaderWriter;

@@ -1,8 +1,9 @@
 /**
  * 
  */
-package org.game_battle.gameplay;
+package org.game_battle.model.Implementation;
 
+import org.game_battle.view.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;

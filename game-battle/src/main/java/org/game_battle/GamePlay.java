@@ -1,12 +1,15 @@
 /**
  * 
  */
-package org.game_battle.gameplay;
+package org.game_battle;
 
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.game_battle.model.Implementation.Board;
+import org.game_battle.model.Implementation.Player;
+import org.game_battle.view.UI;
 
 /**
  * This class sets up the gameplay of the game

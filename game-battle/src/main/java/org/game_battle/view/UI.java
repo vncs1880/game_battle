@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.game_battle.gameplay;
+package org.game_battle.view;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +10,9 @@ import java.util.stream.IntStream;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import org.game_battle.model.Implementation.Country;
+import org.game_battle.model.Implementation.MapInterface;
 
 /**
  * @author vncs

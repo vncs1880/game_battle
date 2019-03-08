@@ -1,15 +1,18 @@
 /**
  * 
  */
-package org.game_battle.gameplay;
+package org.game_battle.model.Implementation;
 
 import java.util.*;
+import org.game_battle.model.Contract.*;
+import org.game_battle.model.Implementation.*;
+import org.game_battle.view.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Predicate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.game_battle.gameplay.Card.Sort;
+import org.game_battle.model.Implementation.Card.Sort;
 
 /**
  * This class sets up the countries and continents on the game board

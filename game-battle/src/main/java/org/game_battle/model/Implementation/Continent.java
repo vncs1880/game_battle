@@ -1,4 +1,4 @@
-package org.game_battle.gameplay;
+package org.game_battle.model.Implementation;
 
 /**
  * Allows the creation of Continent objects.

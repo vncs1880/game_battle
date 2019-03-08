@@ -1,4 +1,4 @@
-package org.game_battle.gameplay;
+package org.game_battle.view;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
