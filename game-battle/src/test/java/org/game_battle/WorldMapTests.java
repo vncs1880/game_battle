@@ -102,7 +102,7 @@ public class WorldMapTests {
 		// int map_connected_count =
 		// ConnectedGraph.connected_components(invalidMap.getTerritoryNeighbour());
 
-		int map_connected_count = ConnectedGraph.connected_components(invalidMap.getTerrirotyNeighbourList());
+		int map_connected_count = ConnectedGraph.connectedComponents(invalidMap.getTerrirotyNeighbourList());
 
 		Assert.assertTrue(map_connected_count > 1);
 	}
@@ -118,7 +118,7 @@ public class WorldMapTests {
 		// int map_connected_count =
 		// ConnectedGraph.connected_components(validMap.getTerritoryNeighbour());
 
-		int map_connected_count = ConnectedGraph.connected_components(validMap.getTerrirotyNeighbourList());
+		int map_connected_count = ConnectedGraph.connectedComponents(validMap.getTerrirotyNeighbourList());
 
 		Assert.assertTrue(map_connected_count <= 1);
 	}

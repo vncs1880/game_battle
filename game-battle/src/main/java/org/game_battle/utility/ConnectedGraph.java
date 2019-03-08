@@ -16,8 +16,8 @@ import java.util.Queue;
 
 public class ConnectedGraph {
 
-	static ArrayList<String> discovered_ = new ArrayList<String>();
-	static ArrayList<String> processed_ = new ArrayList<String>();
+	static ArrayList<String> discovered = new ArrayList<String>();
+	static ArrayList<String> processed = new ArrayList<String>();
 
 	/**
 	 * Checks the connectivity of the map by checking its neighbours, if the
@@ -30,17 +30,17 @@ public class ConnectedGraph {
 		Queue<String> queue = new LinkedList<String>();
 		String v;
 		queue.offer(start);
-		discovered_.add(start);
+		discovered.add(start);
 		while (!queue.isEmpty()) {
 			v = queue.remove();
-			processed_.add(v);
+			processed.add(v);
 			ArrayList<String> entry = new ArrayList<String>();
 			if (wm.containsKey(v)) {
 				entry = wm.get(v);
 			}
 			for (String x : entry) {
-				if (!discovered_.contains(x)) {
-					discovered_.add(x);
+				if (!discovered.contains(x)) {
+					discovered.add(x);
 					queue.add(x);
 
 				}
@@ -59,12 +59,12 @@ public class ConnectedGraph {
 	 * @return c connectivity check
 	 */
 
-	public static int connected_components(Map<String, ArrayList<String>> wm) {
+	public static int connectedComponents(Map<String, ArrayList<String>> wm) {
 		int c = 0;
-		discovered_.clear();
+		discovered.clear();
 		for (Entry<String, ArrayList<String>> entry : wm.entrySet()) {
 			String x = entry.getKey();
-			if (!discovered_.contains(x)) {
+			if (!discovered.contains(x)) {
 				c++;
 				bfs(wm, x);
 			}

@@ -113,7 +113,7 @@ public class WorldMapView {
 	 */
 	public void validateMap(Map<String, ArrayList<String>> wm) {
 
-		int c = ConnectedGraph.connected_components(wm);
+		int c = ConnectedGraph.connectedComponents(wm);
 		if (c == 1) {
 			System.out.println("\n=> Map is connected");
 		} else {
