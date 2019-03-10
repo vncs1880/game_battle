@@ -60,7 +60,7 @@ public class Board {
 		//// generate a list of lists, each w random countries
 		mapinterface = new MapInterface();
 		LOG.info("\r\n\r\n<<UI prompt in the background. Please use ALT-TAB>>");// TODO make the UI come to foreground
-		int totalPlayers = UI.askNumber("Initializing board", "How many players?", 2, 25);
+		int totalPlayers = UI.askNumber("Initializing board", "How many players?", 2, 6);
 		LinkedList<Player> players = new LinkedList<Player>();
 		for (int i = 0; i < totalPlayers; i++) {
 			String name = "dummy player";
