@@ -1,10 +1,10 @@
 package org.game_battle.testsuite;
 
-import org.game_battle.modelutility.CountryContinentTests;
-import org.game_battle.modelutility.MapValidation;
-import org.game_battle.modelutility.PlayerTests;
-import org.game_battle.modelutility.ReaderWriterTests;
-import org.game_battle.modelutility.WorldMapTests;
+import org.game_battle.utility.CountryContinentTests;
+import org.game_battle.model.MapValidation;
+import org.game_battle.utility.PlayerTests;
+import org.game_battle.model.ReaderWriterTests;
+import org.game_battle.model.WorldMapTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;

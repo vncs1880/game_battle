@@ -1,4 +1,4 @@
-package org.game_battle.modelutility;
+package org.game_battle.utility;
 
 import org.game_battle.model.Implementation.*;
 import org.junit.Assert;
