@@ -17,9 +17,9 @@ public class Reinforcement {
 	private static final Logger LOG = LogManager.getLogger(Player.class);
 
 	Player player;
-	
-	public void Reinforcement( int armies , Board board  , List<Country> countries, String playerName , Player player) {
-		
+
+	public void Reinforcement(int armies, Board board, List<Country> countries, String playerName, Player player) {
+
 		// In the reinforcements phase, the player is given a number of armies that
 		// depends on the number of countries he owns (# of countries owned divided by
 		// 3, rounded down).
@@ -58,8 +58,8 @@ public class Reinforcement {
 				totalCountriesOwnedInAllContinents -= totalCountriesOwnedInThisContinent;
 			}
 		}
-		
-		player.setArmiesQtyFromCountriesQty(totalCountriesOwnedInAllContinents, totalArmies);
+
+		armies = player.setArmiesQtyFromCountriesQty(totalCountriesOwnedInAllContinents, totalArmies);
 
 		// Finally, if the player owns three cards of different sorts or the same sorts,
 		// he can exchange them for armies.
@@ -69,21 +69,25 @@ public class Reinforcement {
 		// Player.updateNumberArmies(Cards.getEligibleArmies(Player.getCards()))
 		//// if not eligible, Cards.getEligibleArmies = 0
 		List<Card> player_cards = player.getCards();
-		if (player_cards.size()>4 || UI.isUserOk("Reinforcement phase", /* this.getClass().getEnclosingMethod().getName()+ */
-				"Starting player "+player.getName()+"'s turn. \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
+		if (player_cards.size() > 4 || UI.isUserOk("Reinforcement phase", /*
+																			 * this.getClass().getEnclosingMethod().
+																			 * getName()+
+																			 */
+				"Starting player " + player.getName()
+						+ "'s turn. \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
 
 			int armiesFromCards = board.getArmiesFromCards(player_cards);
-			player.setArmies(player.getArmies() + armiesFromCards);
-			if (armiesFromCards>0) {
-				LOG.info("Success exchanging cards, gained "+armiesFromCards+" armies.");
+			armies = player.setArmies(player.getArmies() + armiesFromCards);
+			if (armiesFromCards > 0) {
+				LOG.info("Success exchanging cards, gained " + armiesFromCards + " armies.");
 				List<Card> playercards = new CopyOnWriteArrayList<Card>(player_cards);
 				for (Card card : playercards) {
 					player.getCards().remove(card);
-					LOG.info("Removing card "+card+" from player hand.");//TODO fix this removing all cards
+					LOG.info("Removing card " + card + " from player hand.");// TODO fix this removing all cards
 				}
 			}
-			
-			//LOG.info("Getting more armies from cards result: " + this.toString());
+
+			// LOG.info("Getting more armies from cards result: " + this.toString());
 		}
 
 		// Once the total number of reinforcements is determined for the player’s turn,
@@ -95,15 +99,17 @@ public class Reinforcement {
 //			Country.setArmiesNumber(n)
 		if (armies > 0) {
 			for (Country country : countries) {
-				int qtyArmies = UI.askNumber("Reinforcement phase",
-						"How many armies do you want to put in country " + country.toString() + " ? ["+(countries.indexOf(country)+1)+"/"+countries.size()+"]", 0, armies);
+				int qtyArmies = UI.askNumber("Reinforcement phase", "How many armies do you want to put in country "
+						+ country.toString() + " ? [" + (countries.indexOf(country) + 1) + "/" + countries.size() + "]",
+						0, armies);
 				if (qtyArmies <= armies) {
 					LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
 							+ country.getArmies()/* this.toString() */);
 					country.setArmyQty(qtyArmies);
 					armies -= qtyArmies;
 				}
-				if (armies == 0) break;
+				if (armies == 0)
+					break;
 			}
 		}
 		// LOG.info(this.toString());
