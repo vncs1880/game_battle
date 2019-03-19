@@ -31,6 +31,10 @@ public class Player {
 	public String toString() {
 		return name + "(" + "armies:" + armies + ", cards:" + cards + ", countries:" + countries + ")";// super.toString();
 	}
+	
+	Fortification fortify;
+	Attack attack;
+	Reinforcement reinforce;
 
 	private static final int MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK = 2;
 	private int armies = 0;
@@ -56,6 +60,9 @@ public class Player {
 	public Player(Board board, String name) {
 		this.board = board;
 		this.name = name;
+		this.attack= new Attack();
+		this.fortify = new Fortification();
+		this.reinforce = new Reinforcement();
 		cards = new LinkedList<Card>(distributeCards(board));
 	}
 
@@ -71,7 +78,7 @@ public class Player {
 		countries = list;
 	}
 
-	public void Reinforcement() {
+	public void Reinforcement1() {
 		// In the reinforcements phase, the player is given a number of armies that
 		// depends on the number of countries he owns (# of countries owned divided by
 		// 3, rounded down).
@@ -183,7 +190,7 @@ public class Player {
 	 * @param totalArmies         totalArmies belongs to a player
 	 */
 
-	private void setArmiesQtyFromCountriesQty(int totalCountriesOwned, int totalArmies) {
+	public void setArmiesQtyFromCountriesQty(int totalCountriesOwned, int totalArmies) {
 		// TODO make sure this is rounded down
 		// setArmies(totalCountriesOwned / 3 + totalArmies);
 		int countries_div = totalCountriesOwned / 3;
@@ -193,7 +200,7 @@ public class Player {
 	/**
 	 * @param i number of armies
 	 */
-	private void setArmies(int i) {
+	public void setArmies(int i) {
 		// In any case, the minimal number of reinforcement armies is 3.
 		// If totalArmiesOwnedByPlayer < 3:
 //			totalArmiesOwnedByPlayer = 3
@@ -210,7 +217,7 @@ public class Player {
 
 	}
 
-	public void Attack() {
+	public void Attack1() {
 		/*
 		 * Once all the reinforcement armies have been placed by the player, the attacks
 		 * phase begins. In the attack phase, the player may choose one of the countries
@@ -304,7 +311,7 @@ public class Player {
 	 * @param
 	 * @return Return attacking neighbour country
 	 */
-	private List<Country> getAttackerCountries(int i) {
+	public List<Country> getAttackerCountries(int i) {
 		List<Country> attackers = new ArrayList<Country>();
 
 		for (Country country : countries) {
@@ -324,7 +331,7 @@ public class Player {
 		return countries;
 	}
 
-	public void Fortification() {
+	public void Fortification1() {
 		/*
 		 * Once he declares that he will not attack anymore (or cannot attack because
 		 * none of his countries that have an adjacent country controlled by another
@@ -388,5 +395,10 @@ public class Player {
 	public void setPreviousCountriesQty(int currentCountriesQty) {
 		previousCountriesQty = currentCountriesQty;
 	}
-
+	
+	public void Fortification() { fortify.Fortification(countries, board, this.name); }
+	public void Attack() {attack.Attack(MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK, this, board);}
+	public void Reinforcement() {
+		reinforce.Reinforcement(MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK, board, countries, this.name, this);
+		}
 }
