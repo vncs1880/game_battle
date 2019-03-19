@@ -16,6 +16,8 @@ import org.game_battle.model.Implementation.*;
  */
 public class MapDataExtractor {
 
+	private static Scanner sc;
+
 	/**
 	 * extractData is to extract the data from the map file and store the continents
 	 * and countries in worldMap.
@@ -78,8 +80,6 @@ public class MapDataExtractor {
 	private static void setTerritorisInfo(String line, WorldMap wm) {
 		Map<String, ArrayList<String>> territoryNeighbour = new HashMap<String, ArrayList<String>>();
 		Map<String, HashMap<String, TerritoryZone>> continents = new HashMap<String, HashMap<String, TerritoryZone>>();
-		HashMap<String, ContinentZone> ContinentZoneList = new HashMap<String, ContinentZone>();
-
 		String territoryName = null;
 		String xcoordinates = null;
 		String ycoordinates = null;
@@ -98,7 +98,7 @@ public class MapDataExtractor {
 		}
 		if (!wm.getContinentValues().containsKey(value[3])) {
 			System.out.println("Enter the control value of continent: " + continentName);
-			Scanner sc = new Scanner(System.in);
+			sc = new Scanner(System.in);
 			Integer temp = Integer.parseInt(sc.nextLine());
 			wm.setContinentValues(value[3], temp);
 		}
