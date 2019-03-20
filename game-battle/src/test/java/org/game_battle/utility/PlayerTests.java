@@ -84,4 +84,33 @@ public class PlayerTests {
 		Assert.assertEquals(p2_conts.get(0), c7);
 	}
 
+	/**
+	 * Test to be completed, requires UI to be decoupled with player attack method
+	 * to be executed without triggering a game loop.
+	 * 
+	 */
+
+	@Test
+	public void playerAttackTest_PlayerHasLessArmiesAfterBattle() {
+		int previousArmyCount = p1.getArmies();
+		// p1.Attack();
+		int nextArmyCount = p1.getArmies();
+		Assert.assertTrue(nextArmyCount >= previousArmyCount);
+	}
+
+	@Test
+	public void playerAttackTest_PlayerHasCorrectNumberOfPreviousArmies() {
+		int armyCountBeforeBattle = p1.getArmies();
+		// p1.Attack();
+		int lostArmies = p1.getArmies();
+		Assert.assertEquals(armyCountBeforeBattle - lostArmies, p1.getArmies());
+	}
+
+	@Test
+	public void playerAttackTest_PlayerConquersCountryAfterWinningBattle() {
+		Country contestedCountry = new Country(p1.toString());
+		// p1.Attack()
+		Assert.assertTrue(p1.getCountries().contains(contestedCountry));
+	}
+
 }
