@@ -220,6 +220,7 @@ public class Player {
 			r = 3;
 		}
 		LOG.info(r + " armies now. Previous amount was " + this.armies/* +" \r\n"+this.toString() */);
+		//this.armies=r;
 		return r;
 		/*
 		 * if (i == -1) { this.armies = 0; }
@@ -421,4 +422,8 @@ public class Player {
 	public void Reinforcement() {
 		reinforce.Reinforcement(MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK, board, countries, this.name, this);
 	}
+	public void updateArmy(int army) {
+		this.armies=army;
+	}
+
 }

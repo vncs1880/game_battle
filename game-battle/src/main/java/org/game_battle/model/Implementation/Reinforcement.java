@@ -77,7 +77,7 @@ public class Reinforcement {
 						+ "'s turn. \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
 
 			int armiesFromCards = board.getArmiesFromCards(player_cards);
-			armies = player.setArmies(player.getArmies() + armiesFromCards);
+			armies = player.setArmies(armies + armiesFromCards);
 			if (armiesFromCards > 0) {
 				LOG.info("Success exchanging cards, gained " + armiesFromCards + " armies.");
 				List<Card> playercards = new CopyOnWriteArrayList<Card>(player_cards);
@@ -107,6 +107,9 @@ public class Reinforcement {
 							+ country.getArmies()/* this.toString() */);
 					country.setArmyQty(qtyArmies);
 					armies -= qtyArmies;
+					
+					player.updateArmy(armies);
+
 				}
 				if (armies == 0)
 					break;
