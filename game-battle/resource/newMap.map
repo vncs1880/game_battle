@@ -1,6 +1,8 @@
 [Continents]
-china=10
+russia=20
 asia=10
 [Territories]
-pak,250,300,asia,india,kaz
-india,100,200,asia,burma,aus
+china,11,20,russia,india,bangladesh
+india,10,20,asia,bangladesh,srilanka,china
+bangladesh,33,32,asia,india,china
+srilanka,21,22,asia,india
