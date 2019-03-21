@@ -59,7 +59,7 @@ public class Reinforcement {
 			}
 		}
 
-		armies = player.setArmiesQtyFromCountriesQty(totalCountriesOwnedInAllContinents, totalArmies);
+//		armies = player.setArmiesQtyFromCountriesQty(totalCountriesOwnedInAllContinents, totalArmies);
 
 		// Finally, if the player owns three cards of different sorts or the same sorts,
 		// he can exchange them for armies.
@@ -77,7 +77,7 @@ public class Reinforcement {
 						+ "'s turn. \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
 
 			int armiesFromCards = board.getArmiesFromCards(player_cards);
-			armies = player.setArmies(armies + armiesFromCards);
+//			armies = player.setArmies(armies + armiesFromCards);
 			if (armiesFromCards > 0) {
 				LOG.info("Success exchanging cards, gained " + armiesFromCards + " armies.");
 				List<Card> playercards = new CopyOnWriteArrayList<Card>(player_cards);
@@ -108,7 +108,7 @@ public class Reinforcement {
 					country.setArmyQty(qtyArmies);
 					armies -= qtyArmies;
 					
-					player.updateArmy(armies);
+				//	player.updateArmy(armies);
 
 				}
 				if (armies == 0)

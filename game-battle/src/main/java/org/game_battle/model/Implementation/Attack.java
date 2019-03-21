@@ -1,4 +1,6 @@
-package org.game_battle.model.Implementation;
+/*package org.game_battle.model.Implementation;
+
+
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -13,12 +15,12 @@ public class Attack {
 	
 	
 	public void Attack(int MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK , Player player, Board board) {
-		/*
+		
 		 * Once all the reinforcement armies have been placed by the player, the attacks
 		 * phase begins. In the attack phase, the player may choose one of the countries
 		 * he owns that contains two or more armies, and declare an attack on an
 		 * adjacent country that is owned by another player.
-		 */
+		 
 		// elligibleAttackerCountries = Player.getCountries(Country.getArmiesCount() >
 		// 2)
 
@@ -44,7 +46,7 @@ public class Attack {
 			LOG.info("connected countries/elligible targets: " + neighbours);
 			if (!neighbours.isEmpty()) {
 				Country DeffendingCountry = UI.selectCountry("Attack phase", "Select target country",
-						neighbours /* board.getElligibleTargets(OffendingCountry) */);
+						neighbours  board.getElligibleTargets(OffendingCountry) );
 
 				// The attacker can choose to continue attacking until either all his armies or
 				// all the defending armies have been eliminated.
@@ -75,12 +77,12 @@ public class Attack {
 				if (DeffendingCountry.getArmies() == 0) {
 					board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
 					LOG.info("All the defender's armies are eliminated." + attacker + " captured " + DeffendingCountry);
-					/*
+					
 					 * The attacking player must then place a number of armies in the conquered
 					 * country which is greater or equal than the number of dice that was used in
 					 * the attack that resulted in conquering the country. A player may do as many
 					 * attacks as he wants during his turn.
-					 */
+					 
 					if (player.getArmies()>0) {
 						int minimumArmies = board.getLastDiceRollResult();
 						int armies_to_occupy = UI.askNumber("Attack phase", "How many armies to occupy defeated country?",
@@ -102,3 +104,4 @@ public class Attack {
 	}}
 
 
+*/
