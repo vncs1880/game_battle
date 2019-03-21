@@ -68,7 +68,7 @@ public class GamePlay {
 			game.getBoard().setTurn(i);
 			for (Player player : players) {
 				LOG.info("\r\n" + game.board + "\r\n\r\n<<PLAYER " + player.getName()
-						+ " TURN>>\r\n\r\nReinforcement START");
+						+ " TURN #" + i + ">>\r\n\r\nReinforcement START");
 				player.Reinforcement();
 				LOG.info("\r\nReinforcement END: \r\n\r\n" + player + "\r\n\r\nAttack START");
 				if (game.getBoard().getTurn() > 1) {

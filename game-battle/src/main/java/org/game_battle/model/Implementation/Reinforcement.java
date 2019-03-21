@@ -105,7 +105,7 @@ public class Reinforcement {
 				if (qtyArmies <= armies) {
 					LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
 							+ country.getArmies()/* this.toString() */);
-					country.setArmyQty(qtyArmies);
+					country.setArmyQty(country.getArmies() + qtyArmies);
 					armies -= qtyArmies;
 					
 				//	player.updateArmy(armies);

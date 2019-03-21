@@ -79,7 +79,7 @@ public class Player {
 		// given an amount of armies
 		// corresponding to the continent’s control value.
 		// Player.resetNumberArmies
-		armies = 0;
+		//armies = 0;
 		// For each Continent:
 //			if allContinentBelongsTo(Player) 
 //				Player.updateNumberArmies(NumberArmies(Continent.control_value))  
@@ -93,7 +93,7 @@ public class Player {
 //			Continent.CalculateNumberArmies(Player)
 		List<Continent> continents = board.getContinents();
 		int totalCountriesOwnedInAllContinents = 0;
-		int totalArmies = 0;
+		int totalArmies = this.getArmies();//0;
 		for (Continent continent : continents) {
 			int totalCountriesOwnedInThisContinent = 0;
 			List<Country> countriesByContinent = board.getCountriesByContinent(continent);
@@ -104,13 +104,13 @@ public class Player {
 				}
 			}
 			if (totalCountriesOwnedInThisContinent == countriesByContinent.size()) {
-				totalArmies = continent.getControlValue();
-				LOG.info(/* "\r\n" + */this.name + " occupies all " + continent + ". Gained " + totalArmies
+				totalArmies += continent.getControlValue();
+				LOG.info(/* "\r\n" + */this.name + " occupies all " + continent + ". Gained " + continent.getControlValue()
 						+ " armies for that.");
 				totalCountriesOwnedInAllContinents -= totalCountriesOwnedInThisContinent;
 			}
 		}
-		setArmiesQtyFromCountriesQty(totalCountriesOwnedInAllContinents, totalArmies);
+		setArmiesQtyFromCountriesQty(totalCountriesOwnedInAllContinents, /* this.getArmies() + */totalArmies);
 
 		// Finally, if the player owns three cards of different sorts or the same sorts,
 		// he can exchange them for armies.
@@ -124,7 +124,7 @@ public class Player {
 				"Starting player "+getName()+"'s turn. \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
 
 			int armiesFromCards = board.getArmiesFromCards(player_cards);
-			setArmies(getArmies() + armiesFromCards);
+			setArmies(this.getArmies() + armiesFromCards);
 			if (armiesFromCards>0) {
 				LOG.info("Success exchanging cards, gained "+armiesFromCards+" armies.");
 				List<Card> playercards = new CopyOnWriteArrayList<Card>(player_cards);
@@ -151,7 +151,7 @@ public class Player {
 				if (qtyArmies <= armies) {
 					LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
 							+ country.getArmies()/* this.toString() */);
-					country.setArmyQty(qtyArmies);
+					country.setArmyQty(country.getArmies() + qtyArmies);
 					armies -= qtyArmies;
 				}
 				if (armies == 0) break;
@@ -187,7 +187,7 @@ public class Player {
 		// TODO make sure this is rounded down
 		// setArmies(totalCountriesOwned / 3 + totalArmies);
 		int countries_div = totalCountriesOwned / 3;
-		setArmies(countries_div + totalArmies);
+		this.setArmies(/* this.getArmies() + */ countries_div + totalArmies);
 	}
 
 	/**
@@ -200,9 +200,9 @@ public class Player {
 		//
 		int r = i;
 		if (i < 3) {
-			r = 3;
+			r = 3 + this.getArmies();
 		}
-		LOG.info(r + " armies now. Previous amount was " + this.armies/* +" \r\n"+this.toString() */);
+		LOG.info("Updating "+ r + " armies now. Previous amount was " + this.armies/* +" \r\n"+this.toString() */);
 		this.armies = r;
 		/*
 		 * if (i == -1) { this.armies = 0; }
@@ -283,7 +283,7 @@ public class Player {
 						int minimumArmies = board.getLastDiceRollResult();
 						int armies_to_occupy = UI.askNumber("Attack phase", "How many armies to occupy defeated country?",
 								minimumArmies, armies);
-						DeffendingCountry.setArmyQty(armies_to_occupy);
+						DeffendingCountry.setArmyQty(DeffendingCountry.getArmies() + armies_to_occupy);
 						LOG.info(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
 					} else LOG.info("no armies to occupy defeated country.");
 					
