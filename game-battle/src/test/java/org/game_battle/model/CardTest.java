@@ -26,7 +26,19 @@ public class CardTest {
 		Assert.assertNotNull(InfantryCard);
 	}
 	
+	@Test
+	public void getType_CorrectCardValues() {
+		Assert.assertEquals(Card.Sort.ARTILLERY,ArtilleryCard.getType());
+		Assert.assertEquals(Card.Sort.CAVALRY,CavalryCard.getType());
+		Assert.assertEquals(Card.Sort.INFANTRY,InfantryCard.getType());
+	}
 	
+	@Test
+	public void toString_CorrectFormat() {
+		Assert.assertEquals("ARTILLERY",ArtilleryCard.toString());
+		Assert.assertEquals("CAVALRY",CavalryCard.toString());
+		Assert.assertEquals("INFANTRY",InfantryCard.toString());
+	}
 	
 	
 
