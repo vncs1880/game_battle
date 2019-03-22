@@ -29,7 +29,7 @@ public class Player {
 	 */
 	@Override
 	public String toString() {
-		return name + "(" + "armies:" + armies + ", cards:" + cards + ", countries:" + countries + ")";// super.toString();
+		return name + "(" + "armies:" + this.armies + ", cards:" + cards + ", countries:" + countries + ")";// super.toString();
 	}
 
 	private static final int MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK = 2;
@@ -93,7 +93,7 @@ public class Player {
 //			Continent.CalculateNumberArmies(Player)
 		List<Continent> continents = board.getContinents();
 		int totalCountriesOwnedInAllContinents = 0;
-		int totalArmies = this.getArmies();//0;
+		int totalArmies = 0;//this.getArmies();//0;
 		for (Continent continent : continents) {
 			int totalCountriesOwnedInThisContinent = 0;
 			List<Country> countriesByContinent = board.getCountriesByContinent(continent);
@@ -121,7 +121,7 @@ public class Player {
 		//// if not eligible, Cards.getEligibleArmies = 0
 		List<Card> player_cards = getCards();
 		if (player_cards.size()>4 || UI.isUserOk("Reinforcement phase", /* this.getClass().getEnclosingMethod().getName()+ */
-				"Starting player "+getName()+"'s turn. \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
+				"Starting player "+getName()+"'s turn #"+board.getTurn()+". \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
 
 			int armiesFromCards = board.getArmiesFromCards(player_cards);
 			setArmies(this.getArmies() + armiesFromCards);
@@ -144,17 +144,17 @@ public class Player {
 //			If totalArmiesOwnedByPlayer == 0 then break
 //			N = user_input //if >  totalArmiesOwnedByPlayer, N = totalArmiesOwnedByPlayer
 //			Country.setArmiesNumber(n)
-		if (armies > 0) {
+		if (this.armies > 0) {
 			for (Country country : countries) {
 				int qtyArmies = UI.askNumber("Reinforcement phase",
-						"How many armies do you want to put in country " + country.toString() + " ? ["+(countries.indexOf(country)+1)+"/"+countries.size()+"]", 0, armies);
-				if (qtyArmies <= armies) {
+						"How many armies do you want to put in country " + country.toString() + " ? ["+(countries.indexOf(country)+1)+"/"+countries.size()+"]", 0, this.armies);
+				if (qtyArmies <= this.armies) {
 					LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
 							+ country.getArmies()/* this.toString() */);
 					country.setArmyQty(country.getArmies() + qtyArmies);
-					armies -= qtyArmies;
+					this.armies -= qtyArmies;
 				}
-				if (armies == 0) break;
+				if (this.armies == 0) break;
 			}
 		}
 		// LOG.info(this.toString());
@@ -165,7 +165,7 @@ public class Player {
 	 * @return Return Armies
 	 */
 	public int getArmies() {
-		return armies;
+		return this.armies;
 	}
 
 	/**
@@ -200,10 +200,10 @@ public class Player {
 		//
 		int r = i;
 		if (i < 3) {
-			r = 3 + this.getArmies();
+			r = 3;
 		}
 		LOG.info("Updating "+ r + " armies now. Previous amount was " + this.armies/* +" \r\n"+this.toString() */);
-		this.armies = r;
+		this.armies += r;
 		/*
 		 * if (i == -1) { this.armies = 0; }
 		 */
@@ -215,7 +215,7 @@ public class Player {
 		 * Once all the reinforcement armies have been placed by the player, the attacks
 		 * phase begins. In the attack phase, the player may choose one of the countries
 		 * he owns that contains two or more armies, and declare an attack on an
-		 * adjacent country that is owned by another player.
+		 * ADJACENT country that is owned by another player.
 		 */
 		// elligibleAttackerCountries = Player.getCountries(Country.getArmiesCount() >
 		// 2)
@@ -238,7 +238,7 @@ public class Player {
 					neighbours.remove(country);
 				}
 			}
-			//LOG.info("neighbours after filtering: "+neighbours); //TODO BUILD2 currently showing adjacent, should look for connected 
+			//LOG.info("neighbours after filtering: "+neighbours); //DONE BUILD2 currently showing adjacent, should look for connected. Actually this is correct. 
 			LOG.info("connected countries/elligible targets: " + neighbours);
 			if (!neighbours.isEmpty()) {
 				Country DeffendingCountry = UI.selectCountry("Attack phase", "Select target country",
@@ -251,7 +251,7 @@ public class Player {
 				// (DeffendingCountry.getTotalArmies() > 0) do {
 				// <<Board.Battle()>>
 				// }
-				LOG.info(OffendingCountry +" vs "+DeffendingCountry+" - Checking if enough armies in both attacker/target countries to allow attack...");
+				LOG.info(OffendingCountry +" vs "+DeffendingCountry);
 				String attacker = board.getOwner(OffendingCountry).name;
 				String deffender = board.getOwner(DeffendingCountry).name;
 				while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
@@ -259,7 +259,7 @@ public class Player {
 					if (!UI.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
 						break;
 					}
-					LOG.info("Enough armies in both countries(>0). Starting Battle. " + attacker + " attacking " + deffender
+					LOG.info("Starting Battle: " + attacker + " attacking " + deffender
 							+ ".");
 					// Board.Battle(OffendingCountry, DeffendingCountry)
 					board.doBattle(OffendingCountry, DeffendingCountry);
@@ -279,17 +279,18 @@ public class Player {
 					 * the attack that resulted in conquering the country. A player may do as many
 					 * attacks as he wants during his turn.
 					 */
-					if (armies>0) {
+					if (this.armies>0) {
 						int minimumArmies = board.getLastDiceRollResult();
 						int armies_to_occupy = UI.askNumber("Attack phase", "How many armies to occupy defeated country?",
-								minimumArmies, armies);
+								minimumArmies, this.armies);
 						DeffendingCountry.setArmyQty(DeffendingCountry.getArmies() + armies_to_occupy);
 						LOG.info(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
 					} else LOG.info("no armies to occupy defeated country.");
 					
-				} else {
-					LOG.info(attacker + " lost battle.");
-				}
+				} /*
+					 * else if (OffendingCountry.getArmies() == 0) { LOG.info(attacker +
+					 * " lost battle."); }
+					 */
 			} else {
 				LOG.info("No elligible target countries.");
 			}
