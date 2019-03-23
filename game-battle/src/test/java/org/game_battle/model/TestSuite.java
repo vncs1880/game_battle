@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ MapValidation.class, ReaderWriterTests.class, WorldMapTests.class })
+@SuiteClasses({ CountryContinentTests.class, GamePlayTest.class, PlayerTests.class, ContinentTest.class,
+		TerritoryZoneTest.class })
 
 /**
  * TestSuite Class to test all test cases
