@@ -29,7 +29,6 @@ public class GamePlay {
 	private static List<Player> players;
 	private PhaseView phaseView;
 	private PlayerDominationView playerDominationView;
-	
 
 	/**
 	 * @param board
@@ -38,7 +37,7 @@ public class GamePlay {
 		super();
 
 		board = new Board(); // Start up phase
-		
+
 		phaseView = new PhaseView();
 		playerDominationView = new PlayerDominationView();
 		players = board.getPlayers();
@@ -73,47 +72,51 @@ public class GamePlay {
 		 */
 		GamePlay game = new GamePlay();
 		boolean gameOver = false;
-		int i=0;
-		String action="";
-		
+		int i = 0;
+		String action = "";
+
 		while (!gameOver/* players.size() > 1 */) {
 			i++;
 			game.getBoard().setTurn(i);
 			for (Player player : players) {
-				game.board.setCurrentPlayer(player.getName());	
-				action= "PLAYER :" + player.getName()
-				+ " TURN #" + i +"\n"+ game.board;
+				game.board.setCurrentPlayer(player.getName());
+				action = "PLAYER :" + player.getName() + " TURN #" + i + "\n" + game.board;
 				game.board.setActionTakingPlace(action);
-				
-				//LOG.info("\r\n" + game.board + "\r\n\r\n<<PLAYER " + player.getName()
-					//	+ " TURN #" + i + ">>\r\n\r\n Reinforcement START");
+
+				// LOG.info("\r\n" + game.board + "\r\n\r\n<<PLAYER " + player.getName()
+				// + " TURN #" + i + ">>\r\n\r\n Reinforcement START");
 				// added 23rd as part of pahse 2
 				game.board.setGamePhaseName("Reinforcement");
 				game.board.getBoardInfo();
 				player.Reinforcement();
-				
-				//LOG.info("\r\nReinforcement END: \r\n\r\n" + player );
-				
+
+				action = "\r\nReinforcement END: \r\n\r\n" + player;
+				game.board.setActionTakingPlace(action);
+					game.board.getBoardInfo();
+
 				if (game.getBoard().getTurn() > 1) {
 					// added 23rd as part of pahse 2
 					game.board.setGamePhaseName("Attack");
 					game.board.getBoardInfo();
 					player.Attack();
-					action="\nAttack END: \r\n\r\n" + player;
+					action = "\nAttack END: \r\n\r\n" + player;
 					game.board.setActionTakingPlace(action);
-					//LOG.info("\r\nAttack END: \r\n\r\n" + player + "\r\n\r\nFortification START");
+					// LOG.info("\r\nAttack END: \r\n\r\n" + player + "\r\n\r\nFortification
+					// START");
 				} else {
-					action="First turn, skipping attack phase \r\n\r\n"+ player;
+					action = "First turn, skipping attack phase \r\n\r\n" + player;
 					game.board.setActionTakingPlace(action);
-					//LOG.info("First turn, skipping attack phase \r\n\r\n"+ player + "\r\n\r\nFortification START");
+					// LOG.info("First turn, skipping attack phase \r\n\r\n"+ player +
+					// "\r\n\r\nFortification START");
 				}
 				// added 23rd as part of pahse 2
 				game.board.setGamePhaseName("Fortification");
 				game.board.getBoardInfo();
 				player.Fortification();
-				action="\nFortification END: \r\n\r\n" + player;
+				action = "\nFortification END: \r\n\r\n" + player;
 				game.board.setActionTakingPlace(action);
-				//LOG.info("\r\nFortification END: \r\n\r\n" + player);
+					game.board.getBoardInfo();
+				// LOG.info("\r\nFortification END: \r\n\r\n" + player);
 				/*
 				 * Any player that does not control at least one country is removed from the
 				 * game. The game ends at any time one of the players owns all the countries in
@@ -125,21 +128,25 @@ public class GamePlay {
 				int currentCountriesQty = player.getCountries().size();
 				if (currentCountriesQty == game.board.getCountries().size()) {
 
-					UI.askNumber("it is over :P", "end of game! congratulations " + player.getName() + "!\r\n\r\nPlease rate this game:",1,5);
+					UI.askNumber("it is over :P",
+							"end of game! congratulations " + player.getName() + "!\r\n\r\nPlease rate this game:", 1,
+							5);
 					gameOver = true;
 				}
 				if (currentCountriesQty == 0) {
 					game.board.getPlayers().remove(player);
-					action=player.getName()
+					action = player.getName()
 							+ ", you lost all your countries. Thank you for your participation. Good bye.";
 					game.board.setActionTakingPlace(action);
-					//LOG.info(player.getName()
-							//+ ", you lost all your countries. Thank you for your participation. Good bye.");
+					// LOG.info(player.getName()
+					// + ", you lost all your countries. Thank you for your participation. Good
+					// bye.");
 				} else if (currentCountriesQty > player.getPreviousCountriesQty()) {
 					player.getCards().add(game.board.getRandomCard());
-					action="You conquered at least one new country. Have an extra card for that. Congratulations.";
+					action = "You conquered at least one new country. Have an extra card for that. Congratulations.";
 					game.board.setActionTakingPlace(action);
-					//LOG.info("You conquered at least one new country. Have an extra card for that. Congratulations.");
+					// LOG.info("You conquered at least one new country. Have an extra card for
+					// that. Congratulations.");
 				}
 				player.setPreviousCountriesQty(currentCountriesQty);
 			}
