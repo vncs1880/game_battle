@@ -125,7 +125,7 @@ public class Player{
 				"Starting player "+getName()+"'s turn #"+board.getTurn()+". \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
 
 			int armiesFromCards = board.getArmiesFromCards(player_cards);
-			//setArmies(this.getArmies() + armiesFromCards);
+
 			if (armiesFromCards>0) {
 				setArmies(/* this.getArmies() + */ armiesFromCards);
 				LOG.info("Success exchanging cards, gained "+armiesFromCards+" armies.");
@@ -274,9 +274,13 @@ public class Player{
 				}
 				if (DeffendingCountry.getArmies() == 0) {
 					board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
+
 					//LOG.info("All the defender's armies are eliminated." + attacker + " captured " + DeffendingCountry);
 					LOG.info("All the defender's armies are eliminated. Player " + attacker + " captured " + DeffendingCountry);
 					
+
+					LOG.info("All the defender's armies are eliminated. Player " + attacker + " captured " + DeffendingCountry);
+
 					/*
 					 * The attacking player must then place a number of armies in the conquered
 					 * country which is greater or equal than the number of dice that was used in

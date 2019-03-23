@@ -124,7 +124,7 @@ public class GamePlay {
 				 */
 				int currentCountriesQty = player.getCountries().size();
 				if (currentCountriesQty == game.board.getCountries().size()) {
-					//UI.isUserOk("it is over", "end of game! congratulations " + player.getName());
+
 					UI.askNumber("it is over :P", "end of game! congratulations " + player.getName() + "!\r\n\r\nPlease rate this game:",1,5);
 					gameOver = true;
 				}
