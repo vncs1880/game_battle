@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +20,7 @@ import org.apache.logging.log4j.Logger;
  * @version Alpha
  * @date 5/02/19
  **/
-public class Player {
+public class Player{
 	private static final Logger LOG = LogManager.getLogger(Player.class);
 
 	/*
@@ -124,8 +125,9 @@ public class Player {
 				"Starting player "+getName()+"'s turn #"+board.getTurn()+". \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
 
 			int armiesFromCards = board.getArmiesFromCards(player_cards);
-			setArmies(this.getArmies() + armiesFromCards);
+			//setArmies(this.getArmies() + armiesFromCards);
 			if (armiesFromCards>0) {
+				setArmies(/* this.getArmies() + */ armiesFromCards);
 				LOG.info("Success exchanging cards, gained "+armiesFromCards+" armies.");
 				List<Card> playercards = new CopyOnWriteArrayList<Card>(player_cards);
 				for (Card card : playercards) {
@@ -272,7 +274,9 @@ public class Player {
 				}
 				if (DeffendingCountry.getArmies() == 0) {
 					board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
-					LOG.info("All the defender's armies are eliminated." + attacker + " captured " + DeffendingCountry);
+					//LOG.info("All the defender's armies are eliminated." + attacker + " captured " + DeffendingCountry);
+					LOG.info("All the defender's armies are eliminated. Player " + attacker + " captured " + DeffendingCountry);
+					
 					/*
 					 * The attacking player must then place a number of armies in the conquered
 					 * country which is greater or equal than the number of dice that was used in
@@ -284,6 +288,7 @@ public class Player {
 						int armies_to_occupy = UI.askNumber("Attack phase", "How many armies to occupy defeated country?",
 								minimumArmies, this.armies);
 						DeffendingCountry.setArmyQty(DeffendingCountry.getArmies() + armies_to_occupy);
+						this.armies -= armies_to_occupy;
 						LOG.info(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
 					} else LOG.info("no armies to occupy defeated country.");
 					
