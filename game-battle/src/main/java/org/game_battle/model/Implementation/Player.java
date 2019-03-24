@@ -40,6 +40,7 @@ public class Player{
 	private List<Card> cards;
 	private int previousCountriesQty = 0;
 	private String name;
+	private List<Integer> diceRollsResultSet = new ArrayList<Integer>();
 
 	public String getName() {
 		return name;
@@ -397,6 +398,16 @@ public class Player{
 
 	public void setPreviousCountriesQty(int currentCountriesQty) {
 		previousCountriesQty = currentCountriesQty;
+	}
+
+	public void setDiceRollResultSet(List<Integer> rollDices) {
+		this.diceRollsResultSet = rollDices;
+		
+	}
+
+	public List<Integer> getDiceRollResultSet() {
+		// TODO Auto-generated method stub
+		return diceRollsResultSet;
 	}
 
 }

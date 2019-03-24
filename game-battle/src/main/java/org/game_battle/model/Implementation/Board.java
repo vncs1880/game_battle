@@ -13,7 +13,6 @@ import java.util.function.Predicate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.game_battle.model.Implementation.Card.Sort;
-import java.util.Observable;
 
 /**
  * This class sets up the countries and continents on the game board
@@ -23,6 +22,7 @@ import java.util.Observable;
  * @date 5/02/19
  **/
 public class Board extends Observable {
+	private static final int MAX_DICE_ROLLS_ATTACKER = 3;
 	private static final Logger LOG = LogManager.getLogger(Board.class);
 
 	/*
@@ -76,6 +76,7 @@ public class Board extends Observable {
 	}
 
 	private static final Random RANDOM = new Random();
+	private static final int MAX_DICE_ROLLS_DEFFENDER = 2;
 
 	/**
 	 * 
@@ -267,9 +268,38 @@ public class Board extends Observable {
 		//
 		Player attacker = getOwner(offendingCountry);
 		Player deffender = getOwner(deffendingCountry);
+		
+		attacker.setDiceRollResultSet(rollDices(MAX_DICE_ROLLS_ATTACKER));
+		deffender.setDiceRollResultSet(rollDices(MAX_DICE_ROLLS_DEFFENDER));
+		LOG.info("Battle dice rolls\r\nAttacker dice rolls results: " + attacker.getDiceRollResultSet() +
+				"\r\nDeffender dice rolls results: " + deffender.getDiceRollResultSet());
+		
+		
+		/*
+		 * diceRollsResultSet.sort(new Comparator<Integer>() {
+		 * 
+		 * @Override public int compare(Integer o1, Integer o2) { return 0; } });
+		 */
+		
 		Player winner = (getDiceRollResult(attacker) > getDiceRollResult(deffender)) ? attacker : deffender;
 		LOG.info("\r\nBattle winner: " + winner);
 		return winner;
+	}
+
+	/**
+	 * @param maxDiceRolls 
+	 * @param player 
+	 * @return 
+	 * 
+	 */
+	private List<Integer> rollDices(int maxDiceRolls) {
+		int diceRollsNum = UI.askNumber("How many dice rolls?", "How many dices do you want to roll?", 1, maxDiceRolls);
+		List<Integer> diceRollsResultSet = new ArrayList<Integer>();
+		for (int i = 0; i < diceRollsNum; i++) {
+			diceRollsResultSet.add(getDiceRollResult(null));
+		}
+		Collections.sort(diceRollsResultSet);
+		return diceRollsResultSet;
 	}
 
 	private int getDiceRollResult(Player attacker) {// TODO doesnt really need parameter for now
