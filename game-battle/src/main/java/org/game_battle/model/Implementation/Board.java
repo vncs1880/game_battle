@@ -247,7 +247,7 @@ public class Board extends Observable {
 	 * null; }
 	 */
 
-	public Player doBattle(Country offendingCountry, Country deffendingCountry) {
+	public void doBattle(Country offendingCountry, Country deffendingCountry) {
 		// ALMOST DONE BUILD2 update players armies numbers according to logic below
 		/*
 		 * A battle is then simulated by the attacker rolling at most 3 dice (which
@@ -257,6 +257,7 @@ public class Board extends Observable {
 		 */
 		Player attacker = getOwner(offendingCountry);
 		Player deffender = getOwner(deffendingCountry);
+		LOG.info("ATTACKER: "+attacker+" DEFFENDER: "+deffender);
 		
 		attacker.setDiceRollResultSet(rollDices(attacker, (offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER));
 		deffender.setDiceRollResultSet(rollDices(deffender, (/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER));
@@ -268,17 +269,25 @@ public class Board extends Observable {
 		 * The outcome of the attack is determined by comparing the defenders best dice
 		 * roll with the attackers best dice roll. If the defender rolls greater or
 		 * equal to the attacker, then the attacker loses an army otherwise the defender
-		 * loses an army. If the defender rolled two dice, then his other dice roll is
+		 * loses an army. */
+		
+		Player winner = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-1) > deffenderDiceRollResultSet.get(deffenderDiceRollResultSet.size()-1)) ? attacker : deffender;
+		Player loser = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-1) < deffenderDiceRollResultSet.get(deffenderDiceRollResultSet.size()-1)) ? attacker : deffender;
+		LOG.info(winner.getName()+" has the best dice roll of all. "+ loser.getName() +" loses one army for that.");
+		loser.setArmies(loser.getArmies()-1);
+		LOG.info("1st round WINNER: "+winner+" LOSER: "+loser);
+		/*If the defender rolled two dice, then his other dice roll is
 		 * compared to the attacker's second best dice roll and a second army is lost by
 		 * the attacker or defender in the same way.
 		 */		
-		
-		Player winner = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()) > deffenderDiceRollResultSet.get(deffenderDiceRollResultSet.size())) ? attacker : deffender;
-		Player loser = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()) < deffenderDiceRollResultSet.get(deffenderDiceRollResultSet.size())) ? attacker : deffender;
-		LOG.info(winner.getName()+" has the best dice roll of all. "+ loser.getName() +" loses one army for that.");
-		loser.setArmies(loser.getArmies()-1);
-		
-		return winner;
+		if (deffenderDiceRollResultSet.size()==2) {//assumes the attacker rolled more dices than the deffender
+			winner = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)>deffenderDiceRollResultSet.get(0))?attacker:deffender;
+			loser = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)<deffenderDiceRollResultSet.get(0))?attacker:deffender;
+			LOG.info(winner.getName()+" has the 2nd best dice roll. "+ loser.getName() +" loses one army.");
+			loser.setArmies(loser.getArmies()-1);
+			LOG.info("2nd round WINNER: "+winner+" LOSER: "+loser);
+		}
+
 	}
 
 	/**
