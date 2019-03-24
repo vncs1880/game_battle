@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
  * @version Alpha
  * @date 5/02/19
  **/
-public class Player{
+public class Player extends Observable {
 	private static final Logger LOG = LogManager.getLogger(Player.class);
 
 	/*
@@ -35,6 +35,7 @@ public class Player{
 
 	private static final int MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK = 2;
 	private int armies = 0;
+
 	/**
 	 * @param armies the armies to set
 	 */
@@ -48,6 +49,15 @@ public class Player{
 	private int previousCountriesQty = 0;
 	private String name;
 	private List<Integer> diceRollsResultSet = new ArrayList<Integer>();
+	private Continent ownedContinent;
+
+	public Continent getOwnedContinent() {
+		return ownedContinent;
+	}
+
+	public void setOwnedContinent(Continent ownedContinent) {
+		this.ownedContinent = ownedContinent;
+	}
 
 	public String getName() {
 		return name;
@@ -63,6 +73,7 @@ public class Player{
 	 * 
 	 */
 	public Player(Board board, String name) {
+		ownedContinent = null;
 		this.board = board;
 		this.name = name;
 		cards = new LinkedList<Card>(distributeCards(board));
@@ -88,7 +99,7 @@ public class Player{
 		// given an amount of armies
 		// corresponding to the continent’s control value.
 		// Player.resetNumberArmies
-		//armies = 0;
+		// armies = 0;
 		// For each Continent:
 //			if allContinentBelongsTo(Player) 
 //				Player.updateNumberArmies(NumberArmies(Continent.control_value))  
@@ -102,7 +113,7 @@ public class Player{
 //			Continent.CalculateNumberArmies(Player)
 		List<Continent> continents = board.getContinents();
 		int totalCountriesOwnedInAllContinents = 0;
-		int totalArmies = 0;//this.getArmies();//0;
+		int totalArmies = 0;// this.getArmies();//0;
 		for (Continent continent : continents) {
 			int totalCountriesOwnedInThisContinent = 0;
 			List<Country> countriesByContinent = board.getCountriesByContinent(continent);
@@ -114,8 +125,10 @@ public class Player{
 			}
 			if (totalCountriesOwnedInThisContinent == countriesByContinent.size()) {
 				totalArmies += continent.getControlValue();
-				LOG.info(/* "\r\n" + */this.name + " occupies all " + continent + ". Gained " + continent.getControlValue()
-						+ " armies for that.");
+				ownedContinent = continent;
+
+				LOG.info(/* "\r\n" + */this.name + " occupies all " + continent + ". Gained "
+						+ continent.getControlValue() + " armies for that.");
 				totalCountriesOwnedInAllContinents -= totalCountriesOwnedInThisContinent;
 			}
 		}
@@ -129,22 +142,27 @@ public class Player{
 		// Player.updateNumberArmies(Cards.getEligibleArmies(Player.getCards()))
 		//// if not eligible, Cards.getEligibleArmies = 0
 		List<Card> player_cards = getCards();
-		if (player_cards.size()>4 || UI.isUserOk("Reinforcement phase", /* this.getClass().getEnclosingMethod().getName()+ */
-				"Starting player "+getName()+"'s turn #"+board.getTurn()+". \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
+		if (player_cards.size() > 4 || UI.isUserOk("Reinforcement phase", /*
+																			 * this.getClass().getEnclosingMethod().
+																			 * getName()+
+																			 */
+				"Starting player " + getName() + "'s turn #" + board.getTurn()
+						+ ". \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
 
 			int armiesFromCards = board.getArmiesFromCards(player_cards);
 
-			if (armiesFromCards>0) {
+			if (armiesFromCards > 0) {
 				setArmiesFortification(/* this.getArmies() + */ armiesFromCards);
-				LOG.info("Success exchanging cards, gained "+armiesFromCards+" armies.");
+				LOG.info("Success exchanging cards, gained " + armiesFromCards + " armies.");
+
 				List<Card> playercards = new CopyOnWriteArrayList<Card>(player_cards);
 				for (Card card : playercards) {
 					getCards().remove(card);
-					LOG.info("Removing card "+card+" from player hand.");//TODO fix this removing all cards
+					LOG.info("Removing card " + card + " from player hand.");// TODO fix this removing all cards
 				}
 			}
-			
-			//LOG.info("Getting more armies from cards result: " + this.toString());
+
+			// LOG.info("Getting more armies from cards result: " + this.toString());
 		}
 
 		// Once the total number of reinforcements is determined for the player’s turn,
@@ -156,18 +174,26 @@ public class Player{
 //			Country.setArmiesNumber(n)
 		if (this.armies > 0) {
 			for (Country country : countries) {
-				int qtyArmies = UI.askNumber("Reinforcement phase",
-						"How many armies do you want to put in country " + country.toString() + " ? ["+(countries.indexOf(country)+1)+"/"+countries.size()+"]", 0, this.armies);
+				int qtyArmies = UI.askNumber(
+						"Reinforcement phase", "How many armies do you want to put in country " + country.toString()
+								+ " ? [" + (countries.indexOf(country) + 1) + "/" + countries.size() + "]",
+						0, this.armies);
 				if (qtyArmies <= this.armies) {
 					LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
 							+ country.getArmies()/* this.toString() */);
 					country.setArmyQty(country.getArmies() + qtyArmies);
 					this.armies -= qtyArmies;
 				}
-				if (this.armies == 0) break;
+				if (this.armies == 0)
+					break;
 			}
 		}
 		// LOG.info(this.toString());
+
+		setChanged();
+		// notify all attached Observers of a change
+		notifyObservers(this);
+
 	}
 
 	/**
@@ -212,7 +238,7 @@ public class Player{
 		if (i < 3) {
 			r = 3;
 		}
-		LOG.info("Updating "+ r + " armies now. Previous amount was " + this.armies/* +" \r\n"+this.toString() */);
+		LOG.info("Updating " + r + " armies now. Previous amount was " + this.armies/* +" \r\n"+this.toString() */);
 		this.armies += r;
 		/*
 		 * if (i == -1) { this.armies = 0; }
@@ -241,14 +267,15 @@ public class Player{
 			Country OffendingCountry = UI.selectCountry("Attack phase", "Select attacker country",
 					elligibleAttackerCountries);
 			List<Country> neighbours = new CopyOnWriteArrayList<>(OffendingCountry.getNeighbours());
-			//LOG.info("neighbours before filtering: "+neighbours);
+			// LOG.info("neighbours before filtering: "+neighbours);
 			neighbours.remove(OffendingCountry);
 			for (Country country : neighbours) {
 				if (board.getOwner(OffendingCountry) == board.getOwner(country)) {
 					neighbours.remove(country);
 				}
 			}
-			//LOG.info("neighbours after filtering: "+neighbours); //DONE BUILD2 currently showing adjacent, should look for connected. Actually this is correct. 
+			// LOG.info("neighbours after filtering: "+neighbours); //DONE BUILD2 currently
+			// showing adjacent, should look for connected. Actually this is correct.
 			LOG.info("connected countries/elligible targets: " + neighbours);
 			if (!neighbours.isEmpty()) {
 				Country DeffendingCountry = UI.selectCountry("Attack phase", "Select target country",
@@ -261,16 +288,15 @@ public class Player{
 				// (DeffendingCountry.getTotalArmies() > 0) do {
 				// <<Board.Battle()>>
 				// }
-				LOG.info(OffendingCountry +" vs "+DeffendingCountry);
+				LOG.info(OffendingCountry + " vs " + DeffendingCountry);
 				String attacker = board.getOwner(OffendingCountry).name;
 				String deffender = board.getOwner(DeffendingCountry).name;
 				while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
-					
+
 					if (!UI.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
 						break;
 					}
-					LOG.info("Starting Battle: " + attacker + " attacking " + deffender
-							+ ".");
+					LOG.info("Starting Battle: " + attacker + " attacking " + deffender + ".");
 					// Board.Battle(OffendingCountry, DeffendingCountry)
 					board.doBattle(OffendingCountry, DeffendingCountry);
 					// If all the defender's armies are eliminated the attacker captures the
@@ -283,11 +309,13 @@ public class Player{
 				if (DeffendingCountry.getArmies() == 0) {
 					board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
 
-					//LOG.info("All the defender's armies are eliminated." + attacker + " captured " + DeffendingCountry);
-					LOG.info("All the defender's armies are eliminated. Player " + attacker + " captured " + DeffendingCountry);
-					
+					// LOG.info("All the defender's armies are eliminated." + attacker + " captured
+					// " + DeffendingCountry);
+					LOG.info("All the defender's armies are eliminated. Player " + attacker + " captured "
+							+ DeffendingCountry);
 
-					LOG.info("All the defender's armies are eliminated. Player " + attacker + " captured " + DeffendingCountry);
+					LOG.info("All the defender's armies are eliminated. Player " + attacker + " captured "
+							+ DeffendingCountry);
 
 					/*
 					 * The attacking player must then place a number of armies in the conquered
@@ -295,15 +323,16 @@ public class Player{
 					 * the attack that resulted in conquering the country. A player may do as many
 					 * attacks as he wants during his turn.
 					 */
-					if (this.armies>0) {
+					if (this.armies > 0) {
 						int minimumArmies = board.getLastDiceRollResult();
-						int armies_to_occupy = UI.askNumber("Attack phase", "How many armies to occupy defeated country?",
-								minimumArmies, this.armies);
+						int armies_to_occupy = UI.askNumber("Attack phase",
+								"How many armies to occupy defeated country?", minimumArmies, this.armies);
 						DeffendingCountry.setArmyQty(DeffendingCountry.getArmies() + armies_to_occupy);
 						this.armies -= armies_to_occupy;
 						LOG.info(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
-					} else LOG.info("no armies to occupy defeated country.");
-					
+					} else
+						LOG.info("no armies to occupy defeated country.");
+
 				} /*
 					 * else if (OffendingCountry.getArmies() == 0) { LOG.info(attacker +
 					 * " lost battle."); }
@@ -311,7 +340,7 @@ public class Player{
 			} else {
 				LOG.info("No elligible target countries.");
 			}
-			
+
 		} else {
 			LOG.info("No elligible attacker countries.");
 		}
@@ -350,7 +379,7 @@ public class Player{
 		 * the fortification phase, the player may move any number of armies from one of
 		 * his owed countries to the other, provided that there is a path between these
 		 * two countries that is composed of countries that he owns. Only one such move
-		 * is allowed per fortification phase. 
+		 * is allowed per fortification phase.
 		 * 
 		 */
 
@@ -369,17 +398,18 @@ public class Player{
 					neighbours.remove(neighbour);
 				}
 			}
-			LOG.info("Elligible territory neighbours owned by "+board.getOwner(country).getName()+": "+neighbours);
+			LOG.info(
+					"Elligible territory neighbours owned by " + board.getOwner(country).getName() + ": " + neighbours);
 			if (country.getArmies() > 0 && neighbours.size() > 0) {
 				Country selected = UI.selectCountry("Fortification phase",
 						"Want to move armies from " + country + " to a neighbour?", neighbours);
-				if (selected != null && country.getArmies()>0) {
+				if (selected != null && country.getArmies() > 0) {
 					int n_armies = UI.askNumber("Fortification phase",
 							"How many armies from " + country + " to " + selected, 0, country.getArmies());
 					country.setArmyQty(country.getArmies() - n_armies);
 					LOG.info("Player " + this.name + " moved " + n_armies + " army from " + country.getName() + " to "
 							+ selected.getName() + " previous army qty was " + selected.getArmies());
-					selected.setArmyQty(selected.getArmies() + n_armies);//DONE bug here. not really updating selected
+					selected.setArmyQty(selected.getArmies() + n_armies);// DONE bug here. not really updating selected
 																			// army qty
 					break;
 				}
@@ -409,12 +439,23 @@ public class Player{
 
 	public void setDiceRollResultSet(List<Integer> rollDices) {
 		this.diceRollsResultSet = rollDices;
-		
+
 	}
 
 	public List<Integer> getDiceRollResultSet() {
 		// TODO Auto-generated method stub
 		return diceRollsResultSet;
+	}
+
+	public void getCardInfo() {
+		setChanged();
+		// notify all attached Observers of a change
+		notifyObservers(this);
+
+	}
+
+	public List<Card> getCardExchange() {
+		return this.getCards();
 	}
 
 }

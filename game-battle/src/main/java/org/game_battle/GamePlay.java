@@ -12,6 +12,8 @@ import org.game_battle.model.Implementation.MapInterface;
 import org.game_battle.model.Implementation.Player;
 import org.game_battle.view.PhaseView;
 import org.game_battle.view.PlayerDominationView;
+import org.game_battle.view.CardView;
+
 import org.game_battle.view.UI;
 
 /**
@@ -26,9 +28,11 @@ public class GamePlay {
 	private static final Logger LOG = LogManager.getLogger(GamePlay.class);
 
 	private Board board;
+	private Player player;
 	private static List<Player> players;
 	private PhaseView phaseView;
 	private PlayerDominationView playerDominationView;
+	private CardView cardView;
 
 	/**
 	 * @param board
@@ -43,6 +47,8 @@ public class GamePlay {
 		players = board.getPlayers();
 		board.addObserver(phaseView);
 		board.addObserver(playerDominationView);
+		cardView = new CardView();
+
 	}
 
 	/**
@@ -88,11 +94,14 @@ public class GamePlay {
 				// added 23rd as part of pahse 2
 				game.board.setGamePhaseName("Reinforcement");
 				game.board.getBoardInfo();
+
+				player.addObserver(game.cardView);
+
 				player.Reinforcement();
 
 				action = "\r\nReinforcement END: \r\n\r\n" + player;
 				game.board.setActionTakingPlace(action);
-					game.board.getBoardInfo();
+				game.board.getBoardInfo();
 
 				if (game.getBoard().getTurn() > 1) {
 					// added 23rd as part of pahse 2
@@ -115,7 +124,7 @@ public class GamePlay {
 				player.Fortification();
 				action = "\nFortification END: \r\n\r\n" + player;
 				game.board.setActionTakingPlace(action);
-					game.board.getBoardInfo();
+				game.board.getBoardInfo();
 				// LOG.info("\r\nFortification END: \r\n\r\n" + player);
 				/*
 				 * Any player that does not control at least one country is removed from the

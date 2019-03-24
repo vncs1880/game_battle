@@ -50,7 +50,6 @@ public class Board extends Observable {
 	private String currentPlayer;
 	private float totalNoOfCountries;
 
-
 	public String getActionTakingPlace() {
 		return actionTakingPlace;
 	}
@@ -89,7 +88,7 @@ public class Board extends Observable {
 		// L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
 		//// generate a list of lists, each w random countries
 		mapinterface = new MapInterface();
-		totalNoOfCountries=MapInterface.getCountries().size();
+		totalNoOfCountries = MapInterface.getCountries().size();
 		LOG.info("\r\n\r\n<<UI prompt in the background. Please use ALT-TAB>>");// TODO make the UI come to foreground
 		int totalPlayers = UI.askNumber("Initializing board", "How many players?", 2, 6);
 		LinkedList<Player> players = new LinkedList<Player>();
@@ -100,18 +99,18 @@ public class Board extends Observable {
 			players.add(new Player(this, name));
 		}
 		setPlayers(players);
-	//  added 23rd as part of pahse 2
-		actionTakingPlace="Players playing in the game : "+players;
+		// added 23rd as part of pahse 2
+		actionTakingPlace = "Players playing in the game : " + players;
 		/*
 		 * setPlayers(new LinkedList<Player>(Arrays.asList(new Player(this, "x"), new
 		 * Player(this, "y"), new Player(this, "z"), new Player(this, "a"))));
 		 */
 		// List<List<Country>> L = getRandomCountriesLists(getPlayers().size());
 		distributeCountries(getPlayers().size());
-		//  added 23rd as part of pahse 2
+		// added 23rd as part of pahse 2
 
-		actionTakingPlace="After Random Distribution of the countries to the players: "+players;
-		
+		actionTakingPlace = "After Random Distribution of the countries to the players: " + players;
+
 		// For player in PlayersTotalNumber:
 //		New Player().AssignCountries( L[player] )
 //		//set countries_list in Player OR set owner in country		
@@ -133,11 +132,9 @@ public class Board extends Observable {
 		// Map is loaded as a connected graph, which is rendered effectively to the user
 		// to enable efficient play. 3
 		// User chooses the number of players,
-		//getBoardInfo();
-		
+		// getBoardInfo();
+
 	}
-
-
 
 	public void distributeCountries(int playersCount) {
 		List<Country> countriesToDistribute = MapInterface.getCountries();
@@ -348,7 +345,7 @@ public class Board extends Observable {
 	}
 
 	public List<Player> getPlayers() {
-	
+
 		return players;
 	}
 
@@ -382,50 +379,57 @@ public class Board extends Observable {
 	public int getTurn() {
 		return this.turn;
 	}
-	
-	
-	 public void getBoardInfo() {
-		 setChanged();
-	 	// notify all attached Observers of a change
-	 	notifyObservers(this);
-	 	
-	 }
-	 
+
+	public void getBoardInfo() {
+		setChanged();
+		// notify all attached Observers of a change
+		notifyObservers(this);
+
+	}
+
 	public HashMap<String, Double> getPercentageByPlayers() {
-		HashMap<String,Double> playersDomination=new HashMap<String, Double>();
-		for(Player x: players) {
-			float noOfCountriesOwned=x.getCountries().size();
-			
-			double result=(float)(noOfCountriesOwned/totalNoOfCountries)*100;
+		HashMap<String, Double> playersDomination = new HashMap<String, Double>();
+		for (Player x : players) {
+			float noOfCountriesOwned = x.getCountries().size();
+
+			double result = (float) (noOfCountriesOwned / totalNoOfCountries) * 100;
 			playersDomination.put(x.getName(), result);
-			
+
 		}
 		return playersDomination;
-		
-		
+
 	}
-	
-	public void getContinentsByPlayers() {
-		
+
+	public HashMap<String, String> getContinentsByPlayers() {
+		HashMap<String, String> continentOwner = new HashMap<String, String>();
+		for (Player x : players) {
+			if (x.getOwnedContinent() != null)
+				continentOwner.put(x.getName(), x.getOwnedContinent().toString());
+			else
+				continentOwner.put(x.getName(), "NULL");
+
+		}
+
+		return continentOwner;
+
 	}
-	
-	public HashMap<String,Integer> getTotalArmiesOwnedByAllPlayers() {
-		HashMap<String,Integer> armiesList=new HashMap<String, Integer>();
-		
-		for(Player x: players) {
+
+	public HashMap<String, Integer> getTotalArmiesOwnedByAllPlayers() {
+		HashMap<String, Integer> armiesList = new HashMap<String, Integer>();
+
+		for (Player x : players) {
 			int countryArmy = 0;
-			for(Country el : x.getCountries())
-			{
-				countryArmy += el.getArmies();		
+			for (Country el : x.getCountries()) {
+				countryArmy += el.getArmies();
 			}
-			
+
 			Integer totalArmies = x.getArmies() + countryArmy;
-			
-			armiesList.put(x.getName(),totalArmies );
-			
+
+			armiesList.put(x.getName(), totalArmies);
+
 		}
 		return armiesList;
-		
+
 	}
 
 }
