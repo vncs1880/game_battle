@@ -267,6 +267,7 @@ public class Board extends Observable {
 		Integer deffender2ndBestDice = 1;//deffenderDices.get(deffenderDices.size()-2);
 		Integer attacker2ndBestDice = 2;//attackerDices.get(attackerDices.size()-2);
 		while ((attackerBestDice==deffenderBestDice)||(attacker2ndBestDice==deffender2ndBestDice)) {//workaround to avoid ties
+			LOG.info("Dice tie detected. Rolling dices again.");
 			attackerDices = rollDices(attacker, (offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
 			deffenderDices = rollDices(deffender, (/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
 			
@@ -320,8 +321,8 @@ public class Board extends Observable {
 	 * 
 	 */
 	private List<Integer> rollDices(Player player, int maxDiceRolls) {
-		LOG.info(player.getName() + "'s max dice rolls is " + maxDiceRolls + " (not more than attacking country armies #)");
-		int diceRollsNum = UI.askNumber("How many dice rolls?", player.getName()+", how many dices do you want to roll?", 1, maxDiceRolls);
+		LOG.info("Rolling dices. "+player.getName() + "'s max dice rolls is " + maxDiceRolls + " (not more than attacking country armies #)");
+		int diceRollsNum = UI.askNumber("Rolling dices", player.getName()+", how many dices do you want to roll?", 1, maxDiceRolls);
 		List<Integer> diceRollsResultSet = new ArrayList<Integer>();
 		for (int i = 0; i < diceRollsNum; i++) {
 			diceRollsResultSet.add(getDiceRollResult(null));
