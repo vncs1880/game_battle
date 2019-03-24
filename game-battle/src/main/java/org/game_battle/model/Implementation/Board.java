@@ -259,8 +259,8 @@ public class Board extends Observable {
 		Player deffender = getOwner(deffendingCountry);
 		LOG.info("\r\nATTACKER: "+attacker+"\r\nDEFFENDER: "+deffender);
 		
-		List<Integer> attackerDices = rollDices(attacker, (offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
-		List<Integer> deffenderDices = rollDices(deffender, (/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
+		List<Integer> attackerDices = rollDices(attacker, offendingCountry,(offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
+		List<Integer> deffenderDices = rollDices(deffender, deffendingCountry,(/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
 		
 		Integer deffenderBestDice = deffenderDices.get(deffenderDices.size()-1);
 		Integer attackerBestDice = attackerDices.get(attackerDices.size()-1);
@@ -268,12 +268,12 @@ public class Board extends Observable {
 		Integer attacker2ndBestDice = 2;//attackerDices.get(attackerDices.size()-2);
 		while ((attackerBestDice==deffenderBestDice)||(attacker2ndBestDice==deffender2ndBestDice)) {//workaround to avoid ties
 			LOG.info("Dice tie detected. Rolling dices again.");
-			attackerDices = rollDices(attacker, (offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
-			deffenderDices = rollDices(deffender, (/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
+			attackerDices = rollDices(attacker, offendingCountry,(offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
+			deffenderDices = rollDices(deffender, deffendingCountry,(/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
 			
 			deffenderBestDice = deffenderDices.get(deffenderDices.size()-1);
 			attackerBestDice = attackerDices.get(attackerDices.size()-1);
-			if (deffenderDices.size()==2) {
+			if (deffenderDices.size()==2) {//TODO check if this is working
 				deffender2ndBestDice = deffenderDices.get(deffenderDices.size()-2);
 				attacker2ndBestDice = attackerDices.get(attackerDices.size()-2);				
 			}
@@ -283,8 +283,8 @@ public class Board extends Observable {
 		deffender.setDiceRollResultSet(deffenderDices);
 		List<Integer> attackerDiceRollResultSet = attacker.getDiceRollResultSet();
 		List<Integer> deffenderDiceRollResultSet = deffender.getDiceRollResultSet();
-		LOG.info("Battle dice rolls\r\nAttacker dice rolls results: " + attackerDiceRollResultSet +
-				"\r\nDeffender dice rolls results: " + deffenderDiceRollResultSet);
+		LOG.info("Battle dice rolls\r\nAttacker ("+attacker.getName()+","+offendingCountry.getName()+") dice rolls results: " + attackerDiceRollResultSet +
+				"\r\nDeffender  ("+deffender.getName()+","+deffendingCountry.getName()+") dice rolls results: " + deffenderDiceRollResultSet);
 		/*
 		 * The outcome of the attack is determined by comparing the defenders best dice
 		 * roll with the attackers best dice roll. If the defender rolls greater or
@@ -294,20 +294,23 @@ public class Board extends Observable {
 		Integer attackerLastDice = attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-1);
 		Integer deffenderLastDice = deffenderDiceRollResultSet.get(deffenderDiceRollResultSet.size()-1);
 
-		Player winner = (attackerLastDice > deffenderLastDice) ? attacker : deffender;
-		Player loser = (attackerLastDice < deffenderLastDice) ? attacker : deffender;
-		LOG.info(winner.getName()+" has the best dice roll of all. "+ loser.getName() +" loses one army for that.");
-		loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
+		Country winner = (attackerLastDice > deffenderLastDice) ? offendingCountry : deffendingCountry;
+		Country loser = (attackerLastDice < deffenderLastDice) ? offendingCountry : deffendingCountry;
+		LOG.info(winner.getName()+" ("+getOwner(winner).getName()+") has the best dice roll of all. "+ loser.getName() +" loses one army for that.");
+		//loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
+		loser.setArmyQty(loser.getArmies()>0?loser.getArmies()-1:0); //update country army instead of player army
+		
 		LOG.info("1st round WINNER: "+winner+" LOSER: "+loser);
 		/*If the defender rolled two dice, then his other dice roll is
 		 * compared to the attacker's second best dice roll and a second army is lost by
 		 * the attacker or defender in the same way.
 		 */		
 		if (deffenderDiceRollResultSet.size()==2) {//assumes the attacker rolled more dices than the deffender
-			winner = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)>deffenderDiceRollResultSet.get(0))?attacker:deffender;
-			loser = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)<deffenderDiceRollResultSet.get(0))?attacker:deffender;
-			LOG.info(winner.getName()+" has the 2nd best dice roll. "+ loser.getName() +" loses one army.");
-			loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
+			winner = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)>deffenderDiceRollResultSet.get(0))?offendingCountry:deffendingCountry;
+			loser = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)<deffenderDiceRollResultSet.get(0))?offendingCountry:deffendingCountry;
+			LOG.info(winner.getName()+" ("+getOwner(winner).getName()+") has the 2nd best dice roll. "+ loser.getName() +" loses one army.");
+			//loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
+			loser.setArmyQty(loser.getArmies()>0?loser.getArmies()-1:0); //update country army instead of player army
 			LOG.info("2nd round WINNER: "+winner+" LOSER: "+loser);
 		}
 
@@ -317,11 +320,12 @@ public class Board extends Observable {
 	 * @param player 
 	 * @param maxDiceRolls 
 	 * @param player 
+	 * @param country 
 	 * @return 
 	 * 
 	 */
-	private List<Integer> rollDices(Player player, int maxDiceRolls) {
-		LOG.info("Rolling dices. "+player.getName() + "'s max dice rolls is " + maxDiceRolls + " (not more than attacking country armies #)");
+	private List<Integer> rollDices(Player player, Country country, int maxDiceRolls) {
+		LOG.info("Rolling dices for "+player.getName() +" ("+country.getName()+")");
 		int diceRollsNum = UI.askNumber("Rolling dices", player.getName()+", how many dices do you want to roll?", 1, maxDiceRolls);
 		List<Integer> diceRollsResultSet = new ArrayList<Integer>();
 		for (int i = 0; i < diceRollsNum; i++) {
