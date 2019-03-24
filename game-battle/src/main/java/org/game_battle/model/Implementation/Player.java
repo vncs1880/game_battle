@@ -291,7 +291,12 @@ public class Player extends Observable {
 				LOG.info(OffendingCountry + " vs " + DeffendingCountry);
 				String attacker = board.getOwner(OffendingCountry).name;
 				String deffender = board.getOwner(DeffendingCountry).name;
-				while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
+
+				while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {// TODO is it the
+																										// player armies
+																										// or the
+																										// country
+																										// armies
 
 					if (!UI.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
 						break;
@@ -311,9 +316,6 @@ public class Player extends Observable {
 
 					// LOG.info("All the defender's armies are eliminated." + attacker + " captured
 					// " + DeffendingCountry);
-					LOG.info("All the defender's armies are eliminated. Player " + attacker + " captured "
-							+ DeffendingCountry);
-
 					LOG.info("All the defender's armies are eliminated. Player " + attacker + " captured "
 							+ DeffendingCountry);
 
