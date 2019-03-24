@@ -35,6 +35,13 @@ public class Player{
 
 	private static final int MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK = 2;
 	private int armies = 0;
+	/**
+	 * @param armies the armies to set
+	 */
+	public void setArmies(int armies) {
+		this.armies = armies;
+	}
+
 	private Board board;
 	private List<Country> countries = new ArrayList<Country>();
 	private List<Card> cards;
@@ -128,7 +135,7 @@ public class Player{
 			int armiesFromCards = board.getArmiesFromCards(player_cards);
 
 			if (armiesFromCards>0) {
-				setArmies(/* this.getArmies() + */ armiesFromCards);
+				setArmiesFortification(/* this.getArmies() + */ armiesFromCards);
 				LOG.info("Success exchanging cards, gained "+armiesFromCards+" armies.");
 				List<Card> playercards = new CopyOnWriteArrayList<Card>(player_cards);
 				for (Card card : playercards) {
@@ -190,13 +197,13 @@ public class Player{
 		// TODO make sure this is rounded down
 		// setArmies(totalCountriesOwned / 3 + totalArmies);
 		int countries_div = totalCountriesOwned / 3;
-		this.setArmies(/* this.getArmies() + */ countries_div + totalArmies);
+		this.setArmiesFortification(/* this.getArmies() + */ countries_div + totalArmies);
 	}
 
 	/**
 	 * @param i number of armies
 	 */
-	private void setArmies(int i) {
+	private void setArmiesFortification(int i) {
 		// In any case, the minimal number of reinforcement armies is 3.
 		// If totalArmiesOwnedByPlayer < 3:
 //			totalArmiesOwnedByPlayer = 3
