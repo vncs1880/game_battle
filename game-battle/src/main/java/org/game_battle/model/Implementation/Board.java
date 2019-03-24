@@ -257,10 +257,29 @@ public class Board extends Observable {
 		 */
 		Player attacker = getOwner(offendingCountry);
 		Player deffender = getOwner(deffendingCountry);
-		LOG.info("ATTACKER: "+attacker+" DEFFENDER: "+deffender);
+		LOG.info("\r\nATTACKER: "+attacker+"\r\nDEFFENDER: "+deffender);
 		
-		attacker.setDiceRollResultSet(rollDices(attacker, (offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER));
-		deffender.setDiceRollResultSet(rollDices(deffender, (/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER));
+		List<Integer> attackerDices = rollDices(attacker, (offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
+		List<Integer> deffenderDices = rollDices(deffender, (/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
+		
+		Integer deffenderBestDice = deffenderDices.get(deffenderDices.size()-1);
+		Integer attackerBestDice = attackerDices.get(attackerDices.size()-1);
+		Integer deffender2ndBestDice = 1;//deffenderDices.get(deffenderDices.size()-2);
+		Integer attacker2ndBestDice = 2;//attackerDices.get(attackerDices.size()-2);
+		while ((attackerBestDice==deffenderBestDice)||(attacker2ndBestDice==deffender2ndBestDice)) {//workaround to avoid ties
+			attackerDices = rollDices(attacker, (offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
+			deffenderDices = rollDices(deffender, (/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
+			
+			deffenderBestDice = deffenderDices.get(deffenderDices.size()-1);
+			attackerBestDice = attackerDices.get(attackerDices.size()-1);
+			if (deffenderDices.size()==2) {
+				deffender2ndBestDice = deffenderDices.get(deffenderDices.size()-2);
+				attacker2ndBestDice = attackerDices.get(attackerDices.size()-2);				
+			}
+		}
+		
+		attacker.setDiceRollResultSet(attackerDices);
+		deffender.setDiceRollResultSet(deffenderDices);
 		List<Integer> attackerDiceRollResultSet = attacker.getDiceRollResultSet();
 		List<Integer> deffenderDiceRollResultSet = deffender.getDiceRollResultSet();
 		LOG.info("Battle dice rolls\r\nAttacker dice rolls results: " + attackerDiceRollResultSet +
@@ -270,11 +289,14 @@ public class Board extends Observable {
 		 * roll with the attackers best dice roll. If the defender rolls greater or
 		 * equal to the attacker, then the attacker loses an army otherwise the defender
 		 * loses an army. */
-		
-		Player winner = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-1) > deffenderDiceRollResultSet.get(deffenderDiceRollResultSet.size()-1)) ? attacker : deffender;
-		Player loser = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-1) < deffenderDiceRollResultSet.get(deffenderDiceRollResultSet.size()-1)) ? attacker : deffender;
+				
+		Integer attackerLastDice = attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-1);
+		Integer deffenderLastDice = deffenderDiceRollResultSet.get(deffenderDiceRollResultSet.size()-1);
+
+		Player winner = (attackerLastDice > deffenderLastDice) ? attacker : deffender;
+		Player loser = (attackerLastDice < deffenderLastDice) ? attacker : deffender;
 		LOG.info(winner.getName()+" has the best dice roll of all. "+ loser.getName() +" loses one army for that.");
-		loser.setArmies(loser.getArmies()-1);
+		loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
 		LOG.info("1st round WINNER: "+winner+" LOSER: "+loser);
 		/*If the defender rolled two dice, then his other dice roll is
 		 * compared to the attacker's second best dice roll and a second army is lost by
@@ -284,7 +306,7 @@ public class Board extends Observable {
 			winner = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)>deffenderDiceRollResultSet.get(0))?attacker:deffender;
 			loser = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)<deffenderDiceRollResultSet.get(0))?attacker:deffender;
 			LOG.info(winner.getName()+" has the 2nd best dice roll. "+ loser.getName() +" loses one army.");
-			loser.setArmies(loser.getArmies()-1);
+			loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
 			LOG.info("2nd round WINNER: "+winner+" LOSER: "+loser);
 		}
 
