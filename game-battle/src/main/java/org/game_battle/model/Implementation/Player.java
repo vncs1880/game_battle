@@ -50,6 +50,7 @@ public class Player extends Observable {
 	private String name;
 	private List<Integer> diceRollsResultSet = new ArrayList<Integer>();
 	private Continent ownedContinent;
+	//private boolean isAllOutMode = false;
 
 	public Continent getOwnedContinent() {
 		return ownedContinent;
@@ -276,14 +277,12 @@ public class Player extends Observable {
 			}
 			// LOG.info("neighbours after filtering: "+neighbours); //DONE BUILD2 currently
 			// showing adjacent, should look for connected. Actually this is correct.
-			LOG.info("connected countries/elligible targets: " + neighbours);
+			LOG.info("neighbour countries/elligible targets: " + neighbours);
 			if (!neighbours.isEmpty()) {
 				Country DeffendingCountry = UI.selectCountry("Attack phase", "Select target country",
 						neighbours /* board.getElligibleTargets(OffendingCountry) */);
-
 				// The attacker can choose to continue attacking until either all his armies or
 				// all the defending armies have been eliminated.
-				//
 				// While (OffendingCountry.getTotalArmies() > 0) AND
 				// (DeffendingCountry.getTotalArmies() > 0) do {
 				// <<Board.Battle()>>
@@ -291,36 +290,36 @@ public class Player extends Observable {
 				LOG.info(OffendingCountry + " vs " + DeffendingCountry);
 				String attacker = board.getOwner(OffendingCountry).name;
 				String deffender = board.getOwner(DeffendingCountry).name;
-
-				while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {// TODO is it the
-																										// player armies
-																										// or the
-																										// country
-																										// armies
-
-					if (!UI.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
-						break;
-					}
+				
+				boolean allOutModeOk = UI.isUserOk("All out mode?", " Attack proceeds with maximum number of dice and end only \r\n"
+						+ "when either the attacker conquers the attacked, or the \r\n"
+						+ "attacker cannot attack anymore.");
+				this.board.setIsAllOutMode(allOutModeOk);
+				if (allOutModeOk) {
+					LOG.info("ALL OUT MODE ENABLED");
+				}
+				
+				// TODO is it the player armies or the country armies
+				while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
+					if (!this.board.getIsAllOutMode()) {
+						if (!UI.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
+							break;
+						}						
+					} else LOG.info("All Out Mode: skipping user input.");
 					LOG.info("Starting Battle: " + attacker + " attacking " + deffender + ".");
 					// Board.Battle(OffendingCountry, DeffendingCountry)
 					board.doBattle(OffendingCountry, DeffendingCountry);
-					// If all the defender's armies are eliminated the attacker captures the
-					// territory.
-					//
+					// If all the defender's armies are eliminated the attacker captures the territory.
 					// Board.updateTerritories(DeffendingCountry)
 					//// just change ownership if DeffendingCountry.getTotalArmies() == 0
-					//
 				}
 				if (DeffendingCountry.getArmies() == 0) {
 					board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
-
 					// LOG.info("All the defender's armies are eliminated." + attacker + " captured
 					// " + DeffendingCountry);
 					LOG.info("All the defender's armies are eliminated. Player " + attacker + " captured "
 							+ DeffendingCountry);
-
-					/*
-					 * The attacking player must then place a number of armies in the conquered
+					/* The attacking player must then place a number of armies in the conquered
 					 * country which is greater or equal than the number of dice that was used in
 					 * the attack that resulted in conquering the country. A player may do as many
 					 * attacks as he wants during his turn.
@@ -335,8 +334,7 @@ public class Player extends Observable {
 					} else
 						LOG.info("no armies to occupy defeated country.");
 
-				} /*
-					 * else if (OffendingCountry.getArmies() == 0) { LOG.info(attacker +
+				} /* * else if (OffendingCountry.getArmies() == 0) { LOG.info(attacker +
 					 * " lost battle."); }
 					 */
 			} else {

@@ -49,6 +49,7 @@ public class Board extends Observable {
 	private String gamePhaseName;
 	private String currentPlayer;
 	private float totalNoOfCountries;
+	private boolean isAllOutMode = false;
 
 	public String getActionTakingPlace() {
 		return actionTakingPlace;
@@ -310,6 +311,9 @@ public class Board extends Observable {
 			loser.setArmyQty(loser.getArmies()>0?loser.getArmies()-1:0); //update country army instead of player army
 			LOG.info("2nd round WINNER: "+winner+" LOSER: "+loser);
 		}
+		
+		setIsAllOutMode(false);
+		LOG.info("ALL OUT MODE DISABLED");
 
 	}
 
@@ -323,7 +327,13 @@ public class Board extends Observable {
 	 */
 	private List<Integer> rollDices(Player player, Country country, int maxDiceRolls) {
 		LOG.info("Rolling dices for "+player.getName() +" ("+country.getName()+")");
-		int diceRollsNum = UI.askNumber("Rolling dices", player.getName()+", how many dices do you want to roll?", 1, maxDiceRolls);
+		
+		int diceRollsNum = maxDiceRolls;
+		
+		if (!this.getIsAllOutMode()) {
+			diceRollsNum = UI.askNumber("Rolling dices", player.getName()+", how many dices do you want to roll?", 1, maxDiceRolls);
+		} else LOG.info("All Out Mode: maximum dice rolls selected: "+maxDiceRolls);
+		
 		List<Integer> diceRollsResultSet = new ArrayList<Integer>();
 		for (int i = 0; i < diceRollsNum; i++) {
 			diceRollsResultSet.add(getDiceRollResult(null));
@@ -457,6 +467,14 @@ public class Board extends Observable {
 		}
 		return armiesList;
 
+	}
+
+	public boolean getIsAllOutMode() {
+		return this.isAllOutMode ;
+	}
+
+	public void setIsAllOutMode(boolean userOk) {
+		isAllOutMode = userOk;
 	}
 
 }
