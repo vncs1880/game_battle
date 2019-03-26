@@ -303,13 +303,18 @@ public class Board extends Observable {
 		 * compared to the attacker's second best dice roll and a second army is lost by
 		 * the attacker or defender in the same way.
 		 */		
-		if (deffenderDiceRollResultSet.size()==2) {//assumes the attacker rolled more dices than the deffender
-			winner = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)>deffenderDiceRollResultSet.get(0))?offendingCountry:deffendingCountry;
-			loser = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)<deffenderDiceRollResultSet.get(0))?offendingCountry:deffendingCountry;
-			LOG.info(winner.getName()+" ("+getOwner(winner).getName()+") has the 2nd best dice roll. "+ loser.getName() +" loses one army.");
-			//loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
-			loser.setArmyQty(loser.getArmies()>0?loser.getArmies()-1:0); //update country army instead of player army
-			LOG.info("2nd round WINNER: "+winner+" LOSER: "+loser);
+		if (deffenderDiceRollResultSet.size()==2) {//TODO fix this:assumes the attacker rolled more dices than the deffender
+			try {
+				winner = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)>deffenderDiceRollResultSet.get(0))?offendingCountry:deffendingCountry;
+				loser = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)<deffenderDiceRollResultSet.get(0))?offendingCountry:deffendingCountry;
+				LOG.info(winner.getName()+" ("+getOwner(winner).getName()+") has the 2nd best dice roll. "+ loser.getName() +" loses one army.");
+				//loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
+				loser.setArmyQty(loser.getArmies()>0?loser.getArmies()-1:0); //update country army instead of player army
+				LOG.info("2nd round WINNER: "+winner+" LOSER: "+loser);
+			} catch (Exception e) {
+				// TODO e.printStackTrace();
+				LOG.error("deffender picked more dice rolls than attacker.. context not found on project description");
+			}
 		}
 		
 		setIsAllOutMode(false);
