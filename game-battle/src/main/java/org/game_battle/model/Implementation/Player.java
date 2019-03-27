@@ -150,21 +150,23 @@ public class Player extends Observable {
 				"Starting player " + getName() + "'s turn #" + board.getTurn()
 						+ ". \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
 
-			int armiesFromCards = board.getArmiesFromCards(player_cards);
+			if ((!(player_cards.size()<3))&&(UI.isUserOk("Exchange cards view", "Enough cards detected. \r\nInitiate Card Exchange? \r\nYou may still opt out now.")||player_cards.size()>4)) {
+				LOG.info("Card Exchange started.");
+				int armiesFromCards = board.getArmiesFromCards(this);
 
-			if (armiesFromCards > 0) {
-				setArmiesFortification(/* this.getArmies() + */ armiesFromCards);
-				LOG.info("Success exchanging cards, gained " + armiesFromCards + " armies.");
+				if (armiesFromCards > 0) {
+					setArmiesFortification(/* this.getArmies() + */ armiesFromCards);
+					LOG.info("Success exchanging cards, gained " + armiesFromCards + " armies.");
 
-				List<Card> playercards = new CopyOnWriteArrayList<Card>(player_cards);
-				for (Card card : playercards) {
-					getCards().remove(card);
-					LOG.info("Removing card " + card + " from player hand.");// TODO fix this removing all cards
-				}
-			}
-
+					List<Card> playercards = new CopyOnWriteArrayList<Card>(player_cards);
+					for (Card card : playercards) {
+						getCards().remove(card);
+						LOG.info("Removing card " + card + " from player hand.");// TODO fix this removing all cards
+					}
+				}	
+			} else LOG.info("User opted out of Card Exchange");
 			// LOG.info("Getting more armies from cards result: " + this.toString());
-		}
+		} else LOG.info("User opted out of Card Exchange");
 
 		// Once the total number of reinforcements is determined for the player’s turn,
 		// the player may place the armies on any country he owns, divided as he wants.

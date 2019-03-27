@@ -160,7 +160,13 @@ public class Board extends Observable {
 		}
 	}
 
-	public int getArmiesFromCards(List<Card> cards) {
+	public int getArmiesFromCards(Player p) {
+		List<Card> player_cards = p.getCards();
+		Collection selected = new ArrayList();
+		while (selected.size()!=3 ) {
+			selected = UI.getObjs("Select 3 cards to exchange (use CTRL for multi select)", player_cards.toArray());			
+		}
+
 		HashMap<Card.Sort, Integer> cardsCount = new HashMap<Card.Sort, Integer>() {
 			{
 				put(Card.Sort.INFANTRY, 0);
@@ -168,6 +174,8 @@ public class Board extends Observable {
 				put(Card.Sort.ARTILLERY, 0);
 			}
 		};
+		
+		List<Card> cards = (List<Card>)selected; 
 
 		for (Card card : cards) {
 			Sort cardtype = card.getType();

@@ -3,12 +3,14 @@
  */
 package org.game_battle.view;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import org.game_battle.model.Implementation.Country;
@@ -33,6 +35,8 @@ public class UI {
 		MapInterface m = new MapInterface();
 		List<Country> countries = m.getCountries();
 
+		System.out.println(getObjs("getobjs", countries.toArray()));
+		
 		Country picked = selectCountry("Select one (MANDATORY)", "select country", countries);
 
 		System.out.println(picked);
@@ -46,6 +50,11 @@ public class UI {
 
 	}
 	
+	public static Collection getObjs(String prompt, Object[] objs) {
+		JList list = new JList(objs);
+		JOptionPane.showMessageDialog(null, list, prompt, JOptionPane.PLAIN_MESSAGE);
+		return list.getSelectedValuesList();
+	}
 	
 
 	public static String askText(String msg, String title) {
