@@ -76,7 +76,7 @@ public class Reinforcement {
 				"Starting player " + player.getName()
 						+ "'s turn. \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
 
-			int armiesFromCards = board.getArmiesFromCards(player_cards);
+			int armiesFromCards = board.getArmiesFromCards(player);
 //			armies = player.setArmies(armies + armiesFromCards);
 			if (armiesFromCards > 0) {
 				LOG.info("Success exchanging cards, gained " + armiesFromCards + " armies.");

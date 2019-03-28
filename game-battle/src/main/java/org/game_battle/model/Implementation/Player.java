@@ -50,7 +50,7 @@ public class Player extends Observable {
 	private String name;
 	private List<Integer> diceRollsResultSet = new ArrayList<Integer>();
 	private Continent ownedContinent;
-	//private boolean isAllOutMode = false;
+	// private boolean isAllOutMode = false;
 
 	public Continent getOwnedContinent() {
 		return ownedContinent;
@@ -142,60 +142,70 @@ public class Player extends Observable {
 		// If YES:
 		// Player.updateNumberArmies(Cards.getEligibleArmies(Player.getCards()))
 		//// if not eligible, Cards.getEligibleArmies = 0
+		LOG.info("Starting player " + getName() + "'s turn #" + board.getTurn());
+
 		List<Card> player_cards = getCards();
-		if (player_cards.size() > 4 || UI.isUserOk("Reinforcement phase", /*
-																			 * this.getClass().getEnclosingMethod().
-																			 * getName()+
-																			 */
-				"Starting player " + getName() + "'s turn #" + board.getTurn()
-						+ ". \n\rDo you wanna try to get MORE armies from your cards? " + player_cards)) {
+		/*
+		 * if ( player_cards.size() > 4 || UI.isUserOk("Reinforcement phase",
+		 * this.getClass().getEnclosingMethod(). getName()+
+		 * 
+		 * ". \n\rDo you wanna try to get MORE armies from your cards? " +
+		 * player_cards)) {
+		 */
 
-			if ((!(player_cards.size()<3))&&(UI.isUserOk("Exchange cards view", "Enough cards detected. \r\nInitiate Card Exchange? \r\nYou may still opt out now.")||player_cards.size()>4)) {
-				LOG.info("Card Exchange started.");
-				int armiesFromCards = board.getArmiesFromCards(this);
+		if ((!(player_cards.size() < 3)) && (UI.isUserOk("Reinforcement phase",
+				"Initiate Card Exchange? " + player_cards + "\r\nDo you wanna try to get MORE armies from your cards?")
+				|| player_cards.size() > 4)) {
+			LOG.info("Card Exchange started.");
+			int armiesFromCards = board.getArmiesFromCards(this);
 
-				if (armiesFromCards > 0) {
-					setArmiesFortification(/* this.getArmies() + */ armiesFromCards);
-					LOG.info("Success exchanging cards, gained " + armiesFromCards + " armies.");
+			if (armiesFromCards > 0) {
+				setArmiesFortification(/* this.getArmies() + */ armiesFromCards);
+				LOG.info("Success exchanging cards, gained " + armiesFromCards + " armies.");
 
-					List<Card> playercards = new CopyOnWriteArrayList<Card>(player_cards);
-					for (Card card : playercards) {
-						getCards().remove(card);
-						LOG.info("Removing card " + card + " from player hand.");// TODO fix this removing all cards
-					}
-				}	
-			} else LOG.info("User opted out of Card Exchange");
-			// LOG.info("Getting more armies from cards result: " + this.toString());
-		} else LOG.info("User opted out of Card Exchange");
+				List<Card> playercards = new CopyOnWriteArrayList<Card>(player_cards);
+				for (Card card : playercards) {
+					getCards().remove(card);
+					LOG.info("Removing card " + card + " from player hand.");// TODO fix this removing all cards
+				}
+			}
+		} else
+			LOG.info("Skipping Card Exchange view");
+		// LOG.info("Getting more armies from cards result: " + this.toString());
+	//}else LOG.info("User opted out of Card Exchange");
 
-		// Once the total number of reinforcements is determined for the player’s turn,
-		// the player may place the armies on any country he owns, divided as he wants.
-		//
-		// For each Player.getCountries():
+	// Once the total number of reinforcements is determined for the player’s turn,
+	// the player may place the armies on any country he owns, divided as he wants.
+	//
+	// For each Player.getCountries():
 //			If totalArmiesOwnedByPlayer == 0 then break
 //			N = user_input //if >  totalArmiesOwnedByPlayer, N = totalArmiesOwnedByPlayer
 //			Country.setArmiesNumber(n)
-		if (this.armies > 0) {
-			for (Country country : countries) {
-				int qtyArmies = UI.askNumber(
-						"Reinforcement phase", "How many armies do you want to put in country " + country.toString()
-								+ " ? [" + (countries.indexOf(country) + 1) + "/" + countries.size() + "]",
-						0, this.armies);
-				if (qtyArmies <= this.armies) {
-					LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
-							+ country.getArmies()/* this.toString() */);
-					country.setArmyQty(country.getArmies() + qtyArmies);
-					this.armies -= qtyArmies;
-				}
-				if (this.armies == 0)
-					break;
-			}
-		}
-		// LOG.info(this.toString());
+	if(this.armies>0)
 
-		setChanged();
-		// notify all attached Observers of a change
-		notifyObservers(this);
+	{
+		for (Country country : countries) {
+			int qtyArmies = UI
+					.askNumber(
+							"Reinforcement phase", "How many armies do you want to put in country " + country.toString()
+									+ " ? [" + (countries.indexOf(country) + 1) + "/" + countries.size() + "]",
+							0, this.armies);
+			if (qtyArmies <= this.armies) {
+				LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
+						+ country.getArmies()/* this.toString() */);
+				country.setArmyQty(country.getArmies() + qtyArmies);
+				this.armies -= qtyArmies;
+			}
+			if (this.armies == 0)
+				break;
+		}
+	}
+	// LOG.info(this.toString());
+
+	setChanged();
+
+	// notify all attached Observers of a change
+	notifyObservers(this);
 
 	}
 
@@ -292,26 +302,29 @@ public class Player extends Observable {
 				LOG.info(OffendingCountry + " vs " + DeffendingCountry);
 				String attacker = board.getOwner(OffendingCountry).name;
 				String deffender = board.getOwner(DeffendingCountry).name;
-				
-				boolean allOutModeOk = UI.isUserOk("All out mode?", " Attack proceeds with maximum number of dice and end only \r\n"
-						+ "when either the attacker conquers the attacked, or the \r\n"
-						+ "attacker cannot attack anymore.");
+
+				boolean allOutModeOk = UI.isUserOk("All out mode?",
+						" Attack proceeds with maximum number of dice and end only \r\n"
+								+ "when either the attacker conquers the attacked, or the \r\n"
+								+ "attacker cannot attack anymore.");
 				this.board.setIsAllOutMode(allOutModeOk);
 				if (allOutModeOk) {
 					LOG.info("ALL OUT MODE ENABLED");
 				}
-				
+
 				// TODO is it the player armies or the country armies
 				while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
 					if (!this.board.getIsAllOutMode()) {
 						if (!UI.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
 							break;
-						}						
-					} else LOG.info("All Out Mode: skipping user input.");
+						}
+					} else
+						LOG.info("All Out Mode: skipping user input.");
 					LOG.info("Starting Battle: " + attacker + " attacking " + deffender + ".");
 					// Board.Battle(OffendingCountry, DeffendingCountry)
 					board.doBattle(OffendingCountry, DeffendingCountry);
-					// If all the defender's armies are eliminated the attacker captures the territory.
+					// If all the defender's armies are eliminated the attacker captures the
+					// territory.
 					// Board.updateTerritories(DeffendingCountry)
 					//// just change ownership if DeffendingCountry.getTotalArmies() == 0
 				}
@@ -321,7 +334,8 @@ public class Player extends Observable {
 					// " + DeffendingCountry);
 					LOG.info("All the defender's armies are eliminated. Player " + attacker + " captured "
 							+ DeffendingCountry);
-					/* The attacking player must then place a number of armies in the conquered
+					/*
+					 * The attacking player must then place a number of armies in the conquered
 					 * country which is greater or equal than the number of dice that was used in
 					 * the attack that resulted in conquering the country. A player may do as many
 					 * attacks as he wants during his turn.
@@ -336,7 +350,8 @@ public class Player extends Observable {
 					} else
 						LOG.info("no armies to occupy defeated country.");
 
-				} /* * else if (OffendingCountry.getArmies() == 0) { LOG.info(attacker +
+				} /*
+					 * * else if (OffendingCountry.getArmies() == 0) { LOG.info(attacker +
 					 * " lost battle."); }
 					 */
 			} else {
