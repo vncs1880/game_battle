@@ -1,15 +1,5 @@
-# SOEN 6441 - BUILD 1
-| Criteria      | Ownership     | Readiness     |
-| ------------- |:-------------:|:-------------:|
-| Map editor    | `Basant`      |100%|
-| Game Play     | `Vinicius`    |95%|
-| Design Doc    | `Gagan`           |x%|
-| JavaDoc       | `Reshma` `Gagan` `Harjot`|x%|
-| Testing       | `N/A`           |0%|
-| Code Standards| `N/A`           |0%|
-
 # SOEN 6441 - BUILD 2
-| Criteria      |Points         |Ownership     | Readiness     |
+| Criteria      |Points         |     | Readiness     |
 | ------------- |:-------------|:-------------:|:-------------:|
 |Presentation |5||100%|
 |Effectiveness, structure and demonstrated preparation of the presentation |2||100%|
