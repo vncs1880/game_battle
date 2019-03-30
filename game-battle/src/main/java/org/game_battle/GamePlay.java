@@ -2,11 +2,14 @@ package org.game_battle;
 
 import java.util.List;
 
+import javax.naming.Context;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.game_battle.model.Implementation.Board;
 import org.game_battle.model.Implementation.MapInterface;
 import org.game_battle.model.Implementation.Player;
+import org.game_battle.model.Implementation.PlayerStrategy;
 import org.game_battle.view.PhaseView;
 import org.game_battle.view.PlayerDominationView;
 import org.game_battle.view.CardView;
@@ -39,7 +42,6 @@ public class GamePlay {
 		super();
 
 		board = new Board(); // Start up phase
-
 		phaseView = new PhaseView();
 		playerDominationView = new PlayerDominationView();
 		players = board.getPlayers();
@@ -79,7 +81,6 @@ public class GamePlay {
 		boolean gameOver = false;
 		int i = 0;
 		String action = "";
-
 		while (!gameOver/* players.size() > 1 */) {
 			i++;
 			game.getBoard().setTurn(i);
@@ -136,7 +137,7 @@ public class GamePlay {
 				int currentCountriesQty = player.getCountries().size();
 				if (currentCountriesQty == game.board.getCountries().size()) {
 
-					UI.askNumber("it is over :P",
+					game.board.playerStrategy.askNumber("it is over :P",
 							"end of game! congratulations " + player.getName() + "!\r\n\r\nPlease rate this game:", 1,
 							5);
 					gameOver = true;

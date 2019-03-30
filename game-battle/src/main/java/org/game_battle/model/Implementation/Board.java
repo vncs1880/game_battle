@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package org.game_battle.model.Implementation;
 
 import java.util.*;
@@ -16,7 +19,7 @@ import org.game_battle.model.Implementation.Card.Sort;
  * 
  * @author Vini
  * @version Alpha
- * 
+ * @date 5/02/19
  **/
 public class Board extends Observable {
 	private static final int MAX_DICE_ROLLS_ATTACKER = 3;
@@ -47,69 +50,28 @@ public class Board extends Observable {
 	private String currentPlayer;
 	private float totalNoOfCountries;
 	private boolean isAllOutMode = false;
-	
-
-	public MapInterface getMapinterface() {
-		return mapinterface;
-	}
-
-	public void setMapinterface(MapInterface mapinterface) {
-		this.mapinterface = mapinterface;
-	}
-
-	/**
-	 * getActionTakingPlace for actions ahppening
-	 * 
-	 * @return actionTakingPlace action taking place
-	 */
+	public UI ui;
+	public PlayerStrategy playerStrategy;
 
 	public String getActionTakingPlace() {
 		return actionTakingPlace;
 	}
 
-	/**
-	 * setActionTakingPlace for setting the actions happening
-	 * 
-	 * @param actionTakingPlace action taking place
-	 */
-
 	public void setActionTakingPlace(String actionTakingPlace) {
 		this.actionTakingPlace = actionTakingPlace;
 	}
 
-	/**
-	 * getCurrentPlayer gets the current player
-	 * 
-	 * @return currentPlayer current player
-	 */
 	public String getCurrentPlayer() {
 		return currentPlayer;
 	}
 
-	/**
-	 * setCurrentPlayer sets the current player
-	 * 
-	 * @param currentPlayer current player
-	 */
 	public void setCurrentPlayer(String currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
 
-	/**
-	 * getGamePhaseName gets the game phase name
-	 * 
-	 * @return gamePhaseName current phase name
-	 */
-
 	public String getGamePhaseName() {
 		return gamePhaseName;
 	}
-
-	/**
-	 * setGamePhaseName sets the gamePhaseName
-	 * 
-	 * @param gamePhaseName game phase name
-	 */
 
 	public void setGamePhaseName(String gamePhaseName) {
 		this.gamePhaseName = gamePhaseName;
@@ -119,8 +81,7 @@ public class Board extends Observable {
 	private static final int MAX_DICE_ROLLS_DEFFENDER = 2;
 
 	/**
-	 * Board function loads the map and gets the ;player name and initialises the
-	 * board
+	 * 
 	 */
 	public Board() {
 		// Board LOADS Graph
@@ -130,35 +91,57 @@ public class Board extends Observable {
 		// L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
 		//// generate a list of lists, each w random countries
 		mapinterface = new MapInterface();
+		playerStrategy = new PlayerStrategy();
+		playerStrategy.setStrategy(new UI());
+
 		totalNoOfCountries = MapInterface.getCountries().size();
 		LOG.info("\r\n\r\n<<UI prompt in the background. Please use ALT-TAB>>");// TODO make the UI come to foreground
-		int totalPlayers = UI.askNumber("Initializing board", "How many players?", 2, 6);
+		int totalPlayers = playerStrategy.askNumber("Initializing board", "How many players?", 2, 6);
 		LinkedList<Player> players = new LinkedList<Player>();
 		for (int i = 0; i < totalPlayers; i++) {
 			String name = "dummy player";
-			name = UI.askText("What is player " + (i + 1) + " name?",
+			name = playerStrategy.askText("What is player " + (i + 1) + " name?",
 					"Initializing board - " + totalPlayers + " players");
 			players.add(new Player(this, name));
 		}
 		setPlayers(players);
 		// added 23rd as part of pahse 2
 		actionTakingPlace = "Players playing in the game : " + players;
-		
+		/*
+		 * setPlayers(new LinkedList<Player>(Arrays.asList(new Player(this, "x"), new
+		 * Player(this, "y"), new Player(this, "z"), new Player(this, "a"))));
+		 */
+		// List<List<Country>> L = getRandomCountriesLists(getPlayers().size());
 		distributeCountries(getPlayers().size());
 		// added 23rd as part of pahse 2
 
 		actionTakingPlace = "After Random Distribution of the countries to the players: " + players;
 
-		
+		// For player in PlayersTotalNumber:
+//		New Player().AssignCountries( L[player] )
+//		//set countries_list in Player OR set owner in country		
+		// for (Player player : players) {
+		// player.setCountries(L.get(players.indexOf(player)));
+		// }
+		// User-driven creation of map elements, such as country, continent, and
+		// connectivity between countries. 4
 		continents = MapInterface.getContinents();
-		
+		// Saving a map to a text file exactly as edited (using the “conquest” game map
+		// format). 3
+		// Loading a map from an existing “conquest” map file, then editing the map, or
+		// create a new map from scratch. 3
+		// Verification of map correctness upon loading and before saving (at least 3
+		// types of incorrect maps). 2
+		// Implementation of a game driver implementing the game phases according to the
+		// Risk rules. 2
+		// Game starts by user selection of a user-saved map file. 1
+		// Map is loaded as a connected graph, which is rendered effectively to the user
+		// to enable efficient play. 3
+		// User chooses the number of players,
+		// getBoardInfo();
+
 	}
 
-	/**
-	 * distributeCountries randomly distributes the countries among all players
-	 * 
-	 * @param playersCount players count
-	 */
 	public void distributeCountries(int playersCount) {
 		List<Country> countriesToDistribute = MapInterface.getCountries();
 		Collections.shuffle(countriesToDistribute);
@@ -182,18 +165,11 @@ public class Board extends Observable {
 		}
 	}
 
-	/**
-	 * getArmiesFromCards gets the armies from the cards.
-	 * 
-	 * @param p player p
-	 * @return 0 
-	 */
-
 	public int getArmiesFromCards(Player p) {
 		List<Card> player_cards = p.getCards();
 		Collection selected = new ArrayList();
-		while (selected.size() != 3) {
-			selected = UI.getObjs("Select 3 cards to exchange (use CTRL for multi select)", player_cards.toArray());
+		while (selected.size()!=3 ) {
+			selected = playerStrategy.getObjs("Select 3 cards to exchange (use CTRL for multi select)", player_cards.toArray());			
 		}
 
 		HashMap<Card.Sort, Integer> cardsCount = new HashMap<Card.Sort, Integer>() {
@@ -203,8 +179,8 @@ public class Board extends Observable {
 				put(Card.Sort.ARTILLERY, 0);
 			}
 		};
-
-		List<Card> cards = (List<Card>) selected;
+		
+		List<Card> cards = (List<Card>)selected; 
 
 		for (Card card : cards) {
 			Sort cardtype = card.getType();
@@ -281,12 +257,7 @@ public class Board extends Observable {
 	 * public List<Country> getElligibleTargets(Country offendingCountry) { return
 	 * null; }
 	 */
-	/**
-	 * doBattle attacks the country based on the dice roll
-	 * 
-	 * @param offendingCountry offending country
-	 * @param deffendingCountry defending country
-	 */
+
 	public void doBattle(Country offendingCountry, Country deffendingCountry) {
 		// ALMOST DONE BUILD2 update players armies numbers according to logic below
 		/*
@@ -297,120 +268,90 @@ public class Board extends Observable {
 		 */
 		Player attacker = getOwner(offendingCountry);
 		Player deffender = getOwner(deffendingCountry);
-		LOG.info("\r\nATTACKER: " + attacker + "\r\nDEFFENDER: " + deffender);
-
-		List<Integer> attackerDices = rollDices(attacker, offendingCountry,
-				(offendingCountry.getArmies() < MAX_DICE_ROLLS_ATTACKER) ? offendingCountry.getArmies()
-						: MAX_DICE_ROLLS_ATTACKER);
-		List<Integer> deffenderDices = rollDices(deffender, deffendingCountry,
-				(/* deffendingCountry */offendingCountry.getArmies() < MAX_DICE_ROLLS_DEFFENDER)
-						? /* deffendingCountry */offendingCountry.getArmies()
-						: MAX_DICE_ROLLS_DEFFENDER);
-
-		Integer deffenderBestDice = deffenderDices.get(deffenderDices.size() - 1);
-		Integer attackerBestDice = attackerDices.get(attackerDices.size() - 1);
-		Integer deffender2ndBestDice = 1;// deffenderDices.get(deffenderDices.size()-2);
-		Integer attacker2ndBestDice = 2;// attackerDices.get(attackerDices.size()-2);
-		while ((attackerBestDice == deffenderBestDice) || (attacker2ndBestDice == deffender2ndBestDice)) {// workaround
-																											// to avoid
-																											// ties
+		LOG.info("\r\nATTACKER: "+attacker+"\r\nDEFFENDER: "+deffender);
+		
+		List<Integer> attackerDices = rollDices(attacker, offendingCountry,(offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
+		List<Integer> deffenderDices = rollDices(deffender, deffendingCountry,(/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
+		
+		Integer deffenderBestDice = deffenderDices.get(deffenderDices.size()-1);
+		Integer attackerBestDice = attackerDices.get(attackerDices.size()-1);
+		Integer deffender2ndBestDice = 1;//deffenderDices.get(deffenderDices.size()-2);
+		Integer attacker2ndBestDice = 2;//attackerDices.get(attackerDices.size()-2);
+		while ((attackerBestDice==deffenderBestDice)||(attacker2ndBestDice==deffender2ndBestDice)) {//workaround to avoid ties
 			LOG.info("Dice tie detected. Rolling dices again.");
-			attackerDices = rollDices(attacker, offendingCountry,
-					(offendingCountry.getArmies() < MAX_DICE_ROLLS_ATTACKER) ? offendingCountry.getArmies()
-							: MAX_DICE_ROLLS_ATTACKER);
-			deffenderDices = rollDices(deffender, deffendingCountry,
-					(/* deffendingCountry */offendingCountry.getArmies() < MAX_DICE_ROLLS_DEFFENDER)
-							? /* deffendingCountry */offendingCountry.getArmies()
-							: MAX_DICE_ROLLS_DEFFENDER);
-
-			deffenderBestDice = deffenderDices.get(deffenderDices.size() - 1);
-			attackerBestDice = attackerDices.get(attackerDices.size() - 1);
-			if (deffenderDices.size() == 2) {// TODO check if this is working
-				deffender2ndBestDice = deffenderDices.get(deffenderDices.size() - 2);
-				attacker2ndBestDice = attackerDices.get(attackerDices.size() - 2);
+			attackerDices = rollDices(attacker, offendingCountry,(offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
+			deffenderDices = rollDices(deffender, deffendingCountry,(/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
+			
+			deffenderBestDice = deffenderDices.get(deffenderDices.size()-1);
+			attackerBestDice = attackerDices.get(attackerDices.size()-1);
+			if (deffenderDices.size()==2) {//TODO check if this is working
+				deffender2ndBestDice = deffenderDices.get(deffenderDices.size()-2);
+				attacker2ndBestDice = attackerDices.get(attackerDices.size()-2);				
 			}
 		}
-
+		
 		attacker.setDiceRollResultSet(attackerDices);
 		deffender.setDiceRollResultSet(deffenderDices);
 		List<Integer> attackerDiceRollResultSet = attacker.getDiceRollResultSet();
 		List<Integer> deffenderDiceRollResultSet = deffender.getDiceRollResultSet();
-		LOG.info("Battle dice rolls\r\nAttacker (" + attacker.getName() + "," + offendingCountry.getName()
-				+ ") dice rolls results: " + attackerDiceRollResultSet + "\r\nDeffender  (" + deffender.getName() + ","
-				+ deffendingCountry.getName() + ") dice rolls results: " + deffenderDiceRollResultSet);
+		LOG.info("Battle dice rolls\r\nAttacker ("+attacker.getName()+","+offendingCountry.getName()+") dice rolls results: " + attackerDiceRollResultSet +
+				"\r\nDeffender  ("+deffender.getName()+","+deffendingCountry.getName()+") dice rolls results: " + deffenderDiceRollResultSet);
 		/*
 		 * The outcome of the attack is determined by comparing the defenders best dice
 		 * roll with the attackers best dice roll. If the defender rolls greater or
 		 * equal to the attacker, then the attacker loses an army otherwise the defender
-		 * loses an army.
-		 */
-
-		Integer attackerLastDice = attackerDiceRollResultSet.get(attackerDiceRollResultSet.size() - 1);
-		Integer deffenderLastDice = deffenderDiceRollResultSet.get(deffenderDiceRollResultSet.size() - 1);
+		 * loses an army. */
+				
+		Integer attackerLastDice = attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-1);
+		Integer deffenderLastDice = deffenderDiceRollResultSet.get(deffenderDiceRollResultSet.size()-1);
 
 		Country winner = (attackerLastDice > deffenderLastDice) ? offendingCountry : deffendingCountry;
 		Country loser = (attackerLastDice < deffenderLastDice) ? offendingCountry : deffendingCountry;
-		LOG.info(winner.getName() + " (" + getOwner(winner).getName() + ") has the best dice roll of all. "
-				+ loser.getName() + " loses one army for that.");
-		// loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
-		loser.setArmyQty(loser.getArmies() > 0 ? loser.getArmies() - 1 : 0); // update country army instead of player
-																				// army
-
-		LOG.info("1st round WINNER: " + winner + " LOSER: " + loser);
-		/*
-		 * If the defender rolled two dice, then his other dice roll is compared to the
-		 * attacker's second best dice roll and a second army is lost by the attacker or
-		 * defender in the same way.
-		 */
-		if (deffenderDiceRollResultSet.size() == 2) {// TODO fix this:assumes the attacker rolled more dices than the
-														// deffender
+		LOG.info(winner.getName()+" ("+getOwner(winner).getName()+") has the best dice roll of all. "+ loser.getName() +" loses one army for that.");
+		//loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
+		loser.setArmyQty(loser.getArmies()>0?loser.getArmies()-1:0); //update country army instead of player army
+		
+		LOG.info("1st round WINNER: "+winner+" LOSER: "+loser);
+		/*If the defender rolled two dice, then his other dice roll is
+		 * compared to the attacker's second best dice roll and a second army is lost by
+		 * the attacker or defender in the same way.
+		 */		
+		if (deffenderDiceRollResultSet.size()==2) {//TODO fix this:assumes the attacker rolled more dices than the deffender
 			try {
-				winner = (attackerDiceRollResultSet
-						.get(attackerDiceRollResultSet.size() - 2) > deffenderDiceRollResultSet.get(0))
-								? offendingCountry
-								: deffendingCountry;
-				loser = (attackerDiceRollResultSet
-						.get(attackerDiceRollResultSet.size() - 2) < deffenderDiceRollResultSet.get(0))
-								? offendingCountry
-								: deffendingCountry;
-				LOG.info(winner.getName() + " (" + getOwner(winner).getName() + ") has the 2nd best dice roll. "
-						+ loser.getName() + " loses one army.");
-				// loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
-				loser.setArmyQty(loser.getArmies() > 0 ? loser.getArmies() - 1 : 0); // update country army instead of
-																						// player army
-				LOG.info("2nd round WINNER: " + winner + " LOSER: " + loser);
+				winner = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)>deffenderDiceRollResultSet.get(0))?offendingCountry:deffendingCountry;
+				loser = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)<deffenderDiceRollResultSet.get(0))?offendingCountry:deffendingCountry;
+				LOG.info(winner.getName()+" ("+getOwner(winner).getName()+") has the 2nd best dice roll. "+ loser.getName() +" loses one army.");
+				//loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
+				loser.setArmyQty(loser.getArmies()>0?loser.getArmies()-1:0); //update country army instead of player army
+				LOG.info("2nd round WINNER: "+winner+" LOSER: "+loser);
 			} catch (Exception e) {
 				// TODO e.printStackTrace();
 				LOG.error("deffender picked more dice rolls than attacker.. context not found on project description");
 			}
 		}
-
+		
 		setIsAllOutMode(false);
 		LOG.info("ALL OUT MODE DISABLED");
 
 	}
 
 	/**
-	 * rollDices gets the maximum output of the two dice rolls
-	 * 
-	 * @param player
-	 * @param maxDiceRolls
-	 * @param player
-	 * @param country
-	 * @return null
+	 * @param player 
+	 * @param maxDiceRolls 
+	 * @param player 
+	 * @param country 
+	 * @return 
 	 * 
 	 */
 	private List<Integer> rollDices(Player player, Country country, int maxDiceRolls) {
-		LOG.info("Rolling dices for " + player.getName() + " (" + country.getName() + ")");
-
+		LOG.info("Rolling dices for "+player.getName() +" ("+country.getName()+")");
+		
 		int diceRollsNum = maxDiceRolls;
-
+		
 		if (!this.getIsAllOutMode()) {
-			diceRollsNum = UI.askNumber("Rolling dices", player.getName() + ", how many dices do you want to roll?", 1,
-					maxDiceRolls);
-		} else
-			LOG.info("All Out Mode: maximum dice rolls selected: " + maxDiceRolls);
-
+			diceRollsNum = playerStrategy.askNumber("Rolling dices", player.getName()+", how many dices do you want to roll?", 1, maxDiceRolls);
+		} else LOG.info("All Out Mode: maximum dice rolls selected: "+maxDiceRolls);
+		
 		List<Integer> diceRollsResultSet = new ArrayList<Integer>();
 		for (int i = 0; i < diceRollsNum; i++) {
 			diceRollsResultSet.add(getDiceRollResult(null));
@@ -433,9 +374,6 @@ public class Board extends Observable {
 	}
 
 	/**
-	 * giveLoserCountryToWinnerPlayer if the palyer looses the country an army is
-	 * allocated to the country
-	 * 
 	 * @param OffendingCountry
 	 * @param DeffendingCountry
 	 */
@@ -453,30 +391,13 @@ public class Board extends Observable {
 		LOG.info("ANNEXING COUNTRY END\r\nattacker: " + attacker + "\r\ndefender: " + deffender);
 	}
 
-	/**
-	 * getLastDiceRollResult gets the last Dice Roll result
-	 * 
-	 * @return lastDiceRollResult
-	 */
-
 	public int getLastDiceRollResult() {
 		return lastDiceRollResult;
 	}
 
-	/**
-	 * setPlayers sets the players as a list
-	 * 
-	 * @param asList list of players
-	 */
 	public void setPlayers(List<Player> asList) {
 		players = asList;
 	}
-
-	/**
-	 * getPlayers gets the players
-	 * 
-	 * @return players
-	 */
 
 	public List<Player> getPlayers() {
 
@@ -484,69 +405,36 @@ public class Board extends Observable {
 	}
 
 	/**
-	 * getCountriesByContinent gets the countries list of that particular continent
-	 * 
-	 * @param continent continent values
-	 * @return countriesByContinent
+	 * @param continent
+	 * @return the countriesByContinent
 	 */
 	public List<Country> getCountriesByContinent(Continent continent) {
 		return MapInterface.getCountriesByContinent(continent); // countriesByContinent.get(countriesByContinent.indexOf(continent));
 	}
-
-	/**
-	 * getContinents gets the continents list
-	 * 
-	 * @return continents continents list
-	 */
 
 	public List<Continent> getContinents() {
 		List<Continent> continents = MapInterface.getContinents();
 		return continents;
 	}
 
-	/**
-	 * getCountries gets the countries
-	 * 
-	 * @return countries countries list
-	 */
 	public List<Country> getCountries() {
 		List<Country> countries = MapInterface.getCountries();
 		return countries;
 	}
 
-	/**
-	 * getRandomCard gets the card types randomly
-	 * 
-	 * @return Card random cards
-	 */
 	public Card getRandomCard() {
 		Sort[] card_types = Sort.values();
 		return new Card(card_types[RANDOM.nextInt(card_types.length)]);
 	}
 
-	/**
-	 * setTurn sets the turns
-	 * 
-	 * @param i turns
-	 */
-
 	public void setTurn(int i) {
 		this.turn = i;
 	}
 
-	/**
-	 * getTurn gets the turns
-	 * 
-	 * @return turn
-	 */
 	public int getTurn() {
 		return this.turn;
 	}
 
-	/**
-	 * getBoardInfo gets the board information
-	 * 
-	 */
 	public void getBoardInfo() {
 		setChanged();
 		// notify all attached Observers of a change
@@ -554,11 +442,6 @@ public class Board extends Observable {
 
 	}
 
-	/**
-	 * getPercentageByPlayers gets the percentage player
-	 * 
-	 * @return playersDomination
-	 */
 	public HashMap<String, Double> getPercentageByPlayers() {
 		HashMap<String, Double> playersDomination = new HashMap<String, Double>();
 		for (Player x : players) {
@@ -572,11 +455,6 @@ public class Board extends Observable {
 
 	}
 
-	/**
-	 * getContinentByPlayers gets the continents oqned by the players
-	 * 
-	 * @return continentOwner
-	 */
 	public HashMap<String, String> getContinentsByPlayers() {
 		HashMap<String, String> continentOwner = new HashMap<String, String>();
 		for (Player x : players) {
@@ -590,12 +468,6 @@ public class Board extends Observable {
 		return continentOwner;
 
 	}
-
-	/**
-	 * getTotalArmiesByAllPlayers gets the total armies owned by all players
-	 * 
-	 * @return armiesList
-	 */
 
 	public HashMap<String, Integer> getTotalArmiesOwnedByAllPlayers() {
 		HashMap<String, Integer> armiesList = new HashMap<String, Integer>();
@@ -615,21 +487,9 @@ public class Board extends Observable {
 
 	}
 
-	/**
-	 * getIsAllOutMode gets the all out mode
-	 * 
-	 * @return isAllOutMode
-	 */
-
 	public boolean getIsAllOutMode() {
-		return this.isAllOutMode;
+		return this.isAllOutMode ;
 	}
-
-	/**
-	 * setIsAllOutMode sets the all out mide
-	 * 
-	 * @param userOk user ok mode
-	 */
 
 	public void setIsAllOutMode(boolean userOk) {
 		isAllOutMode = userOk;
