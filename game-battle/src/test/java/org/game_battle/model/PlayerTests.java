@@ -35,11 +35,11 @@ public class PlayerTests {
 		c6 = new Country("c6");
 		c7 = new Country("c7");
 
-		p1 = new Player(testBoard, "p1");
+		p1 = new Player(testBoard, "p1","Human");
 		p1_conts = Arrays.asList(new Country[] { c1, c2, c3, c4, c5, c6 });
 		p1.setCountries(p1_conts);
 
-		p2 = new Player(testBoard, "p2");
+		p2 = new Player(testBoard, "p2","Aggresive");
 		p2_conts = Arrays.asList(new Country[] { c7 });
 		p2.setCountries(p2_conts);
 	}
