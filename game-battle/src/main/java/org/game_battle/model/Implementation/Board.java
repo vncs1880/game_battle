@@ -50,6 +50,7 @@ public class Board extends Observable {
 	private String currentPlayer;
 	private float totalNoOfCountries;
 	private boolean isAllOutMode = false;
+	public UI ui;
 
 	public String getActionTakingPlace() {
 		return actionTakingPlace;
@@ -89,13 +90,14 @@ public class Board extends Observable {
 		// L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
 		//// generate a list of lists, each w random countries
 		mapinterface = new MapInterface();
+		ui = new UI();
 		totalNoOfCountries = MapInterface.getCountries().size();
 		LOG.info("\r\n\r\n<<UI prompt in the background. Please use ALT-TAB>>");// TODO make the UI come to foreground
-		int totalPlayers = UI.askNumber("Initializing board", "How many players?", 2, 6);
+		int totalPlayers = ui.askNumber("Initializing board", "How many players?", 2, 6);
 		LinkedList<Player> players = new LinkedList<Player>();
 		for (int i = 0; i < totalPlayers; i++) {
 			String name = "dummy player";
-			name = UI.askText("What is player " + (i + 1) + " name?",
+			name = ui.askText("What is player " + (i + 1) + " name?",
 					"Initializing board - " + totalPlayers + " players");
 			players.add(new Player(this, name));
 		}
@@ -344,7 +346,7 @@ public class Board extends Observable {
 		int diceRollsNum = maxDiceRolls;
 		
 		if (!this.getIsAllOutMode()) {
-			diceRollsNum = UI.askNumber("Rolling dices", player.getName()+", how many dices do you want to roll?", 1, maxDiceRolls);
+			diceRollsNum = ui.askNumber("Rolling dices", player.getName()+", how many dices do you want to roll?", 1, maxDiceRolls);
 		} else LOG.info("All Out Mode: maximum dice rolls selected: "+maxDiceRolls);
 		
 		List<Integer> diceRollsResultSet = new ArrayList<Integer>();

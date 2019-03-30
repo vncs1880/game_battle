@@ -41,12 +41,12 @@ public class UI {
 
 		System.out.println(picked);
 		
-		System.out.println(askNumber("Select one (MANDATORY)", "pick a number", 1, 12));
-		System.out.println(askNumber("Select one (MANDATORY)", "pick a number", 20, 55));
+	//	System.out.println(askNumber("Select one (MANDATORY)", "pick a number", 1, 12));
+	//	System.out.println(askNumber("Select one (MANDATORY)", "pick a number", 20, 55));
 		
 		System.out.println(isUserOk("Yes/No?", "test"));
 		
-		System.out.println(askText("",""));
+	//	System.out.println(askText("",""));
 
 	}
 	
@@ -57,7 +57,7 @@ public class UI {
 	}
 	
 
-	public static String askText(String msg, String title) {
+	public String askText(String msg, String title) {
 		String text = null;
 		do {
 	        //JFrame frame = new JFrame();            
@@ -74,7 +74,8 @@ public class UI {
 		return (picked==JOptionPane.OK_OPTION)?true:false;
 	}
 
-	public static int askNumber(String title,  String prompt, int min, int max) {
+	public int askNumber(String title,  String prompt, int min, int max) {
+		System.out.println("I ma in here");
 		List<Integer> collect = IntStream.rangeClosed(min, max).boxed().collect(Collectors.toList());
 		Integer[] options = (Integer[]) collect.toArray((new Integer[collect.size()]));
 		Integer picked = null;
@@ -85,6 +86,13 @@ public class UI {
 		} while (picked == null);
 		
 		return picked;
+	}
+	
+	public int test()
+	{
+		System.out.println("I m here");
+		return 0;
+		
 	}
 
 	public static Country selectCountry(String title, String prompt, List<Country> countries) {

@@ -50,6 +50,7 @@ public class Player extends Observable {
 	private String name;
 	private List<Integer> diceRollsResultSet = new ArrayList<Integer>();
 	private Continent ownedContinent;
+	private UI ui;
 	// private boolean isAllOutMode = false;
 
 	public Continent getOwnedContinent() {
@@ -78,6 +79,7 @@ public class Player extends Observable {
 		this.board = board;
 		this.name = name;
 		cards = new LinkedList<Card>(distributeCards(board));
+		ui = new UI();
 	}
 
 	/**
@@ -184,12 +186,12 @@ public class Player extends Observable {
 	if(this.armies>0)
 
 	{
-		for (Country country : countries) {
-			int qtyArmies = UI
-					.askNumber(
+		for (Country country : countries) {			
+			int qtyArmies = ui.askNumber(
 							"Reinforcement phase", "How many armies do you want to put in country " + country.toString()
 									+ " ? [" + (countries.indexOf(country) + 1) + "/" + countries.size() + "]",
 							0, this.armies);
+
 			if (qtyArmies <= this.armies) {
 				LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
 						+ country.getArmies()/* this.toString() */);
@@ -342,7 +344,7 @@ public class Player extends Observable {
 					 */
 					if (this.armies > 0) {
 						int minimumArmies = board.getLastDiceRollResult();
-						int armies_to_occupy = UI.askNumber("Attack phase",
+						int armies_to_occupy = board.ui.askNumber("Attack phase",
 								"How many armies to occupy defeated country?", minimumArmies, this.armies);
 						DeffendingCountry.setArmyQty(DeffendingCountry.getArmies() + armies_to_occupy);
 						this.armies -= armies_to_occupy;
@@ -421,7 +423,7 @@ public class Player extends Observable {
 				Country selected = UI.selectCountry("Fortification phase",
 						"Want to move armies from " + country + " to a neighbour?", neighbours);
 				if (selected != null && country.getArmies() > 0) {
-					int n_armies = UI.askNumber("Fortification phase",
+					int n_armies = ui.askNumber("Fortification phase",
 							"How many armies from " + country + " to " + selected, 0, country.getArmies());
 					country.setArmyQty(country.getArmies() - n_armies);
 					LOG.info("Player " + this.name + " moved " + n_armies + " army from " + country.getName() + " to "

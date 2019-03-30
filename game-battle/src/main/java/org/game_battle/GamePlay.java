@@ -41,7 +41,6 @@ public class GamePlay {
 		super();
 
 		board = new Board(); // Start up phase
-
 		phaseView = new PhaseView();
 		playerDominationView = new PlayerDominationView();
 		players = board.getPlayers();
@@ -137,7 +136,7 @@ public class GamePlay {
 				int currentCountriesQty = player.getCountries().size();
 				if (currentCountriesQty == game.board.getCountries().size()) {
 
-					UI.askNumber("it is over :P",
+					game.board.ui.askNumber("it is over :P",
 							"end of game! congratulations " + player.getName() + "!\r\n\r\nPlease rate this game:", 1,
 							5);
 					gameOver = true;
