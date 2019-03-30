@@ -155,7 +155,7 @@ public class Player extends Observable {
 		 * player_cards)) {
 		 */
 
-		if ((!(player_cards.size() < 3)) && (UI.isUserOk("Reinforcement phase",
+		if ((!(player_cards.size() < 3)) && (board.playerStrategy.isUserOk("Reinforcement phase",
 				"Initiate Card Exchange? " + player_cards + "\r\nDo you wanna try to get MORE armies from your cards?")
 				|| player_cards.size() > 4)) {
 			LOG.info("Card Exchange started.");
@@ -279,7 +279,7 @@ public class Player extends Observable {
 			// Board.getElligibleTargets(OffendingCountry)[UI.get_user_selection]
 			//// elligible targets are adjacent nodes
 
-			Country OffendingCountry = UI.selectCountry("Attack phase", "Select attacker country",
+			Country OffendingCountry = board.playerStrategy.selectCountry("Attack phase", "Select attacker country",
 					elligibleAttackerCountries);
 			List<Country> neighbours = new CopyOnWriteArrayList<>(OffendingCountry.getNeighbours());
 			// LOG.info("neighbours before filtering: "+neighbours);
@@ -293,7 +293,7 @@ public class Player extends Observable {
 			// showing adjacent, should look for connected. Actually this is correct.
 			LOG.info("neighbour countries/elligible targets: " + neighbours);
 			if (!neighbours.isEmpty()) {
-				Country DeffendingCountry = UI.selectCountry("Attack phase", "Select target country",
+				Country DeffendingCountry = board.playerStrategy.selectCountry("Attack phase", "Select target country",
 						neighbours /* board.getElligibleTargets(OffendingCountry) */);
 				// The attacker can choose to continue attacking until either all his armies or
 				// all the defending armies have been eliminated.
@@ -305,7 +305,7 @@ public class Player extends Observable {
 				String attacker = board.getOwner(OffendingCountry).name;
 				String deffender = board.getOwner(DeffendingCountry).name;
 
-				boolean allOutModeOk = UI.isUserOk("All out mode?",
+				boolean allOutModeOk = board.playerStrategy.isUserOk("All out mode?",
 						" Attack proceeds with maximum number of dice and end only \r\n"
 								+ "when either the attacker conquers the attacked, or the \r\n"
 								+ "attacker cannot attack anymore.");
@@ -317,7 +317,7 @@ public class Player extends Observable {
 				// TODO is it the player armies or the country armies
 				while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
 					if (!this.board.getIsAllOutMode()) {
-						if (!UI.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
+						if (!board.playerStrategy.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
 							break;
 						}
 					} else
@@ -420,7 +420,7 @@ public class Player extends Observable {
 			LOG.info(
 					"Elligible territory neighbours owned by " + board.getOwner(country).getName() + ": " + neighbours);
 			if (country.getArmies() > 0 && neighbours.size() > 0) {
-				Country selected = UI.selectCountry("Fortification phase",
+				Country selected = board.playerStrategy.selectCountry("Fortification phase",
 						"Want to move armies from " + country + " to a neighbour?", neighbours);
 				if (selected != null && country.getArmies() > 0) {
 					int n_armies = ui.askNumber("Fortification phase",

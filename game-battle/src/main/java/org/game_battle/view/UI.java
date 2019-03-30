@@ -8,23 +8,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import org.game_battle.model.Implementation.Country;
 import org.game_battle.model.Implementation.MapInterface;
+import org.game_battle.model.Contract.*;
 
 /**
  * @author vncs
  *
  */
-public class UI {
+public class UI implements Strategy {
 
 	/**
 	 * @param args
 	 */
+	public int execute(int a, int b)
+	{
+		
+		return 0;
+	}
 	public static void main(String[] args) {
 		/*
 		 * //Options for the combo box dialog String[] choices = {"Monday", "Tuesday"
@@ -35,22 +39,22 @@ public class UI {
 		MapInterface m = new MapInterface();
 		List<Country> countries = m.getCountries();
 
-		System.out.println(getObjs("getobjs", countries.toArray()));
+	//	System.out.println(getObjs("getobjs", countries.toArray()));
 		
-		Country picked = selectCountry("Select one (MANDATORY)", "select country", countries);
+	//	Country picked = selectCountry("Select one (MANDATORY)", "select country", countries);
 
-		System.out.println(picked);
+	//	System.out.println(picked);
 		
 	//	System.out.println(askNumber("Select one (MANDATORY)", "pick a number", 1, 12));
 	//	System.out.println(askNumber("Select one (MANDATORY)", "pick a number", 20, 55));
 		
-		System.out.println(isUserOk("Yes/No?", "test"));
+//		System.out.println(isUserOk("Yes/No?", "test"));
 		
 	//	System.out.println(askText("",""));
 
 	}
 	
-	public static Collection getObjs(String prompt, Object[] objs) {
+	public Collection getObjs(String prompt, Object[] objs) {
 		JList list = new JList(objs);
 		JOptionPane.showMessageDialog(null, list, prompt, JOptionPane.PLAIN_MESSAGE);
 		return list.getSelectedValuesList();
@@ -69,7 +73,7 @@ public class UI {
 
 
 
-	public static boolean isUserOk(String title, String prompt) {
+	public boolean isUserOk(String title, String prompt) {
 		int picked = JOptionPane.showConfirmDialog(null, prompt, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		return (picked==JOptionPane.OK_OPTION)?true:false;
 	}
@@ -95,7 +99,7 @@ public class UI {
 		
 	}
 
-	public static Country selectCountry(String title, String prompt, List<Country> countries) {
+	public  Country selectCountry(String title, String prompt, List<Country> countries) {
 		//MapInterface m = new MapInterface();
 		//String[] y = x.toArray(new String[0]);
 		Country[] countries_array = countries.toArray(new Country[0]);

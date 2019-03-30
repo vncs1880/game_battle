@@ -51,6 +51,7 @@ public class Board extends Observable {
 	private float totalNoOfCountries;
 	private boolean isAllOutMode = false;
 	public UI ui;
+	public PlayerStrategy playerStrategy;
 
 	public String getActionTakingPlace() {
 		return actionTakingPlace;
@@ -90,14 +91,16 @@ public class Board extends Observable {
 		// L = GameBoard.loadGraph(filename).getRandomCountriesLists(PlayersTotalNumber)
 		//// generate a list of lists, each w random countries
 		mapinterface = new MapInterface();
-		ui = new UI();
+		playerStrategy = new PlayerStrategy();
+		playerStrategy.setStrategy(new UI());
+
 		totalNoOfCountries = MapInterface.getCountries().size();
 		LOG.info("\r\n\r\n<<UI prompt in the background. Please use ALT-TAB>>");// TODO make the UI come to foreground
-		int totalPlayers = ui.askNumber("Initializing board", "How many players?", 2, 6);
+		int totalPlayers = playerStrategy.askNumber("Initializing board", "How many players?", 2, 6);
 		LinkedList<Player> players = new LinkedList<Player>();
 		for (int i = 0; i < totalPlayers; i++) {
 			String name = "dummy player";
-			name = ui.askText("What is player " + (i + 1) + " name?",
+			name = playerStrategy.askText("What is player " + (i + 1) + " name?",
 					"Initializing board - " + totalPlayers + " players");
 			players.add(new Player(this, name));
 		}
@@ -166,7 +169,7 @@ public class Board extends Observable {
 		List<Card> player_cards = p.getCards();
 		Collection selected = new ArrayList();
 		while (selected.size()!=3 ) {
-			selected = UI.getObjs("Select 3 cards to exchange (use CTRL for multi select)", player_cards.toArray());			
+			selected = playerStrategy.getObjs("Select 3 cards to exchange (use CTRL for multi select)", player_cards.toArray());			
 		}
 
 		HashMap<Card.Sort, Integer> cardsCount = new HashMap<Card.Sort, Integer>() {
@@ -346,7 +349,7 @@ public class Board extends Observable {
 		int diceRollsNum = maxDiceRolls;
 		
 		if (!this.getIsAllOutMode()) {
-			diceRollsNum = ui.askNumber("Rolling dices", player.getName()+", how many dices do you want to roll?", 1, maxDiceRolls);
+			diceRollsNum = playerStrategy.askNumber("Rolling dices", player.getName()+", how many dices do you want to roll?", 1, maxDiceRolls);
 		} else LOG.info("All Out Mode: maximum dice rolls selected: "+maxDiceRolls);
 		
 		List<Integer> diceRollsResultSet = new ArrayList<Integer>();
