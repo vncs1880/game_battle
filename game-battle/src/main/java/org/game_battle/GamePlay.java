@@ -77,6 +77,7 @@ public class GamePlay {
 		 * while (it.hasNext()) { Player player = (Player) it.next();
 		 * player.Reinforcement(); //player.Attack(); //player.Fortification(); }
 		 */
+		
 		GamePlay game = new GamePlay();
 		boolean gameOver = false;
 		int i = 0;

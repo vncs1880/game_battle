@@ -51,7 +51,16 @@ public class Player extends Observable {
 	private List<Integer> diceRollsResultSet = new ArrayList<Integer>();
 	private Continent ownedContinent;
 	private UI ui;
+	private String playerMode;
 	// private boolean isAllOutMode = false;
+
+	public String getPlayerMode() {
+		return playerMode;
+	}
+
+	public void setPlayerMode(String playerMode) {
+		this.playerMode = playerMode;
+	}
 
 	public Continent getOwnedContinent() {
 		return ownedContinent;
@@ -74,12 +83,13 @@ public class Player extends Observable {
 	 * @param name
 	 * 
 	 */
-	public Player(Board board, String name) {
+	public Player(Board board, String name,String playerMode) {
 		ownedContinent = null;
 		this.board = board;
 		this.name = name;
 		cards = new LinkedList<Card>(distributeCards(board));
 		ui = new UI();
+		this.playerMode = playerMode;
 	}
 
 	/**

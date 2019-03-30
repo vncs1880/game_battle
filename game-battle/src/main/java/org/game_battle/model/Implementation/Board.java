@@ -10,6 +10,8 @@ import org.game_battle.view.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Predicate;
 
+import javax.swing.JOptionPane;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.game_battle.model.Implementation.Card.Sort;
@@ -93,16 +95,29 @@ public class Board extends Observable {
 		mapinterface = new MapInterface();
 		playerStrategy = new PlayerStrategy();
 		playerStrategy.setStrategy(new UI());
-
 		totalNoOfCountries = MapInterface.getCountries().size();
 		LOG.info("\r\n\r\n<<UI prompt in the background. Please use ALT-TAB>>");// TODO make the UI come to foreground
 		int totalPlayers = playerStrategy.askNumber("Initializing board", "How many players?", 2, 6);
+		
 		LinkedList<Player> players = new LinkedList<Player>();
 		for (int i = 0; i < totalPlayers; i++) {
 			String name = "dummy player";
 			name = playerStrategy.askText("What is player " + (i + 1) + " name?",
 					"Initializing board - " + totalPlayers + " players");
-			players.add(new Player(this, name));
+			String tempPrompt = "Select your player type of " +  name;
+			String tempTitle ="Player Type";
+			List<String> playersType=new ArrayList();
+			playersType.add("Human");
+			playersType.add("Aggresive");
+			playersType.add("Benevolent");
+			playersType.add("Random");
+			playersType.add("Cheater");
+			Object[] playerMode_array = playersType.toArray();
+			String playerMode = (String) JOptionPane.showInputDialog(null,  tempPrompt
+					, tempTitle, JOptionPane.QUESTION_MESSAGE
+					, null,playerMode_array, playerMode_array[0] );
+			players.add(new Player(this, name, playerMode));
+		
 		}
 		setPlayers(players);
 		// added 23rd as part of pahse 2
