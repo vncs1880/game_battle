@@ -5,7 +5,7 @@ package org.game_battle.model.Implementation;
  * 
  * @author Vini
  * @version Alpha
- * @date 5/02/19
+ * 
  **/
 public class Continent {
 	/*
@@ -24,7 +24,7 @@ public class Continent {
 	/**
 	 * Method to get name of the continent
 	 * 
-	 * @return the name
+	 * @return name name of the continent
 	 */
 	public String getName() {
 		return name;
@@ -33,9 +33,9 @@ public class Continent {
 	/**
 	 * Continent Constructor
 	 * 
-	 * @param ctrlValue control value associated with the continent
-	 * @param name      Name of the continent
-	 * 
+	 * @param ctrlValue  control value
+	 * @param name     name continent
+	 *  
 	 */
 	public Continent(int ctrlValue, String name) {
 		controlValue = ctrlValue;
@@ -45,7 +45,7 @@ public class Continent {
 	/**
 	 * Method to get control value belongs to a continent
 	 * 
-	 * @return Returns the control value associated with a continent
+	 * @return controlValue control value of the continent
 	 * 
 	 **/
 	public int getControlValue() {

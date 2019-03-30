@@ -1,11 +1,19 @@
 package org.game_battle.model;
 
 import org.game_battle.model.Implementation.Card;
+
+
 import org.game_battle.model.Implementation.Card.Sort;
 import org.junit.Before;
 import org.junit.Test;
 
 import junit.framework.Assert;
+
+/**
+ * CardTest test the card types
+ * @author 91950
+ *
+ */
 
 public class CardTest {
 
@@ -18,6 +26,9 @@ public class CardTest {
 		CavalryCard = new Card(Card.Sort.CAVALRY);
 		
 	}
+	/**
+	 * cardsNotNull checks if the cards are not null
+	 */
 	
 	@Test
 	public void cardsNotNull() {
@@ -25,7 +36,9 @@ public class CardTest {
 		Assert.assertNotNull(CavalryCard);
 		Assert.assertNotNull(InfantryCard);
 	}
-	
+	/**
+	 * Type_CorrectCardValues gets the correct type cards
+	 */
 	
 	@Test
 	public void getType_CorrectCardValues() {
@@ -34,6 +47,10 @@ public class CardTest {
 		Assert.assertEquals(Card.Sort.INFANTRY,InfantryCard.getType());
 	}
 	
+	/**
+	 * toString_CorrectFormat gets the correct format of cards
+	 */
+	
 	@Test
 	public void toString_CorrectFormat() {
 		Assert.assertEquals("ARTILLERY",ArtilleryCard.toString());
@@ -41,10 +58,18 @@ public class CardTest {
 		Assert.assertEquals("INFANTRY",InfantryCard.toString());
 	}
 	
+	/**
+	 * Sort_Enum_CorrectSize gets the correct size of cards
+	 */
+	
 	@Test
 	public void Sort_Enum_CorrectSize() {
 		Assert.assertEquals(3, Card.Sort.values().length);
 	}
+	
+	/**
+	 * Sort_Enum_NonEqualValues checks the values of cards
+	 */
 	
 	@Test
 	public void Sort_Enum_NonEqualValues() {

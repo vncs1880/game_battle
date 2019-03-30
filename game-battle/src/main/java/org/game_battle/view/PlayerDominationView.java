@@ -8,7 +8,17 @@ import org.game_battle.model.Implementation.Board;
 import org.game_battle.model.Implementation.Continent;
 import org.game_battle.model.Implementation.Player;
 
+/**
+ * PlayerDominationView gets the view for player domination using observer
+ * 
+ * @author Basant
+ *
+ */
 public class PlayerDominationView implements Observer {
+
+	/**
+	 * update method updates the view when change in model
+	 */
 
 	public void update(Observable obs, Object x) {
 		// redraw my clock�s reading after I was notified

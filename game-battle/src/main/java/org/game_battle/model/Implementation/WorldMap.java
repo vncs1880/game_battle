@@ -123,6 +123,7 @@ public class WorldMap {
 
 	/**
 	 * getTerritoryNeighbour gets the neighbours of the territories.
+	 * @param territory territory value
 	 * 
 	 * @return territoryNeighbour
 	 */
@@ -134,7 +135,7 @@ public class WorldMap {
 	 * setContinentsInfo sets the continents its countries and its neighbouring
 	 * territories
 	 * 
-	 * @param input continent and country list
+	 * @return continentsInfo
 	 */
 
 	public Map<String, HashMap<String, TerritoryZone>> getContinentsInfo() {
@@ -236,7 +237,7 @@ public class WorldMap {
 				temp.add(element.trim());
 			}
 
-			this.territoryNeighbour.put(key, temp);
+	 		this.territoryNeighbour.put(key, temp);
 			this.updateNeighboursInCountryInfo(this.continentsInfo);
 		}
 
@@ -300,7 +301,7 @@ public class WorldMap {
 	 * getCountriesByContinent returns the specific countries present in that
 	 * continent
 	 * 
-	 * @param continent
+	 * @param continent continent name
 	 * @return territories
 	 */
 

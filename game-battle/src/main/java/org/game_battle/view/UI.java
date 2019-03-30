@@ -17,13 +17,15 @@ import org.game_battle.model.Implementation.Country;
 import org.game_battle.model.Implementation.MapInterface;
 
 /**
- * @author vncs
+ * UI class caretes the GUI for the gamePlay
+ * 
+ * @author vini
  *
  */
 public class UI {
 
 	/**
-	 * @param args
+	 * @param args arguments
 	 */
 	public static void main(String[] args) {
 		/*
@@ -36,71 +38,106 @@ public class UI {
 		List<Country> countries = m.getCountries();
 
 		System.out.println(getObjs("getobjs", countries.toArray()));
-		
+
 		Country picked = selectCountry("Select one (MANDATORY)", "select country", countries);
 
 		System.out.println(picked);
-		
+
 		System.out.println(askNumber("Select one (MANDATORY)", "pick a number", 1, 12));
 		System.out.println(askNumber("Select one (MANDATORY)", "pick a number", 20, 55));
-		
+
 		System.out.println(isUserOk("Yes/No?", "test"));
-		
-		System.out.println(askText("",""));
+
+		System.out.println(askText("", ""));
 
 	}
-	
+
+	/**
+	 * getObjs gets the objects for message dialogue
+	 * 
+	 * @param prompt prompt object
+	 * @param objs objects
+	 * @return getSelectedcontinentNameValuesList
+	 */
 	public static Collection getObjs(String prompt, Object[] objs) {
 		JList list = new JList(objs);
 		JOptionPane.showMessageDialog(null, list, prompt, JOptionPane.PLAIN_MESSAGE);
 		return list.getSelectedValuesList();
 	}
-	
 
+	/**
+	 * askText asks question for the selection
+	 * 
+	 * @param msg message
+	 * @param title title 
+	 * @return text
+	 */
 	public static String askText(String msg, String title) {
 		String text = null;
 		do {
-	        //JFrame frame = new JFrame();            
+			// JFrame frame = new JFrame();
 
-	        text = JOptionPane.showInputDialog(null, msg, title, JOptionPane.QUESTION_MESSAGE);
-		} while (text == null); 
+			text = JOptionPane.showInputDialog(null, msg, title, JOptionPane.QUESTION_MESSAGE);
+		} while (text == null);
 		return text;
 	}
 
-
-
+	/**
+	 * isUserOk gets the option yes or no
+	 * 
+	 * @param title title
+	 * @param prompt prompt message
+	 * @return option
+	 */
 	public static boolean isUserOk(String title, String prompt) {
-		int picked = JOptionPane.showConfirmDialog(null, prompt, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-		return (picked==JOptionPane.OK_OPTION)?true:false;
+		int picked = JOptionPane.showConfirmDialog(null, prompt, title, JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE);
+		return (picked == JOptionPane.OK_OPTION) ? true : false;
 	}
 
-	public static int askNumber(String title,  String prompt, int min, int max) {
+	/**
+	 * askNumber ask the drop down for gthe number of players
+	 * 
+	 * @param title title msg
+	 * @param prompt prompt msg
+	 * @param min min num of players
+	 * @param max max number of players
+	 * @return picked
+	 */
+	public static int askNumber(String title, String prompt, int min, int max) {
 		List<Integer> collect = IntStream.rangeClosed(min, max).boxed().collect(Collectors.toList());
 		Integer[] options = (Integer[]) collect.toArray((new Integer[collect.size()]));
 		Integer picked = null;
 		do {
-			picked = (Integer) JOptionPane.showInputDialog(null, prompt
-					, title, JOptionPane.QUESTION_MESSAGE
-					, null, options, options[0]);
+			picked = (Integer) JOptionPane.showInputDialog(null, prompt, title, JOptionPane.QUESTION_MESSAGE, null,
+					options, options[0]);
 		} while (picked == null);
-		
+
 		return picked;
 	}
 
+	/**
+	 * selectCountry selects the country for whcih the armies are to be placed or
+	 * moved
+	 * 
+	 * @param title title msg
+	 * @param prompt prompt msg
+	 * @param countries countries list
+	 * @return picked
+	 */
 	public static Country selectCountry(String title, String prompt, List<Country> countries) {
-		//MapInterface m = new MapInterface();
-		//String[] y = x.toArray(new String[0]);
+		// MapInterface m = new MapInterface();
+		// String[] y = x.toArray(new String[0]);
 		Country[] countries_array = countries.toArray(new Country[0]);
-		
+
 		Country picked;
 		do {
-	        //JFrame frame = new JFrame();  frame.toFront();          
+			// JFrame frame = new JFrame(); frame.toFront();
 
-			picked = (Country) JOptionPane.showInputDialog(null, prompt
-					, title, JOptionPane.QUESTION_MESSAGE
-					, null, countries_array, countries_array[0]);
+			picked = (Country) JOptionPane.showInputDialog(null, prompt, title, JOptionPane.QUESTION_MESSAGE, null,
+					countries_array, countries_array[0]);
 		} while (picked == null);
-		
+
 		return picked;
 	}
 

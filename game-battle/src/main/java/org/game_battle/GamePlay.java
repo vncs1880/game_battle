@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.game_battle;
 
 import java.util.List;
@@ -21,7 +18,7 @@ import org.game_battle.view.UI;
  * 
  * @author Vini
  * @version Alpha
- * @date 5/02/19
+ * 
  **/
 public class GamePlay {
 	// System.setProperty("log4j.configurationFile","./path_to_the_log4j2_config_file/log4j2.xml");
@@ -35,7 +32,8 @@ public class GamePlay {
 	private CardView cardView;
 
 	/**
-	 * @param board
+	 * Gameplay constructor
+	 * 
 	 */
 	public GamePlay() {
 		super();
@@ -52,7 +50,8 @@ public class GamePlay {
 	}
 
 	/**
-	 * @param args
+	 * Main class to run the entire flow
+	 * @param args arguments
 	 */
 	public static void main(String[] args) {
 		// Then the turn-based main play phase begins, in which all players are given a
@@ -196,7 +195,7 @@ public class GamePlay {
 	}
 
 	/**
-	 * 
+	 * getBoard class to get Board details
 	 * @return game board
 	 */
 	public Board getBoard() {

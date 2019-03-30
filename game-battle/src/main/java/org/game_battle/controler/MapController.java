@@ -28,8 +28,8 @@ public class MapController {
 	/**
 	 * Mapcontroller Constructor
 	 * 
-	 * @param view
-	 * @param model
+	 * @param view view of the world map
+	 * @param model model of map
 	 */
 	public MapController(WorldMapView view, WorldMap model) {
 		this.view = view;
@@ -40,7 +40,7 @@ public class MapController {
 	 * loadMap is to load the existing Map or to create a new map and display the
 	 * new created Map.
 	 * 
-	 * @param view
+	 * @param view view of the world map
 	 */
 	public void loadMap(WorldMapView view) {
 		view.initiateMapLoad();
@@ -64,8 +64,8 @@ public class MapController {
 	 * editMap edits the map : continent control value or editing neighbours or
 	 * deleting neighbours
 	 * 
-	 * @param view
-	 * @param map
+	 * @param view view of the world map
+	 * @param map map object
 	 */
 	public void editMap(WorldMapView view, WorldMap map) {
 		userAction value = view.editMap();
@@ -88,7 +88,7 @@ public class MapController {
 	/**
 	 * checkcorrectnessOfMap is to validate the map with respect to its neighbours.
 	 * 
-	 * @param tn map values
+	 * @param tn territory neighbours
 	 */
 	public void checkCorrectnessOfMap(Map<String, ArrayList<String>> tn) {
 		view.validateMap(tn);
@@ -97,8 +97,8 @@ public class MapController {
 	/**
 	 * printMap is to print the map to the console.
 	 * 
-	 * @param view
-	 * @param map
+	 * @param view view of the world map
+	 * @param map map object
 	 */
 	public void printMap(WorldMapView view, WorldMap map) {
 		view.displayMap(map);

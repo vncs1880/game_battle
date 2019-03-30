@@ -51,44 +51,86 @@ public class TerritoryZone implements Territory {
 	/**
 	 * hasAdjacencyWith checks if the countries are neighbouring
 	 * 
-	 * @param t
-	 * @return boolean checks if the country name is present in the territory list
+	 * @param t territory t
+	 * @return continentName 
 	 */
 	public boolean hasAdjacencyWith(Territory t) {
 		return continentName.contains(t.getTerritoryName());
 	}
 
+	/**
+	 * getAdjacentNeighbours gets the adjacent neighbours
+	 * 
+	 * @return null
+	 */
 	public ArrayList<Territory> getAdjacentNeighbours() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * getAdjacentTerritories gets the adjacent territories return
+	 * adjacentTerritories
+	 */
 	public ArrayList<String> getAdjacentTerritories() {
 		return this.adjacentTerritories;
 
 	}
 
+	/**
+	 * setAdjacentTerritories sets the adjacent territories
+	 * 
+	 * @param territorylist list of territories
+	 */
 	public void setAdjacentTerritories(ArrayList<String> territorylist) {
 		this.adjacentTerritories.clear();
 		this.adjacentTerritories = territorylist;
 
 	}
 
+	/**
+	 * getTerritoryName gets the territory names
+	 * 
+	 * @return territoryName
+	 */
+
 	public String getTerritoryName() {
 		return territoryName;
 	}
 
+	/**
+	 * setTerritoryName sets the territory Name
+	 * 
+	 * @param territoryName name of territory
+	 */
 	public void setTerritoryName(String territoryName) {
 		this.territoryName = territoryName;
 	}
+
+	/**
+	 * setContinentName sets the continent Name
+	 * 
+	 * @param continentName name of the continent
+	 */
 
 	public void setContinentName(String continentName) {
 		this.continentName = continentName;
 	}
 
+	/**
+	 * getxCoordinates gets the x coordinates
+	 * 
+	 * @return x_coordinates
+	 */
 	public String getxCoordinates() {
 		return x_coordinates;
 	}
+
+	/**
+	 * getyCoordinates gets the y coordinates
+	 * 
+	 * @return y_coordinates
+	 */
 
 	public String getyCoordinates() {
 		return y_coordinates;
@@ -105,6 +147,11 @@ public class TerritoryZone implements Territory {
 				+ this.adjacentTerritories + "'";
 	}
 
+	/**
+	 * getContinentName gets the continent Name
+	 * 
+	 * @return continentName
+	 */
 	public String getContinentName() {
 		return continentName;
 	}

@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package org.game_battle.model.Implementation;
 
 import java.util.List;
@@ -10,7 +8,7 @@ import java.util.List;
  * 
  * @author Vini
  * @version Alpha
- * @date 5/02/19
+ * 
  **/
 public class Card {
 
@@ -34,10 +32,6 @@ public class Card {
 		this.type = type;
 	}
 
-	/**
-	 * @author vncs
-	 *
-	 */
 	public enum Sort {// infantry, cavalry, or artillery
 		INFANTRY, CAVALRY, ARTILLERY
 	}

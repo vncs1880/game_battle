@@ -27,7 +27,7 @@ public class WorldMapTests {
 	/**
 	 * setup phase initilaises the map and file data
 	 * 
-	 * @throws IOException
+	 * @throws IOException input and output exception
 	 */
 
 	@Before

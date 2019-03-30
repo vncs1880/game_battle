@@ -12,7 +12,7 @@ import org.game_battle.model.Implementation.TerritoryZone;
  * 
  * @author Vinicous
  * @version Alpha
- * @date 5/02/19
+ * 
  **/
 public class Country {
 	/*
@@ -43,7 +43,7 @@ public class Country {
 	/**
 	 * Method to set name of the country
 	 * 
-	 * @param name name of the country
+	 * @param name name of territory
 	 */
 	public void setName(String name) {
 		/*
@@ -54,21 +54,22 @@ public class Country {
 	/**
 	 * Country Constructor
 	 * 
-	 * @param name name of the country
-	 **/
+	 * @param name NAME OF COUNTRY
+	 **/ 
 	public Country(String name) {
 		this.name = name;
 	}
 
 	/*
-	 * public Country(TerritoryZone t) {
-	 * this.territoryZone = t; }
+	 * public Country(TerritoryZone t) { this.territoryZone = t; }
 	 */
+
+
 
 	/**
 	 * Used to set the number of armies currently stationed in this country
 	 * 
-	 * @param n_armies
+	 * @param n_armies number of armies
 	 **/
 	public void setArmyQty(int n_armies) {
 		armies = n_armies;
@@ -77,7 +78,7 @@ public class Country {
 	/**
 	 * Get number of armies stationed in this country
 	 * 
-	 * @return the number of armies currently stationed in this country
+	 * @return armies the number of armies currently stationed in this country
 	 **/
 	public int getArmies() {
 		return armies;
@@ -86,8 +87,8 @@ public class Country {
 	/**
 	 * Method to get neigbouring countries
 	 * 
-	 * @return a list of the country objects that are neighbor to this country on
-	 *         the board
+	 * @return neighbours a list of the country objects that are neighbor to this
+	 *         country on the board
 	 **/
 	public List<Country> getNeighbours() {
 		return MapInterface.getNeighbours(this);

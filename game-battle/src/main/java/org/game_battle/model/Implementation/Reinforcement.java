@@ -20,25 +20,21 @@ public class Reinforcement {
 
 	public void Reinforcement(int armies, Board board, List<Country> countries, String playerName, Player player) {
 
-		// In the reinforcements phase, the player is given a number of armies that
-		// depends on the number of countries he owns (# of countries owned divided by
-		// 3, rounded down).
-		// If the player owns all the countries of an entire continent, the player is
-		// given an amount of armies
-		// corresponding to the continent’s control value.
-		// Player.resetNumberArmies
-		armies = 0;
-		// For each Continent:
-//			if allContinentBelongsTo(Player) 
-//				Player.updateNumberArmies(NumberArmies(Continent.control_value))  
-		//// updateNumberArmies just accumulates the number
-//			else
-//				totalCountriesOwnedByPlayer += Continent.CountriesOwnedBy(Player)
-		//// add accumulated countries after all continents are checked
-		// Player.updateNumberArmies(RoundDown(totalCountriesOwnedByPlayer/3))
-		// OR (needs elaboration tho)...
-		// For each Continent
-//			Continent.CalculateNumberArmies(Player)
+		/*
+		 * // In the reinforcements phase, the player is given a number of armies that
+		 * // depends on the number of countries he owns (# of countries owned divided
+		 * by // 3, rounded down). // If the player owns all the countries of an entire
+		 * continent, the player is // given an amount of armies // corresponding to the
+		 * continent’s control value. // Player.resetNumberArmies armies = 0; // For
+		 * each Continent: // if allContinentBelongsTo(Player) //
+		 * Player.updateNumberArmies(NumberArmies(Continent.control_value)) ////
+		 * updateNumberArmies just accumulates the number // else //
+		 * totalCountriesOwnedByPlayer += Continent.CountriesOwnedBy(Player) //// add
+		 * accumulated countries after all continents are checked //
+		 * Player.updateNumberArmies(RoundDown(totalCountriesOwnedByPlayer/3)) // OR
+		 * (needs elaboration tho)... // For each Continent //
+		 * Continent.CalculateNumberArmies(Player)
+		 */
 		List<Continent> continents = board.getContinents();
 		int totalCountriesOwnedInAllContinents = 0;
 		int totalArmies = 0;
@@ -59,15 +55,7 @@ public class Reinforcement {
 			}
 		}
 
-//		armies = player.setArmiesQtyFromCountriesQty(totalCountriesOwnedInAllContinents, totalArmies);
-
-		// Finally, if the player owns three cards of different sorts or the same sorts,
-		// he can exchange them for armies.
-		//
-		// “Do you want to try to get armies from your cards?”
-		// If YES:
-		// Player.updateNumberArmies(Cards.getEligibleArmies(Player.getCards()))
-		//// if not eligible, Cards.getEligibleArmies = 0
+			
 		List<Card> player_cards = player.getCards();
 		if (player_cards.size() > 4 || UI.isUserOk("Reinforcement phase", /*
 																			 * this.getClass().getEnclosingMethod().
@@ -90,13 +78,14 @@ public class Reinforcement {
 			// LOG.info("Getting more armies from cards result: " + this.toString());
 		}
 
-		// Once the total number of reinforcements is determined for the player’s turn,
-		// the player may place the armies on any country he owns, divided as he wants.
-		//
-		// For each Player.getCountries():
-//			If totalArmiesOwnedByPlayer == 0 then break
-//			N = user_input //if >  totalArmiesOwnedByPlayer, N = totalArmiesOwnedByPlayer
-//			Country.setArmiesNumber(n)
+		/*
+		 * // Once the total number of reinforcements is determined for the player’s
+		 * turn, // the player may place the armies on any country he owns, divided as
+		 * he wants. // // For each Player.getCountries(): // If
+		 * totalArmiesOwnedByPlayer == 0 then break // N = user_input //if >
+		 * totalArmiesOwnedByPlayer, N = totalArmiesOwnedByPlayer //
+		 * Country.setArmiesNumber(n)
+		 */
 		if (armies > 0) {
 			for (Country country : countries) {
 				int qtyArmies = UI.askNumber("Reinforcement phase", "How many armies do you want to put in country "

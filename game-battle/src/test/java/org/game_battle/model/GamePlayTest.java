@@ -10,6 +10,13 @@ import org.game_battle.GamePlay;
 
 import junit.framework.Assert;
 
+/**
+ * GamePlayTest tests the game play and ensures the game play functions correct
+ * 
+ * @author Harjot
+ *
+ */
+
 public class GamePlayTest {
 
 	GamePlay game;
@@ -18,6 +25,10 @@ public class GamePlayTest {
 	public void setup() {
 		game = new GamePlay();
 	}
+
+	/**
+	 * gameHasNoNullObjects checks if the opbjects are not null
+	 */
 
 	@Test
 	public void gameHasNoNullOjbects() {
@@ -28,6 +39,10 @@ public class GamePlayTest {
 		Assert.assertNotNull(game.getBoard().getCountries());
 	}
 
+	/**
+	 * playerIsRemovedFromGameWhenOwningNoCountries checks if the playher is removed
+	 * when he lost all the countries
+	 */
 	@Test
 	public void playerIsRemovedFromGameWhenOwningNoCountries() {
 
@@ -39,6 +54,10 @@ public class GamePlayTest {
 		Assert.assertTrue(game.getBoard().getPlayers().contains(playerWithCountries));
 	}
 
+	/**
+	 * playerWinsIfOwningAllCountries player should win when he owns all the
+	 * countries
+	 */
 	@Test
 	public void playerWinsIfOwningAllCountries() {
 		Player winningPlayer = game.getBoard().getPlayers().get(0);

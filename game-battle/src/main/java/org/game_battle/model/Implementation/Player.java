@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package org.game_battle.model.Implementation;
 
 import org.game_battle.view.*;
@@ -18,7 +16,7 @@ import org.apache.logging.log4j.Logger;
  * 
  * @author Vini
  * @version Alpha
- * @date 5/02/19
+ *
  **/
 public class Player extends Observable {
 	private static final Logger LOG = LogManager.getLogger(Player.class);
@@ -37,7 +35,9 @@ public class Player extends Observable {
 	private int armies = 0;
 
 	/**
-	 * @param armies the armies to set
+	 * setArmies sets the armies
+	 *  
+	 * @param armies armies
 	 */
 	public void setArmies(int armies) {
 		this.armies = armies;
@@ -50,27 +50,52 @@ public class Player extends Observable {
 	private String name;
 	private List<Integer> diceRollsResultSet = new ArrayList<Integer>();
 	private Continent ownedContinent;
+
 	// private boolean isAllOutMode = false;
+	/**
+	 * getOwnedContinent gets the owned continents
+	 * 
+	 * @return ownedContinent
+	 */
 
 	public Continent getOwnedContinent() {
 		return ownedContinent;
 	}
 
+	/**
+	 * setOwnedContinent sets the owned continents
+	 * 
+	 * @param ownedContinent continent owned by player
+	 */
+
 	public void setOwnedContinent(Continent ownedContinent) {
 		this.ownedContinent = ownedContinent;
 	}
+
+	/**
+	 * getName gets the name of the player
+	 * 
+	 * @return name
+	 */
 
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * setName sets the name of the player
+	 * 
+	 * @param name name of the player
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @param board game board
-	 * @param name
+	 * Player gets the board,name and cards
+	 * 
+	 * @param board board 
+	 * @param name name of the player
 	 * 
 	 */
 	public Player(Board board, String name) {
@@ -81,6 +106,8 @@ public class Player extends Observable {
 	}
 
 	/**
+	 * distributeCards gets the random distribution of cards
+	 * 
 	 * @param board
 	 * @return Return Random List of Cards
 	 */
@@ -88,9 +115,20 @@ public class Player extends Observable {
 		return Arrays.asList(board.getRandomCard(), board.getRandomCard(), board.getRandomCard());
 	}
 
+	/**
+	 * setCountries sets the countries
+	 * 
+	 * @param list list of countries
+	 */ 
+
 	public void setCountries(List<Country> list) {
 		countries = list;
 	}
+
+	/**
+	 * Reinforcement function allows the player to place its armies based on the
+	 * initial start up phase in its countries
+	 */
 
 	public void Reinforcement() {
 		// In the reinforcements phase, the player is given a number of armies that
@@ -102,16 +140,16 @@ public class Player extends Observable {
 		// Player.resetNumberArmies
 		// armies = 0;
 		// For each Continent:
-//			if allContinentBelongsTo(Player) 
-//				Player.updateNumberArmies(NumberArmies(Continent.control_value))  
+		// if allContinentBelongsTo(Player)
+		// Player.updateNumberArmies(NumberArmies(Continent.control_value))
 		//// updateNumberArmies just accumulates the number
-//			else
-//				totalCountriesOwnedByPlayer += Continent.CountriesOwnedBy(Player)
+		// else
+		// totalCountriesOwnedByPlayer += Continent.CountriesOwnedBy(Player)
 		//// add accumulated countries after all continents are checked
 		// Player.updateNumberArmies(RoundDown(totalCountriesOwnedByPlayer/3))
 		// OR (needs elaboration tho)...
 		// For each Continent
-//			Continent.CalculateNumberArmies(Player)
+		// Continent.CalculateNumberArmies(Player)
 		List<Continent> continents = board.getContinents();
 		int totalCountriesOwnedInAllContinents = 0;
 		int totalArmies = 0;// this.getArmies();//0;
@@ -135,13 +173,6 @@ public class Player extends Observable {
 		}
 		setArmiesQtyFromCountriesQty(totalCountriesOwnedInAllContinents, /* this.getArmies() + */totalArmies);
 
-		// Finally, if the player owns three cards of different sorts or the same sorts,
-		// he can exchange them for armies.
-		//
-		// “Do you want to try to get armies from your cards?”
-		// If YES:
-		// Player.updateNumberArmies(Cards.getEligibleArmies(Player.getCards()))
-		//// if not eligible, Cards.getEligibleArmies = 0
 		LOG.info("Starting player " + getName() + "'s turn #" + board.getTurn());
 
 		List<Card> player_cards = getCards();
@@ -153,7 +184,7 @@ public class Player extends Observable {
 		 * player_cards)) {
 		 */
 
-		if ((!(player_cards.size() < 3)) && (UI.isUserOk("Reinforcement phase",
+		if ((!(player_cards.size() < 3)) && (UI.isUserOk(/*"Reinforcement phase"*/"Starting player " + getName() + "'s turn #" + board.getTurn(),
 				"Initiate Card Exchange? " + player_cards + "\r\nDo you wanna try to get MORE armies from your cards?")
 				|| player_cards.size() > 4)) {
 			LOG.info("Card Exchange started.");
@@ -172,54 +203,55 @@ public class Player extends Observable {
 		} else
 			LOG.info("Skipping Card Exchange view");
 		// LOG.info("Getting more armies from cards result: " + this.toString());
-	//}else LOG.info("User opted out of Card Exchange");
+		// }else LOG.info("User opted out of Card Exchange");
 
-	// Once the total number of reinforcements is determined for the player’s turn,
-	// the player may place the armies on any country he owns, divided as he wants.
-	//
-	// For each Player.getCountries():
-//			If totalArmiesOwnedByPlayer == 0 then break
-//			N = user_input //if >  totalArmiesOwnedByPlayer, N = totalArmiesOwnedByPlayer
-//			Country.setArmiesNumber(n)
-	if(this.armies>0)
+		// Once the total number of reinforcements is determined for the player’s turn,
+		// the player may place the armies on any country he owns, divided as he wants.
+		//
+		// For each Player.getCountries():
+		// If totalArmiesOwnedByPlayer == 0 then break
+		// N = user_input //if > totalArmiesOwnedByPlayer, N = totalArmiesOwnedByPlayer
+		// Country.setArmiesNumber(n)
+		if (this.armies > 0)
 
-	{
-		for (Country country : countries) {
-			int qtyArmies = UI
-					.askNumber(
-							"Reinforcement phase", "How many armies do you want to put in country " + country.toString()
-									+ " ? [" + (countries.indexOf(country) + 1) + "/" + countries.size() + "]",
-							0, this.armies);
-			if (qtyArmies <= this.armies) {
-				LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
-						+ country.getArmies()/* this.toString() */);
-				country.setArmyQty(country.getArmies() + qtyArmies);
-				this.armies -= qtyArmies;
+		{
+			for (Country country : countries) {
+				int qtyArmies = UI.askNumber(
+						"Reinforcement phase", "How many armies do you want to put in country " + country.toString()
+								+ " ? [" + (countries.indexOf(country) + 1) + "/" + countries.size() + "]",
+						0, this.armies);
+				if (qtyArmies <= this.armies) {
+					LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
+							+ country.getArmies()/* this.toString() */);
+					country.setArmyQty(country.getArmies() + qtyArmies);
+					this.armies -= qtyArmies;
+				}
+				if (this.armies == 0)
+					break;
 			}
-			if (this.armies == 0)
-				break;
 		}
-	}
-	// LOG.info(this.toString());
+		// LOG.info(this.toString());
 
-	setChanged();
+		setChanged();
 
-	// notify all attached Observers of a change
-	notifyObservers(this);
+		// notify all attached Observers of a change
+		notifyObservers(this);
 
 	}
 
 	/**
+	 * getArmies gets the armies
 	 * 
-	 * @return Return Armies
+	 * @return Armies
 	 */
 	public int getArmies() {
 		return this.armies;
 	}
 
 	/**
+	 * getCrads gets the list of cards
 	 * 
-	 * @return Return list of Cards
+	 * @return cards list of Cards
 	 */
 
 	public List<Card> getCards() {
@@ -227,6 +259,7 @@ public class Player extends Observable {
 	}
 
 	/**
+	 * setArmiesQtyFromCountriesQty sets the armies quantity
 	 * 
 	 * @param totalCountriesOwned countries owned by the player
 	 * @param totalArmies         totalArmies belongs to a player
@@ -240,12 +273,14 @@ public class Player extends Observable {
 	}
 
 	/**
+	 * setArmiesFortification sets the armies for fortification
+	 * 
 	 * @param i number of armies
 	 */
 	private void setArmiesFortification(int i) {
 		// In any case, the minimal number of reinforcement armies is 3.
 		// If totalArmiesOwnedByPlayer < 3:
-//			totalArmiesOwnedByPlayer = 3
+		// totalArmiesOwnedByPlayer = 3
 		//
 		int r = i;
 		if (i < 3) {
@@ -259,6 +294,10 @@ public class Player extends Observable {
 
 	}
 
+	/**
+	 * Attack allows the player to attack the opponents teams countries based on the
+	 * dice roll
+	 */
 	public void Attack() {
 		/*
 		 * Once all the reinforcement armies have been placed by the player, the attacks
@@ -293,13 +332,12 @@ public class Player extends Observable {
 			if (!neighbours.isEmpty()) {
 				Country DeffendingCountry = UI.selectCountry("Attack phase", "Select target country",
 						neighbours /* board.getElligibleTargets(OffendingCountry) */);
-				// The attacker can choose to continue attacking until either all his armies or
-				// all the defending armies have been eliminated.
-				// While (OffendingCountry.getTotalArmies() > 0) AND
-				// (DeffendingCountry.getTotalArmies() > 0) do {
-				// <<Board.Battle()>>
-				// }
-				LOG.info(OffendingCountry + " vs " + DeffendingCountry);
+				/*
+				 * // The attacker can choose to continue attacking until either all his armies
+				 * or // all the defending armies have been eliminated. // While
+				 * (OffendingCountry.getTotalArmies() > 0) AND //
+				 * (DeffendingCountry.getTotalArmies() > 0) do { // <<Board.Battle()>> // }
+				 */LOG.info(OffendingCountry + " vs " + DeffendingCountry);
 				String attacker = board.getOwner(OffendingCountry).name;
 				String deffender = board.getOwner(DeffendingCountry).name;
 
@@ -323,11 +361,11 @@ public class Player extends Observable {
 					LOG.info("Starting Battle: " + attacker + " attacking " + deffender + ".");
 					// Board.Battle(OffendingCountry, DeffendingCountry)
 					board.doBattle(OffendingCountry, DeffendingCountry);
-					// If all the defender's armies are eliminated the attacker captures the
-					// territory.
-					// Board.updateTerritories(DeffendingCountry)
-					//// just change ownership if DeffendingCountry.getTotalArmies() == 0
-				}
+					/*
+					 * // If all the defender's armies are eliminated the attacker captures the //
+					 * territory. // Board.updateTerritories(DeffendingCountry) //// just change
+					 * ownership if DeffendingCountry.getTotalArmies() == 0
+					 */				}
 				if (DeffendingCountry.getArmies() == 0) {
 					board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
 					// LOG.info("All the defender's armies are eliminated." + attacker + " captured
@@ -364,9 +402,10 @@ public class Player extends Observable {
 	}
 
 	/**
+	 * getAttackerCountries gets the attacker list of countries
 	 * 
-	 * @param
-	 * @return Return attacking neighbour country
+	 * @param i
+	 * @return attackers attacking neighbour country
 	 */
 	private List<Country> getAttackerCountries(int i) {
 		List<Country> attackers = new ArrayList<Country>();
@@ -380,33 +419,23 @@ public class Player extends Observable {
 	}
 
 	/**
+	 * getCountries gets the list of Countries
 	 * 
-	 * @return list of countries
+	 * @return countries list of countries
 	 */
 
 	public List<Country> getCountries() {
 		return countries;
 	}
 
+	/**
+	 * Fortification allows the players to move the armies to its repective other
+	 * countries
+	 */
 	public void Fortification() {
-		/*
-		 * Once he declares that he will not attack anymore (or cannot attack because
-		 * none of his countries that have an adjacent country controlled by another
-		 * player is containing more than one army), the fortification phase begins. In
-		 * the fortification phase, the player may move any number of armies from one of
-		 * his owed countries to the other, provided that there is a path between these
-		 * two countries that is composed of countries that he owns. Only one such move
-		 * is allowed per fortification phase.
-		 * 
-		 */
+		
 
-		// For each country in Player.getCountryList():
-		// If coutry.hasArmies() AND GameBoard.areConnected(country, defeatedCountry):
-//			Z = UI.ask(“Move how many armies from X to Y? [0 to country.getArmiesNumber()]”)
-//			country.setArmiesNumber(country.getArmiesNumber() - Z)
-//			defeatedCountry.setArmiesNumber(Z)	
-		// break FOR //only 1 move is allowed
-
+		
 		for (Country country : countries) {
 			List<Country> neighbours = new CopyOnWriteArrayList<>(country.getNeighbours());
 			for (Country neighbour : neighbours) {
@@ -415,11 +444,10 @@ public class Player extends Observable {
 					neighbours.remove(neighbour);
 				}
 			}
-			LOG.info(
-					"Elligible territory neighbours owned by " + board.getOwner(country).getName() + ": " + neighbours);
+			LOG.info("Elligible territories owned by " + board.getOwner(country).getName() + ": " + neighbours);
 			if (country.getArmies() > 0 && neighbours.size() > 0) {
 				Country selected = UI.selectCountry("Fortification phase",
-						"Want to move armies from " + country + " to a neighbour?", neighbours);
+						"Want to move armies from " + country + " to an elligible territory?", neighbours);
 				if (selected != null && country.getArmies() > 0) {
 					int n_armies = UI.askNumber("Fortification phase",
 							"How many armies from " + country + " to " + selected, 0, country.getArmies());
@@ -427,11 +455,11 @@ public class Player extends Observable {
 					LOG.info("Player " + this.name + " moved " + n_armies + " army from " + country.getName() + " to "
 							+ selected.getName() + " previous army qty was " + selected.getArmies());
 					selected.setArmyQty(selected.getArmies() + n_armies);// DONE bug here. not really updating selected
-																			// army qty
+					// army qty
 					break;
 				}
 			} else {
-				LOG.info(country.getName() + ": No armies or no neighbours to move around.");
+				LOG.info(country.getName() + ": No armies or no elligible territories to move around.");
 			}
 		}
 
@@ -443,26 +471,47 @@ public class Player extends Observable {
 	}
 
 	/**
+	 * getPreviousCountriesQty gets the countries qty
 	 * 
-	 * @return number of countries before attack
+	 * @return previousCountriesQty number of countries before attack
 	 */
 	public int getPreviousCountriesQty() {
 		return previousCountriesQty;
 	}
 
+	/**
+	 * setPreviousCountriesQty sets the previous countries quantity
+	 * 
+	 * @param currentCountriesQty countries quantity
+	 */
 	public void setPreviousCountriesQty(int currentCountriesQty) {
 		previousCountriesQty = currentCountriesQty;
 	}
 
+	/**
+	 * setDiceRollResultSet sets the dice roll result set
+	 * 
+	 * @param rollDices number of dice rolls
+	 */
 	public void setDiceRollResultSet(List<Integer> rollDices) {
 		this.diceRollsResultSet = rollDices;
 
 	}
 
+	/**
+	 * getDiceRollResultSet gets the dice result set
+	 * 
+	 * @return diceRollsResultSet
+	 */
+
 	public List<Integer> getDiceRollResultSet() {
 		// TODO Auto-generated method stub
 		return diceRollsResultSet;
 	}
+
+	/**
+	 * getCardInfo gets the card information
+	 */
 
 	public void getCardInfo() {
 		setChanged();
@@ -471,6 +520,11 @@ public class Player extends Observable {
 
 	}
 
+	/**
+	 * getCardExchange gets the card exchange
+	 * 
+	 * @return getCards
+	 */
 	public List<Card> getCardExchange() {
 		return this.getCards();
 	}

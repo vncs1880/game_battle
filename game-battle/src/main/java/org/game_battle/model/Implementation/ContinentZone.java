@@ -27,7 +27,7 @@ public class ContinentZone implements Continent {
 	/**
 	 * getContinentName gets the continent Name
 	 * 
-	 * @return continentName
+	 * @return continentName name of the Continent
 	 */
 	public String getContinentName() {
 		return continentName;
@@ -35,6 +35,7 @@ public class ContinentZone implements Continent {
 
 	/**
 	 * setContinentName set the continent Name
+	 * @param continentName name of the continent
 	 * 
 	 */
 
@@ -45,7 +46,7 @@ public class ContinentZone implements Continent {
 	/**
 	 * getContryList gets the country List
 	 * 
-	 * @return countrylist
+	 * @return countrylist list of the countries
 	 */
 
 	public List<TerritoryZone> getContryList() {
@@ -54,6 +55,7 @@ public class ContinentZone implements Continent {
 
 	/**
 	 * setContinentList sets the continent list
+	 * @param countrylist list of the countries
 	 * 
 	 */
 
@@ -64,7 +66,7 @@ public class ContinentZone implements Continent {
 	/**
 	 * setContinentList sets the continent List
 	 * 
-	 * @return countrylist
+	 * @return countrylist list of the countries
 	 */
 
 	public ArrayList<TerritoryZone> setContinentList() {

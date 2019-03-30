@@ -5,8 +5,8 @@ import java.util.ArrayList;
 /**
  * A javadoc for Territory interface
  * that has the following methods
- * @author
- * @version map1.0
+ * @author basant
+ * @version alpha
  * 
  */
 

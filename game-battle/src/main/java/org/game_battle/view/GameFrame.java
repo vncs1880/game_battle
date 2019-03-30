@@ -10,12 +10,19 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+/**
+ * GameFrame creates the GUI of the frame of game Play
+ * 
+ * @author Vini
+ *
+ */
 public class GameFrame extends JFrame {
 
 	private JPanel contentPane;
 
 	/**
 	 * Launch the application.
+	 * @param args arguments
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -40,26 +47,24 @@ public class GameFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
+
 		JTree tree = new JTree();
-		tree.setModel(new DefaultTreeModel(
-			new DefaultMutableTreeNode("Graph") {
-				{
-					DefaultMutableTreeNode node_1;
-					node_1 = new DefaultMutableTreeNode("Asia");
-						node_1.add(new DefaultMutableTreeNode("India"));
-						node_1.add(new DefaultMutableTreeNode("Japan"));
-					add(node_1);
-					node_1 = new DefaultMutableTreeNode("America");
-						node_1.add(new DefaultMutableTreeNode("Brazil"));
-						node_1.add(new DefaultMutableTreeNode("Mexico"));
-					add(node_1);
-					node_1 = new DefaultMutableTreeNode("Oceania");
-						node_1.add(new DefaultMutableTreeNode("Australia"));
-					add(node_1);
-				}
+		tree.setModel(new DefaultTreeModel(new DefaultMutableTreeNode("Graph") {
+			{
+				DefaultMutableTreeNode node_1;
+				node_1 = new DefaultMutableTreeNode("Asia");
+				node_1.add(new DefaultMutableTreeNode("India"));
+				node_1.add(new DefaultMutableTreeNode("Japan"));
+				add(node_1);
+				node_1 = new DefaultMutableTreeNode("America");
+				node_1.add(new DefaultMutableTreeNode("Brazil"));
+				node_1.add(new DefaultMutableTreeNode("Mexico"));
+				add(node_1);
+				node_1 = new DefaultMutableTreeNode("Oceania");
+				node_1.add(new DefaultMutableTreeNode("Australia"));
+				add(node_1);
 			}
-		));
+		}));
 		contentPane.add(tree, BorderLayout.WEST);
 	}
 

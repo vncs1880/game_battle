@@ -6,8 +6,8 @@ import java.util.Map;
 /**
  *  A javadoc for world interface
  * that has the following methods
- * @author
- * @version map1.0
+ * @author basant
+ * @version alpha
  * 
  */
 

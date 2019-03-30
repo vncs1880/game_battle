@@ -77,6 +77,7 @@ public class ReaderWriterTests {
 	/**
 	 * Test responsible for ensuring that the number of lines read equals the size
 	 * of the map file
+	 * @throws IOException inout and output exception
 	 */
 
 	@Test
@@ -96,6 +97,7 @@ public class ReaderWriterTests {
 
 	/**
 	 * Ensure if the control values are updated
+	 * @throws IOException input and output exception
 	 */
 
 	@Test

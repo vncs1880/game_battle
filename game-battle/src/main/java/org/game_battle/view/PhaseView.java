@@ -1,6 +1,10 @@
 package org.game_battle.view;
 
 import java.util.Observable;
+
+/**
+ * PhaseView implememnts the phase view of the information of the player using observer pattern
+ */
 import java.util.Observer;
 
 import org.game_battle.model.Implementation.Board;

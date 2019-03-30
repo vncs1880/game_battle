@@ -2,7 +2,13 @@ package org.game_battle.model.Implementation;
 
 
 import java.util.List;
+
 import java.util.Observable;
+/**
+ * PhaseWorldModel creates the obeserver pattern model
+ * @author Basant
+ *
+ */
 
 public class PhaseWorldModel extends Observable {
 

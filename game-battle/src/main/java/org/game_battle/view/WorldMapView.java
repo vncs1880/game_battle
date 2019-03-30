@@ -65,7 +65,7 @@ public class WorldMapView {
 	 * initiateMapLoad method is to get user input for loading previous map or
 	 * creating a new map.
 	 * 
-	 * @return isEditMap value to load old map or create new map
+	 * 
 	 */
 
 	public void initiateMapLoad() {
@@ -151,6 +151,7 @@ public class WorldMapView {
 
 	/**
 	 * editMap to give the user the option for map editing
+	 * @return userAction
 	 * 
 	 */
 	public userAction editMap() {
@@ -172,6 +173,7 @@ public class WorldMapView {
 	/**
 	 * editContinentValue is a method to display the option to edit continent and
 	 * its control value
+	 * @return input:value
 	 *
 	 */
 
@@ -186,6 +188,7 @@ public class WorldMapView {
 
 	/**
 	 * editNeighbours method is to display the country names and new neighbours
+	 * @return input:value
 	 * 
 	 */
 	public String editNeighbours() {
@@ -200,6 +203,7 @@ public class WorldMapView {
 	/**
 	 * removeNeighbour method displays the country name and the neighbours to be
 	 * removed.
+	 * @return input:value
 	 */
 	public String removeNeighbours() {
 		sc = new Scanner(System.in);
