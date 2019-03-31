@@ -78,8 +78,8 @@ public class UI implements Strategy {
 		return (picked==JOptionPane.OK_OPTION)?true:false;
 	}
 
-	public int askNumber(String title,  String prompt, int min, int max) {
-		System.out.println("I ma in here");
+	public int askNumber(String title,  String prompt, int min, int max ,int numOfCountries, boolean flag) {
+		//System.out.println("I ma in here");
 		List<Integer> collect = IntStream.rangeClosed(min, max).boxed().collect(Collectors.toList());
 		Integer[] options = (Integer[]) collect.toArray((new Integer[collect.size()]));
 		Integer picked = null;
@@ -103,6 +103,11 @@ public class UI implements Strategy {
 		//MapInterface m = new MapInterface();
 		//String[] y = x.toArray(new String[0]);
 		Country[] countries_array = countries.toArray(new Country[0]);
+		for(Country str:countries_array) {
+			System.out.println("#########################"+str.toString());
+			
+		}
+		
 		
 		Country picked;
 		do {
@@ -115,5 +120,23 @@ public class UI implements Strategy {
 		
 		return picked;
 	}
-
+	@Override
+	public int setArmies(int NumOfArmies) {
+		// TODO Auto-generated method stub
+		return NumOfArmies;
+	}
+	
+	
+	@Override
+	public Country[] doAttack(Country offendingCountry, Country deffendingCountry, int attackerDiceRoll,
+			int defenderDiceRoll) {
+		// TODO Auto-generated method stub
+		Country winner = (attackerDiceRoll > defenderDiceRoll) ? offendingCountry : deffendingCountry;
+		Country loser = (attackerDiceRoll < defenderDiceRoll) ? offendingCountry : deffendingCountry;
+		Country[] cn = new Country[2];
+		cn[0] = winner;
+		cn[1] = loser;
+		return cn;
+	}
+	
 }

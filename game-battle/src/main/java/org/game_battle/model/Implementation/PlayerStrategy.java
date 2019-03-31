@@ -24,9 +24,19 @@ public class PlayerStrategy{
 
 		
 	}
+	public Country[] doAttack(Country offendingCountry, Country deffendingCountry, int attackerDiceRoll,
+			int defenderDiceRoll) {
+		return this.strategy.doAttack(offendingCountry,deffendingCountry,attackerDiceRoll,defenderDiceRoll);
+	}
 	
-	public int askNumber(String title,  String prompt, int min, int max) {
-        return this.strategy.askNumber(title, prompt, min, max);
+	public int setArmies(int title) {
+        return this.strategy.setArmies(title);
+
+		
+	}
+	
+	public int askNumber(String title,  String prompt, int min, int max, int numOfCountries , boolean flag) {
+        return this.strategy.askNumber(title, prompt, min, max, numOfCountries,  flag);
 
 	}
 	

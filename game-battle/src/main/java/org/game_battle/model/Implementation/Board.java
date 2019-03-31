@@ -50,10 +50,21 @@ public class Board extends Observable {
 	private String actionTakingPlace;
 	private String gamePhaseName;
 	private String currentPlayer;
+	private String currentPlayerMode;
+
+	public String getCurrentPlayerMode() {
+		return currentPlayerMode;
+	}
+
+	public void setCurrentPlayerMode(String currentPlayerMode) {
+		this.currentPlayerMode = currentPlayerMode;
+	}
+
 	private float totalNoOfCountries;
 	private boolean isAllOutMode = false;
 	public UI ui;
 	public PlayerStrategy playerStrategy;
+	// public Player currePlayer;
 
 	public String getActionTakingPlace() {
 		return actionTakingPlace;
@@ -96,29 +107,30 @@ public class Board extends Observable {
 		playerStrategy = new PlayerStrategy();
 		playerStrategy.setStrategy(new UI());
 		totalNoOfCountries = MapInterface.getCountries().size();
+		int numofCountries = MapInterface.getCountries().size();
 		LOG.info("\r\n\r\n<<UI prompt in the background. Please use ALT-TAB>>");// TODO make the UI come to foreground
-		int totalPlayers = playerStrategy.askNumber("Initializing board", "How many players?", 2, 6);
-		
+		int totalPlayers = playerStrategy.askNumber("Initializing board", "How many players?", 2, 6, 0, false);
+
 		LinkedList<Player> players = new LinkedList<Player>();
 		for (int i = 0; i < totalPlayers; i++) {
 			String name = "dummy player";
 			name = playerStrategy.askText("What is player " + (i + 1) + " name?",
 					"Initializing board - " + totalPlayers + " players");
-			String tempPrompt = "Select your player type of " +  name;
-			String tempTitle ="Player Type";
-			List<String> playersType=new ArrayList();
+			String tempPrompt = "Select your player type of " + name;
+			String tempTitle = "Player Type";
+			List<String> playersType = new ArrayList();
 			playersType.add("Human");
 			playersType.add("Aggresive");
 			playersType.add("Benevolent");
 			playersType.add("Random");
 			playersType.add("Cheater");
 			Object[] playerMode_array = playersType.toArray();
-			String playerMode = (String) JOptionPane.showInputDialog(null,  tempPrompt
-					, tempTitle, JOptionPane.QUESTION_MESSAGE
-					, null,playerMode_array, playerMode_array[0] );
+			String playerMode = (String) JOptionPane.showInputDialog(null, tempPrompt, tempTitle,
+					JOptionPane.QUESTION_MESSAGE, null, playerMode_array, playerMode_array[0]);
 			players.add(new Player(this, name, playerMode));
-		
+
 		}
+
 		setPlayers(players);
 		// added 23rd as part of pahse 2
 		actionTakingPlace = "Players playing in the game : " + players;
@@ -183,8 +195,9 @@ public class Board extends Observable {
 	public int getArmiesFromCards(Player p) {
 		List<Card> player_cards = p.getCards();
 		Collection selected = new ArrayList();
-		while (selected.size()!=3 ) {
-			selected = playerStrategy.getObjs("Select 3 cards to exchange (use CTRL for multi select)", player_cards.toArray());			
+		while (selected.size() != 3) {
+			selected = playerStrategy.getObjs("Select 3 cards to exchange (use CTRL for multi select)",
+					player_cards.toArray());
 		}
 
 		HashMap<Card.Sort, Integer> cardsCount = new HashMap<Card.Sort, Integer>() {
@@ -194,8 +207,8 @@ public class Board extends Observable {
 				put(Card.Sort.ARTILLERY, 0);
 			}
 		};
-		
-		List<Card> cards = (List<Card>)selected; 
+
+		List<Card> cards = (List<Card>) selected;
 
 		for (Card card : cards) {
 			Sort cardtype = card.getType();
@@ -283,90 +296,126 @@ public class Board extends Observable {
 		 */
 		Player attacker = getOwner(offendingCountry);
 		Player deffender = getOwner(deffendingCountry);
-		LOG.info("\r\nATTACKER: "+attacker+"\r\nDEFFENDER: "+deffender);
-		
-		List<Integer> attackerDices = rollDices(attacker, offendingCountry,(offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
-		List<Integer> deffenderDices = rollDices(deffender, deffendingCountry,(/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
-		
-		Integer deffenderBestDice = deffenderDices.get(deffenderDices.size()-1);
-		Integer attackerBestDice = attackerDices.get(attackerDices.size()-1);
-		Integer deffender2ndBestDice = 1;//deffenderDices.get(deffenderDices.size()-2);
-		Integer attacker2ndBestDice = 2;//attackerDices.get(attackerDices.size()-2);
-		while ((attackerBestDice==deffenderBestDice)||(attacker2ndBestDice==deffender2ndBestDice)) {//workaround to avoid ties
+		LOG.info("\r\nATTACKER: " + attacker + "\r\nDEFFENDER: " + deffender);
+
+		List<Integer> attackerDices = rollDices(attacker, offendingCountry,
+				(offendingCountry.getArmies() < MAX_DICE_ROLLS_ATTACKER) ? offendingCountry.getArmies()
+						: MAX_DICE_ROLLS_ATTACKER);
+		List<Integer> deffenderDices = rollDices(deffender, deffendingCountry,
+				(/* deffendingCountry */offendingCountry.getArmies() < MAX_DICE_ROLLS_DEFFENDER)
+						? /* deffendingCountry */offendingCountry.getArmies()
+						: MAX_DICE_ROLLS_DEFFENDER);
+
+		Integer deffenderBestDice = deffenderDices.get(deffenderDices.size() - 1);
+		Integer attackerBestDice = attackerDices.get(attackerDices.size() - 1);
+		Integer deffender2ndBestDice = 1;// deffenderDices.get(deffenderDices.size()-2);
+		Integer attacker2ndBestDice = 2;// attackerDices.get(attackerDices.size()-2);
+		while ((attackerBestDice == deffenderBestDice) || (attacker2ndBestDice == deffender2ndBestDice)) {// workaround
+																											// to avoid
+																											// ties
 			LOG.info("Dice tie detected. Rolling dices again.");
-			attackerDices = rollDices(attacker, offendingCountry,(offendingCountry.getArmies()<MAX_DICE_ROLLS_ATTACKER)?offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
-			deffenderDices = rollDices(deffender, deffendingCountry,(/*deffendingCountry*/offendingCountry.getArmies()<MAX_DICE_ROLLS_DEFFENDER)?/*deffendingCountry*/offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
-			
-			deffenderBestDice = deffenderDices.get(deffenderDices.size()-1);
-			attackerBestDice = attackerDices.get(attackerDices.size()-1);
-			if (deffenderDices.size()==2) {//TODO check if this is working
-				deffender2ndBestDice = deffenderDices.get(deffenderDices.size()-2);
-				attacker2ndBestDice = attackerDices.get(attackerDices.size()-2);				
+			attackerDices = rollDices(attacker, offendingCountry,
+					(offendingCountry.getArmies() < MAX_DICE_ROLLS_ATTACKER) ? offendingCountry.getArmies()
+							: MAX_DICE_ROLLS_ATTACKER);
+			deffenderDices = rollDices(deffender, deffendingCountry,
+					(/* deffendingCountry */offendingCountry.getArmies() < MAX_DICE_ROLLS_DEFFENDER)
+							? /* deffendingCountry */offendingCountry.getArmies()
+							: MAX_DICE_ROLLS_DEFFENDER);
+
+			deffenderBestDice = deffenderDices.get(deffenderDices.size() - 1);
+			attackerBestDice = attackerDices.get(attackerDices.size() - 1);
+			if (deffenderDices.size() == 2) {// TODO check if this is working
+				deffender2ndBestDice = deffenderDices.get(deffenderDices.size() - 2);
+				attacker2ndBestDice = attackerDices.get(attackerDices.size() - 2);
 			}
 		}
-		
+
 		attacker.setDiceRollResultSet(attackerDices);
 		deffender.setDiceRollResultSet(deffenderDices);
 		List<Integer> attackerDiceRollResultSet = attacker.getDiceRollResultSet();
 		List<Integer> deffenderDiceRollResultSet = deffender.getDiceRollResultSet();
-		LOG.info("Battle dice rolls\r\nAttacker ("+attacker.getName()+","+offendingCountry.getName()+") dice rolls results: " + attackerDiceRollResultSet +
-				"\r\nDeffender  ("+deffender.getName()+","+deffendingCountry.getName()+") dice rolls results: " + deffenderDiceRollResultSet);
+		LOG.info("Battle dice rolls\r\nAttacker (" + attacker.getName() + "," + offendingCountry.getName()
+				+ ") dice rolls results: " + attackerDiceRollResultSet + "\r\nDeffender  (" + deffender.getName() + ","
+				+ deffendingCountry.getName() + ") dice rolls results: " + deffenderDiceRollResultSet);
 		/*
 		 * The outcome of the attack is determined by comparing the defenders best dice
 		 * roll with the attackers best dice roll. If the defender rolls greater or
 		 * equal to the attacker, then the attacker loses an army otherwise the defender
-		 * loses an army. */
-				
-		Integer attackerLastDice = attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-1);
-		Integer deffenderLastDice = deffenderDiceRollResultSet.get(deffenderDiceRollResultSet.size()-1);
+		 * loses an army.
+		 */
 
-		Country winner = (attackerLastDice > deffenderLastDice) ? offendingCountry : deffendingCountry;
-		Country loser = (attackerLastDice < deffenderLastDice) ? offendingCountry : deffendingCountry;
-		LOG.info(winner.getName()+" ("+getOwner(winner).getName()+") has the best dice roll of all. "+ loser.getName() +" loses one army for that.");
-		//loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
-		loser.setArmyQty(loser.getArmies()>0?loser.getArmies()-1:0); //update country army instead of player army
+		Integer attackerLastDice = attackerDiceRollResultSet.get(attackerDiceRollResultSet.size() - 1);
+		Integer deffenderLastDice = deffenderDiceRollResultSet.get(deffenderDiceRollResultSet.size() - 1);
+
+		Country[] cn = new Country[2];
+		cn = this.playerStrategy.doAttack(offendingCountry, deffendingCountry, attackerLastDice, deffenderLastDice);
+//		
+//		Country winner = (attackerLastDice > deffenderLastDice) ? offendingCountry : deffendingCountry;
+//		Country loser = (attackerLastDice < deffenderLastDice) ? offendingCountry : deffendingCountry;
+//		this.playerStrategy.doAttack(offendingCountry,deffendingCountry,attackerLastDice,deffenderLastDice);
+//		
 		
-		LOG.info("1st round WINNER: "+winner+" LOSER: "+loser);
-		/*If the defender rolled two dice, then his other dice roll is
-		 * compared to the attacker's second best dice roll and a second army is lost by
-		 * the attacker or defender in the same way.
-		 */		
-		if (deffenderDiceRollResultSet.size()==2) {//TODO fix this:assumes the attacker rolled more dices than the deffender
+		Country winner = cn[0];
+		Country loser = cn[1];
+		LOG.info(winner.getName() + " (" + getOwner(winner).getName() + ") has the best dice roll of all. "
+				+ loser.getName() + " loses one army for that.");
+		// loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
+		loser.setArmyQty(loser.getArmies() > 0 ? loser.getArmies() - 1 : 0); // update country army instead of player
+																				// army
+
+		LOG.info("1st round WINNER: " + winner + " LOSER: " + loser);
+		/*
+		 * If the defender rolled two dice, then his other dice roll is compared to the
+		 * attacker's second best dice roll and a second army is lost by the attacker or
+		 * defender in the same way.
+		 */
+		if (deffenderDiceRollResultSet.size() == 2) {// TODO fix this:assumes the attacker rolled more dices than the
+														// deffender
 			try {
-				winner = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)>deffenderDiceRollResultSet.get(0))?offendingCountry:deffendingCountry;
-				loser = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size()-2)<deffenderDiceRollResultSet.get(0))?offendingCountry:deffendingCountry;
-				LOG.info(winner.getName()+" ("+getOwner(winner).getName()+") has the 2nd best dice roll. "+ loser.getName() +" loses one army.");
-				//loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
-				loser.setArmyQty(loser.getArmies()>0?loser.getArmies()-1:0); //update country army instead of player army
-				LOG.info("2nd round WINNER: "+winner+" LOSER: "+loser);
+				winner = (attackerDiceRollResultSet
+						.get(attackerDiceRollResultSet.size() - 2) > deffenderDiceRollResultSet.get(0))
+								? offendingCountry
+								: deffendingCountry;
+				loser = (attackerDiceRollResultSet
+						.get(attackerDiceRollResultSet.size() - 2) < deffenderDiceRollResultSet.get(0))
+								? offendingCountry
+								: deffendingCountry;
+				LOG.info(winner.getName() + " (" + getOwner(winner).getName() + ") has the 2nd best dice roll. "
+						+ loser.getName() + " loses one army.");
+				// loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
+				loser.setArmyQty(loser.getArmies() > 0 ? loser.getArmies() - 1 : 0); // update country army instead of
+																						// player army
+				LOG.info("2nd round WINNER: " + winner + " LOSER: " + loser);
 			} catch (Exception e) {
 				// TODO e.printStackTrace();
 				LOG.error("deffender picked more dice rolls than attacker.. context not found on project description");
 			}
 		}
-		
+
 		setIsAllOutMode(false);
 		LOG.info("ALL OUT MODE DISABLED");
 
 	}
 
 	/**
-	 * @param player 
-	 * @param maxDiceRolls 
-	 * @param player 
-	 * @param country 
-	 * @return 
+	 * @param player
+	 * @param maxDiceRolls
+	 * @param player
+	 * @param country
+	 * @return
 	 * 
 	 */
 	private List<Integer> rollDices(Player player, Country country, int maxDiceRolls) {
-		LOG.info("Rolling dices for "+player.getName() +" ("+country.getName()+")");
-		
+		LOG.info("Rolling dices for " + player.getName() + " (" + country.getName() + ")");
+
 		int diceRollsNum = maxDiceRolls;
-		
+
 		if (!this.getIsAllOutMode()) {
-			diceRollsNum = playerStrategy.askNumber("Rolling dices", player.getName()+", how many dices do you want to roll?", 1, maxDiceRolls);
-		} else LOG.info("All Out Mode: maximum dice rolls selected: "+maxDiceRolls);
-		
+			diceRollsNum = playerStrategy.askNumber("Rolling dices",
+					player.getName() + ", how many dices do you want to roll?", 1, maxDiceRolls, 0, false);
+		} else
+			LOG.info("All Out Mode: maximum dice rolls selected: " + maxDiceRolls);
+
 		List<Integer> diceRollsResultSet = new ArrayList<Integer>();
 		for (int i = 0; i < diceRollsNum; i++) {
 			diceRollsResultSet.add(getDiceRollResult(null));
@@ -503,7 +552,7 @@ public class Board extends Observable {
 	}
 
 	public boolean getIsAllOutMode() {
-		return this.isAllOutMode ;
+		return this.isAllOutMode;
 	}
 
 	public void setIsAllOutMode(boolean userOk) {

@@ -6,10 +6,14 @@ import javax.naming.Context;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.game_battle.model.Implementation.AggresiveStrategyImpl;
+import org.game_battle.model.Implementation.BenevolentStrategyImpl;
 import org.game_battle.model.Implementation.Board;
+import org.game_battle.model.Implementation.CheaterStrategyImpl;
 import org.game_battle.model.Implementation.MapInterface;
 import org.game_battle.model.Implementation.Player;
 import org.game_battle.model.Implementation.PlayerStrategy;
+import org.game_battle.model.Implementation.RandomStrategyImpl;
 import org.game_battle.view.PhaseView;
 import org.game_battle.view.PlayerDominationView;
 import org.game_battle.view.CardView;
@@ -53,6 +57,7 @@ public class GamePlay {
 
 	/**
 	 * Main class to run the entire flow
+	 * 
 	 * @param args arguments
 	 */
 	public static void main(String[] args) {
@@ -77,7 +82,7 @@ public class GamePlay {
 		 * while (it.hasNext()) { Player player = (Player) it.next();
 		 * player.Reinforcement(); //player.Attack(); //player.Fortification(); }
 		 */
-		
+
 		GamePlay game = new GamePlay();
 		boolean gameOver = false;
 		int i = 0;
@@ -86,7 +91,26 @@ public class GamePlay {
 			i++;
 			game.getBoard().setTurn(i);
 			for (Player player : players) {
-				game.board.setCurrentPlayer(player.getName());
+
+				if (player.getPlayerMode().equals("Human")) {
+					game.board.playerStrategy.setStrategy(new UI());
+				} else if (player.getPlayerMode().equals("Aggresive")) {
+					game.board.playerStrategy.setStrategy(new AggresiveStrategyImpl());
+
+				} else if (player.getPlayerMode().equals("Benevolent")) {
+					game.board.playerStrategy.setStrategy(new BenevolentStrategyImpl());
+
+				} else if (player.getPlayerMode().equals("Random")) {
+					game.board.playerStrategy.setStrategy(new RandomStrategyImpl());
+				}
+
+				else {
+					game.board.playerStrategy.setStrategy(new CheaterStrategyImpl());
+
+				}
+
+				game.board.setCurrentPlayer(player.getName() + "  " + player.getPlayerMode());
+
 				action = "PLAYER :" + player.getName() + " TURN #" + i + "\n" + game.board;
 				game.board.setActionTakingPlace(action);
 
@@ -140,7 +164,7 @@ public class GamePlay {
 
 					game.board.playerStrategy.askNumber("it is over :P",
 							"end of game! congratulations " + player.getName() + "!\r\n\r\nPlease rate this game:", 1,
-							5);
+							5, 0, false);
 					gameOver = true;
 				}
 				if (currentCountriesQty == 0) {
@@ -198,6 +222,7 @@ public class GamePlay {
 
 	/**
 	 * getBoard class to get Board details
+	 * 
 	 * @return game board
 	 */
 	public Board getBoard() {

@@ -90,6 +90,8 @@ public class Player extends Observable {
 		cards = new LinkedList<Card>(distributeCards(board));
 		ui = new UI();
 		this.playerMode = playerMode;
+		
+		
 	}
 
 	/**
@@ -164,7 +166,7 @@ public class Player extends Observable {
 		 * ". \n\rDo you wanna try to get MORE armies from your cards? " +
 		 * player_cards)) {
 		 */
-
+     
 		if ((!(player_cards.size() < 3)) && (board.playerStrategy.isUserOk("Reinforcement phase",
 				"Initiate Card Exchange? " + player_cards + "\r\nDo you wanna try to get MORE armies from your cards?")
 				|| player_cards.size() > 4)) {
@@ -193,20 +195,26 @@ public class Player extends Observable {
 //			If totalArmiesOwnedByPlayer == 0 then break
 //			N = user_input //if >  totalArmiesOwnedByPlayer, N = totalArmiesOwnedByPlayer
 //			Country.setArmiesNumber(n)
+		int numOfCountries;
 	if(this.armies>0)
 
 	{
-		for (Country country : countries) {			
-			int qtyArmies = ui.askNumber(
+	    numOfCountries= getCountries().size();
+	    boolean flag = false; 
+	    this.armies = board.playerStrategy.setArmies(this.armies);
+       	
+		for (Country country : countries) {		
+			
+			int qtyArmies = board.playerStrategy.askNumber(
 							"Reinforcement phase", "How many armies do you want to put in country " + country.toString()
 									+ " ? [" + (countries.indexOf(country) + 1) + "/" + countries.size() + "]",
-							0, this.armies);
-
+							0, this.armies, numOfCountries, flag );
 			if (qtyArmies <= this.armies) {
 				LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
 						+ country.getArmies()/* this.toString() */);
 				country.setArmyQty(country.getArmies() + qtyArmies);
 				this.armies -= qtyArmies;
+				flag = true;
 			}
 			if (this.armies == 0)
 				break;
@@ -354,8 +362,8 @@ public class Player extends Observable {
 					 */
 					if (this.armies > 0) {
 						int minimumArmies = board.getLastDiceRollResult();
-						int armies_to_occupy = board.ui.askNumber("Attack phase",
-								"How many armies to occupy defeated country?", minimumArmies, this.armies);
+						int armies_to_occupy = board.playerStrategy.askNumber("Attack phase",
+								"How many armies to occupy defeated country?", minimumArmies, this.armies, 0, false);
 						DeffendingCountry.setArmyQty(DeffendingCountry.getArmies() + armies_to_occupy);
 						this.armies -= armies_to_occupy;
 						LOG.info(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
@@ -433,8 +441,8 @@ public class Player extends Observable {
 				Country selected = board.playerStrategy.selectCountry("Fortification phase",
 						"Want to move armies from " + country + " to a neighbour?", neighbours);
 				if (selected != null && country.getArmies() > 0) {
-					int n_armies = ui.askNumber("Fortification phase",
-							"How many armies from " + country + " to " + selected, 0, country.getArmies());
+					int n_armies = board.playerStrategy.askNumber("Fortification phase",
+							"How many armies from " + country + " to " + selected, 0, country.getArmies(), 0, false);
 					country.setArmyQty(country.getArmies() - n_armies);
 					LOG.info("Player " + this.name + " moved " + n_armies + " army from " + country.getName() + " to "
 							+ selected.getName() + " previous army qty was " + selected.getArmies());
