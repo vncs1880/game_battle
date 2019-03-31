@@ -84,72 +84,77 @@ public class GamePlay {
 		 */
 
 		GamePlay game = new GamePlay();
+		game.startMatch();
+
+	}
+
+	private void startMatch() {
 		boolean gameOver = false;
 		int i = 0;
 		String action = "";
 		while (!gameOver/* players.size() > 1 */) {
 			i++;
-			game.getBoard().setTurn(i);
+			getBoard().setTurn(i);
 			for (Player player : players) {
 
 				if (player.getPlayerMode().equals("Human")) {
-					game.board.playerStrategy.setStrategy(new UI());
-				} else if (player.getPlayerMode().equals("Aggresive")) {
-					game.board.playerStrategy.setStrategy(new AggresiveStrategyImpl());
+					board.playerStrategy.setStrategy(new UI());
+				} else if (player.getPlayerMode().equals("Aggressive")) {
+					board.playerStrategy.setStrategy(new AggresiveStrategyImpl());
 
 				} else if (player.getPlayerMode().equals("Benevolent")) {
-					game.board.playerStrategy.setStrategy(new BenevolentStrategyImpl());
+					board.playerStrategy.setStrategy(new BenevolentStrategyImpl());
 
 				} else if (player.getPlayerMode().equals("Random")) {
-					game.board.playerStrategy.setStrategy(new RandomStrategyImpl());
+					board.playerStrategy.setStrategy(new RandomStrategyImpl());
 				}
 
 				else {
-					game.board.playerStrategy.setStrategy(new CheaterStrategyImpl());
+					board.playerStrategy.setStrategy(new CheaterStrategyImpl());
 
 				}
 
-				game.board.setCurrentPlayer(player.getName() + "  " + player.getPlayerMode());
+				board.setCurrentPlayer(player.getName() + "  " + player.getPlayerMode());
 
-				action = "PLAYER :" + player.getName() + " TURN #" + i + "\n" + game.board;
-				game.board.setActionTakingPlace(action);
+				action = "PLAYER :" + player.getName() + " TURN #" + i + "\n" + board;
+				board.setActionTakingPlace(action);
 
 				// LOG.info("\r\n" + game.board + "\r\n\r\n<<PLAYER " + player.getName()
 				// + " TURN #" + i + ">>\r\n\r\n Reinforcement START");
 				// added 23rd as part of pahse 2
-				game.board.setGamePhaseName("Reinforcement");
-				game.board.getBoardInfo();
+				board.setGamePhaseName("Reinforcement");
+				board.getBoardInfo();
 
-				player.addObserver(game.cardView);
+				player.addObserver(cardView);
 
 				player.Reinforcement();
 
 				action = "\r\nReinforcement END: \r\n\r\n" + player;
-				game.board.setActionTakingPlace(action);
-				game.board.getBoardInfo();
+				board.setActionTakingPlace(action);
+				board.getBoardInfo();
 
-				if (game.getBoard().getTurn() > 1) {
+				if (getBoard().getTurn() > 1) {
 					// added 23rd as part of pahse 2
-					game.board.setGamePhaseName("Attack");
-					game.board.getBoardInfo();
+					board.setGamePhaseName("Attack");
+					board.getBoardInfo();
 					player.Attack();
 					action = "\nAttack END: \r\n\r\n" + player;
-					game.board.setActionTakingPlace(action);
+					board.setActionTakingPlace(action);
 					// LOG.info("\r\nAttack END: \r\n\r\n" + player + "\r\n\r\nFortification
 					// START");
 				} else {
 					action = "First turn, skipping attack phase \r\n\r\n" + player;
-					game.board.setActionTakingPlace(action);
+					board.setActionTakingPlace(action);
 					// LOG.info("First turn, skipping attack phase \r\n\r\n"+ player +
 					// "\r\n\r\nFortification START");
 				}
 				// added 23rd as part of pahse 2
-				game.board.setGamePhaseName("Fortification");
-				game.board.getBoardInfo();
+				board.setGamePhaseName("Fortification");
+				board.getBoardInfo();
 				player.Fortification();
 				action = "\nFortification END: \r\n\r\n" + player;
-				game.board.setActionTakingPlace(action);
-				game.board.getBoardInfo();
+				board.setActionTakingPlace(action);
+				board.getBoardInfo();
 				// LOG.info("\r\nFortification END: \r\n\r\n" + player);
 				/*
 				 * Any player that does not control at least one country is removed from the
@@ -160,25 +165,25 @@ public class GamePlay {
 				 * 8Y1byZSe0/edit?disco=AAAAClD6TuY
 				 */
 				int currentCountriesQty = player.getCountries().size();
-				if (currentCountriesQty == game.board.getCountries().size()) {
+				if (currentCountriesQty == board.getCountries().size()) {
 
-					game.board.playerStrategy.askNumber("it is over :P",
+					board.playerStrategy.askNumber("it is over :P",
 							"end of game! congratulations " + player.getName() + "!\r\n\r\nPlease rate this game:", 1,
 							5, 0, false);
 					gameOver = true;
 				}
 				if (currentCountriesQty == 0) {
-					game.board.getPlayers().remove(player);
+					board.getPlayers().remove(player);
 					action = player.getName()
 							+ ", you lost all your countries. Thank you for your participation. Good bye.";
-					game.board.setActionTakingPlace(action);
+					board.setActionTakingPlace(action);
 					// LOG.info(player.getName()
 					// + ", you lost all your countries. Thank you for your participation. Good
 					// bye.");
 				} else if (currentCountriesQty > player.getPreviousCountriesQty()) {
-					player.getCards().add(game.board.getRandomCard());
+					player.getCards().add(board.getRandomCard());
 					action = "You conquered at least one new country. Have an extra card for that. Congratulations.";
-					game.board.setActionTakingPlace(action);
+					board.setActionTakingPlace(action);
 					// LOG.info("You conquered at least one new country. Have an extra card for
 					// that. Congratulations.");
 				}
@@ -216,8 +221,6 @@ public class GamePlay {
 			// cardslist = GameBoard.getDistributedCards
 			// cardslist[winner].append(cardslist[defeated])
 		}
-		;
-
 	}
 
 	/**
