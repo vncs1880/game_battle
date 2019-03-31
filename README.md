@@ -11,8 +11,8 @@
 |Implementation of the different player behaviors using the Strategy pattern, where the strategies implement different versions of the reinforcement, attack and fortification as methods of the Player class (see Player Behavior Strategies below). |0%|4| 
 |Single game mode: Game starts by user selection of a user-saved map file, then loads the map as a connected graph. User chooses the number and behavior of players (see Player Behavior Strategies below). The game proceeds until one of the players has conquered the whole map. If no human player is selected, the game proceeds fully automatically without any user interaction. |0%|2| 
 |Player Behavior Strategies|||
-|• A human player that requires user interaction to make decisions.|||
-|• An aggressive computer player strategy that focuses on attack (reinforces its strongest country, then always attack with it until it cannot attack anymore, then fortifies in order to maximize aggregation of forces in one country).|||
+|• A human player that requires user interaction to make decisions.|100%||
+|• An aggressive computer player strategy that focuses on attack (reinforces its strongest country, then always attack with it until it cannot attack anymore, then fortifies in order to maximize aggregation of forces in one country).|100%||
 |• A benevolent computer player strategy that focuses on protecting its weak countries (reinforces its weakest countries, never attacks, then fortifies in order to move armies to weaker countries).|||
 |• A random computer player strategy that reinforces random a random country, attacks a random number of times a random country, and fortifies a random country, all following the standard rules for each phase.|||
 |• A cheater computer player strategy whose reinforce() method doubles the number of armies on all its countries, whose attack() method automatically conquers all the neighbors of all its countries, and whose fortify() method doubles the number of armies on its countries that have neighbors that belong to other players. |||
