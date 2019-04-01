@@ -3,12 +3,14 @@
  */
 package org.game_battle;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.game_battle.model.Implementation.Country;
 import org.game_battle.model.Implementation.Player;
 
 /**
@@ -43,7 +45,7 @@ public class TournamentMatch {
 	}
 
 	public void startMatch() {
-		List<Player> players = null;
+		List<Player> players = new ArrayList<Player>();;
 		String[] strategies = {"Aggresive", "Benevolent", "Random","Cheater"};
 		players.add(new Player(game.getBoard(), "computer 1",
 				strategies[0] /*strategies[RANDOM.nextInt(strategies.length)]*/));
