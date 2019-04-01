@@ -8,8 +8,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.ProgressMonitor;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.message.ExitMessage;
+import org.game_battle.model.Contract.TurnSubscriber;
 import org.game_battle.model.Implementation.Country;
 import org.game_battle.model.Implementation.Player;
 
@@ -17,7 +21,7 @@ import org.game_battle.model.Implementation.Player;
  * @author vncs
  *
  */
-public class TournamentMatch {
+public class TournamentMatch implements TurnSubscriber{
 	private static final Random RANDOM = new Random();
 	private static final Logger LOG = LogManager.getLogger(TournamentMatch.class);
 	private String winner;
@@ -25,17 +29,22 @@ public class TournamentMatch {
 	private Player player2;
 	private int map;
 	private GamePlay game;
+	private ProgressMonitor progressMonitor;
 
-	public TournamentMatch(int map, GamePlay gamePlay) {
+	public TournamentMatch(int map, GamePlay gamePlay, int max_turns) {
 		this.map = map;
 		this.game = gamePlay;
+		progressMonitor = new ProgressMonitor(null,
+                "Running "+gamePlay,
+                "", 0, max_turns);
+		this.game.getBoard().subscribeTurnEvents(this);
 	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		TournamentMatch tm = new TournamentMatch(1, new GamePlay());
+		TournamentMatch tm = new TournamentMatch(1, new GamePlay(),5000);
 		tm.startMatch();
 		LOG.info("cabou");
 	}
@@ -45,13 +54,24 @@ public class TournamentMatch {
 	}
 
 	public void startMatch() {
-		List<Player> players = new ArrayList<Player>();;
+		List<Player> players = new ArrayList<Player>();
 		String[] strategies = {"Aggresive", "Benevolent", "Random","Cheater"};
 		players.add(new Player(game.getBoard(), "computer 1",
 				strategies[0] /*strategies[RANDOM.nextInt(strategies.length)]*/));
 		players.add(new Player(game.getBoard(), "computer 2",
 				strategies[0] /* strategies[RANDOM.nextInt(strategies.length)] */));
 		this.game.startMatch(players);
+		//game.getBoard().getTurn();//use observer for this
+	}
+
+	@Override
+	public void turnChangedTo(int turn) {
+		progressMonitor.setProgress(turn);
+		if (turn==progressMonitor.getMaximum()+1) {
+			this.winner="DRAW";
+			LOG.info("Draw");
+			System.exit(0);
+		}
 	}
 
 }

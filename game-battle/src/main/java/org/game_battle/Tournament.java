@@ -80,7 +80,7 @@ public class Tournament {
 		this.tournamentPanel = tournamentPanel;
 		for (int game = 0; game < this.getGamesNumber(); game++) {
 			for (int map = 0; map < 4; map++) {
-				TournamentMatch tm = new TournamentMatch(map, new GamePlay());
+				TournamentMatch tm = new TournamentMatch(map, new GamePlay(), max_turns);
 
 				this.tournamentPanel[game][map] = tm;
 				this.tournamentPanel[game][map].startMatch();

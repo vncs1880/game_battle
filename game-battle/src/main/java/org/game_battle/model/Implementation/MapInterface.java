@@ -60,8 +60,6 @@ public class MapInterface {
 		 * countries.get(9)));
 		 */
 		
-		
-		
 		model  = new WorldMap();
 		WorldMapView view = new WorldMapView();
 		MapController controller = new MapController(view, model);

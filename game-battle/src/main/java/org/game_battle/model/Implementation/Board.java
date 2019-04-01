@@ -4,6 +4,8 @@
 package org.game_battle.model.Implementation;
 
 import java.util.*;
+
+import org.game_battle.TournamentMatch;
 import org.game_battle.model.Contract.*;
 import org.game_battle.model.Implementation.*;
 import org.game_battle.view.*;
@@ -65,6 +67,7 @@ public class Board extends Observable {
 	public UI ui;
 	public PlayerStrategy playerStrategy;
 	// public Player currePlayer;
+	private List<TurnSubscriber> turnsubscribers = new LinkedList<TurnSubscriber>();
 
 	public String getActionTakingPlace() {
 		return actionTakingPlace;
@@ -306,8 +309,11 @@ public class Board extends Observable {
 						? /* deffendingCountry */offendingCountry.getArmies()
 						: MAX_DICE_ROLLS_DEFFENDER);
 
-		Integer deffenderBestDice = deffenderDices.get(deffenderDices.size() - 1);
-		Integer attackerBestDice = attackerDices.get(attackerDices.size() - 1);
+		int deffender_dice_list_size = deffenderDices.size()<1?1:deffenderDices.size();
+		int attacker_dice_list_size = attackerDices.size()<1?1:attackerDices.size();
+		
+		Integer deffenderBestDice = deffenderDices.get(deffender_dice_list_size - 1);
+		Integer attackerBestDice = attackerDices.get(attacker_dice_list_size - 1);
 		Integer deffender2ndBestDice = 1;// deffenderDices.get(deffenderDices.size()-2);
 		Integer attacker2ndBestDice = 2;// attackerDices.get(attackerDices.size()-2);
 		while ((attackerBestDice == deffenderBestDice) || (attacker2ndBestDice == deffender2ndBestDice)) {// workaround
@@ -322,11 +328,11 @@ public class Board extends Observable {
 							? /* deffendingCountry */offendingCountry.getArmies()
 							: MAX_DICE_ROLLS_DEFFENDER);
 
-			deffenderBestDice = deffenderDices.get(deffenderDices.size() - 1);
-			attackerBestDice = attackerDices.get(attackerDices.size() - 1);
-			if (deffenderDices.size() == 2) {// TODO check if this is working
-				deffender2ndBestDice = deffenderDices.get(deffenderDices.size() - 2);
-				attacker2ndBestDice = attackerDices.get(attackerDices.size() - 2);
+			deffenderBestDice = deffenderDices.get(deffender_dice_list_size - 1);
+			attackerBestDice = attackerDices.get(attacker_dice_list_size - 1);
+			if (deffender_dice_list_size == 2) {// TODO check if this is working
+				deffender2ndBestDice = deffenderDices.get(deffender_dice_list_size - 2);
+				attacker2ndBestDice = attackerDices.get(attacker_dice_list_size - 2);
 			}
 		}
 
@@ -493,6 +499,13 @@ public class Board extends Observable {
 
 	public void setTurn(int i) {
 		this.turn = i;
+		broadcastTurnChanged(turn);
+	}
+
+	private void broadcastTurnChanged(int turn) {
+		for (TurnSubscriber subscriber : turnsubscribers) {
+			subscriber.turnChangedTo(turn);
+		}
 	}
 
 	public int getTurn() {
@@ -557,6 +570,11 @@ public class Board extends Observable {
 
 	public void setIsAllOutMode(boolean userOk) {
 		isAllOutMode = userOk;
+	}
+
+	public void subscribeTurnEvents(TurnSubscriber turnsubscriber) {
+		this.turnsubscribers.add(turnsubscriber);
+		
 	}
 
 }
