@@ -69,7 +69,8 @@ public class TournamentMatch implements TurnSubscriber{
 		progressMonitor.setProgress(turn);
 		if (turn==progressMonitor.getMaximum()+1) {
 			this.winner="DRAW";
-			LOG.info("Draw");
+			LOG.info("In order to minimize run completion time, each game should be declared a\r\n" + 
+					"draw after D turns.");
 			System.exit(0);
 		}
 	}
