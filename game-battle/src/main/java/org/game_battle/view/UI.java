@@ -120,6 +120,8 @@ public class UI implements Strategy {
 		
 		return picked;
 	}
+	
+	
 	@Override
 	public int setArmies(int NumOfArmies) {
 		// TODO Auto-generated method stub

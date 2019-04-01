@@ -3,6 +3,12 @@
  */
 package org.game_battle;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.game_battle.model.Implementation.Player;
 
 /**
@@ -10,48 +16,40 @@ import org.game_battle.model.Implementation.Player;
  *
  */
 public class TournamentMatch {
-
+	private static final Random RANDOM = new Random();
+	private static final Logger LOG = LogManager.getLogger(TournamentMatch.class);
 	private String winner;
 	private Player player1;
 	private Player player2;
 	private int map;
-	private int game;
+	private GamePlay game;
 
-	/**
-	 * 
-	 */
-	public TournamentMatch() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public TournamentMatch(int map, int game) {
-		// TODO Auto-generated constructor stub
+	public TournamentMatch(int map, GamePlay gamePlay) {
 		this.map = map;
-		this.game = game;
+		this.game = gamePlay;
 	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void setCompetitors(Player player1, Player player2) {
-		// TODO Auto-generated method stub
-		this.player1 = player1;
-		this.player2 = player2;
+		TournamentMatch tm = new TournamentMatch(1, new GamePlay());
+		tm.startMatch();
+		LOG.info("cabou");
 	}
 
 	public void setWinner(String winner) {
-		// TODO Auto-generated method stub
 		this.winner= winner;
 	}
 
 	public void startMatch() {
-		// TODO Auto-generated method stub
-		
+		List<Player> players = null;
+		String[] strategies = {"Aggresive", "Benevolent", "Random","Cheater"};
+		players.add(new Player(game.getBoard(), "computer 1",
+				strategies[0] /*strategies[RANDOM.nextInt(strategies.length)]*/));
+		players.add(new Player(game.getBoard(), "computer 2",
+				strategies[0] /* strategies[RANDOM.nextInt(strategies.length)] */));
+		this.game.startMatch(players);
 	}
 
 }

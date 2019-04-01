@@ -84,22 +84,22 @@ public class GamePlay {
 		 */
 
 		GamePlay game = new GamePlay();
-		game.startMatch();
+		game.startMatch(game.players);
 
 	}
 
-	private void startMatch() {
+	public void startMatch(List<Player> players_list) {
 		boolean gameOver = false;
 		int i = 0;
 		String action = "";
 		while (!gameOver/* players.size() > 1 */) {
 			i++;
 			getBoard().setTurn(i);
-			for (Player player : players) {
+			for (Player player : players_list) {
 
 				if (player.getPlayerMode().equals("Human")) {
 					board.playerStrategy.setStrategy(new UI());
-				} else if (player.getPlayerMode().equals("Aggressive")) {
+				} else if (player.getPlayerMode().equals("Aggresive")) {
 					board.playerStrategy.setStrategy(new AggresiveStrategyImpl());
 
 				} else if (player.getPlayerMode().equals("Benevolent")) {

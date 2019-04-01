@@ -4,6 +4,7 @@
 package org.game_battle;
 
 import java.util.List;
+import java.util.Random;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -79,11 +80,11 @@ public class Tournament {
 		this.tournamentPanel = tournamentPanel;
 		for (int game = 0; game < this.getGamesNumber(); game++) {
 			for (int map = 0; map < 4; map++) {
-				TournamentMatch tm = new TournamentMatch(map, game);
-				tm.setCompetitors(null/*new Player(board,"name1", "Aggressive")*/, null/*new Player(board,"name2","Aggressive")*/);
-				tm.setWinner("Draw");
+				TournamentMatch tm = new TournamentMatch(map, new GamePlay());
+
 				this.tournamentPanel[game][map] = tm;
 				this.tournamentPanel[game][map].startMatch();
+				tm.setWinner("Draw");
 			}
 		}
 	}
