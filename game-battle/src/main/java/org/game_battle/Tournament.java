@@ -3,6 +3,7 @@
  */
 package org.game_battle;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -11,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.game_battle.model.Implementation.AggresiveStrategyImpl;
 import org.game_battle.model.Implementation.Board;
 import org.game_battle.model.Implementation.Player;
+import org.game_battle.utility.UtilsGUI;
 import org.game_battle.view.UI;
 
 /**
@@ -25,6 +27,8 @@ public class Tournament {
 	private int games_number;
 	private int max_turns;
 	private List<Object> maps;
+	private UtilsGUI gui;
+	private HashMap config;
 	
 	/**
 	 * @param maps 
@@ -33,6 +37,8 @@ public class Tournament {
 	 */
 	public Tournament(int games_number, List<Object> maps) {
 		super();
+		gui = new UtilsGUI();
+		config = gui.initTournamentForm();
 		this.games_number = games_number;
 		this.maps = maps;
 	}
@@ -78,9 +84,11 @@ public class Tournament {
 
 	private void setTournamentPanel(TournamentMatch[][] tournamentPanel) {
 		this.tournamentPanel = tournamentPanel;
-		for (int game = 0; game < this.getGamesNumber(); game++) {
-			for (int map = 0; map < 4; map++) {
-				TournamentMatch tm = new TournamentMatch(map, new GamePlay(), max_turns);
+		List<Object> mapslist = (List<Object>)this.config.get("mapslist");
+		
+		for (int game = 0; game < (int)(this.config.get("gamesnumber")); game++) {	
+			for (int map = 0; map < mapslist.size(); map++) {
+				TournamentMatch tm = new TournamentMatch(map, new GamePlay("resource/file.map"), (int)this.config.get("turnsnumber"));
 
 				this.tournamentPanel[game][map] = tm;
 				this.tournamentPanel[game][map].startMatch();

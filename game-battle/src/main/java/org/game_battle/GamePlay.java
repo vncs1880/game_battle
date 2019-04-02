@@ -31,7 +31,7 @@ public class GamePlay {
 	// System.setProperty("log4j.configurationFile","./path_to_the_log4j2_config_file/log4j2.xml");
 	private static final Logger LOG = LogManager.getLogger(GamePlay.class);
 
-	private Board board;
+	private Board board = null;
 	private Player player;
 	private static List<Player> players;
 	private PhaseView phaseView;
@@ -44,15 +44,14 @@ public class GamePlay {
 	 */
 	public GamePlay() {
 		super();
+		board = new Board(); //Start up phase
+		initGamePlay();
+	}
 
-		board = new Board(); // Start up phase
-		phaseView = new PhaseView();
-		playerDominationView = new PlayerDominationView();
-		players = board.getPlayers();
-		board.addObserver(phaseView);
-		board.addObserver(playerDominationView);
-		cardView = new CardView();
-
+	public GamePlay(String mapPath) {//overloaded for tournament mode
+		super();
+		board = new Board(mapPath);
+		initGamePlay();
 	}
 
 	/**
@@ -84,18 +83,20 @@ public class GamePlay {
 		 */
 
 		GamePlay game = new GamePlay();
-		game.startMatch(game.players);
+		game.startMatch();
 
 	}
 
-	public void startMatch(List<Player> players_list) {
+	public void startMatch(/* List<Player> players_list */) {
+		
+		
 		boolean gameOver = false;
 		int i = 0;
 		String action = "";
 		while (!gameOver/* players.size() > 1 */) {
 			i++;
 			getBoard().setTurn(i);
-			for (Player player : players_list) {
+			for (Player player : players/*players_list*/) {
 
 				if (player.getPlayerMode().equals("Human")) {
 					board.playerStrategy.setStrategy(new UI());
@@ -221,6 +222,20 @@ public class GamePlay {
 			// cardslist = GameBoard.getDistributedCards
 			// cardslist[winner].append(cardslist[defeated])
 		}
+	}
+
+	/**
+	 * 
+	 */
+	private void initGamePlay() {
+		players = board.getPlayers();
+
+		phaseView = new PhaseView();
+		playerDominationView = new PlayerDominationView();
+		cardView = new CardView();
+		
+		board.addObserver(phaseView);
+		board.addObserver(playerDominationView);
 	}
 
 	/**

@@ -8,10 +8,13 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.game_battle.Constant;
 import org.game_battle.controler.MapController;
 import org.game_battle.model.Implementation.ContinentZone;
 import org.game_battle.model.Implementation.TerritoryZone;
 import org.game_battle.model.Implementation.WorldMap;
+import org.game_battle.utility.FileReaderWriter;
+import org.game_battle.utility.MapDataExtractor;
 import org.game_battle.view.WorldMapView;
 
 /**
@@ -83,6 +86,17 @@ public class MapInterface {
 		
 	}
 	
+	public MapInterface(String mapPath) {//overloaded for tournament mode
+		super();
+		model = new WorldMap();
+		ArrayList<String> mapData = new ArrayList<String>();
+		mapData = FileReaderWriter.readFile(mapPath);
+		MapDataExtractor.extractData(mapData, model);
+
+		countries = getCountriesFromTerritories(model.getTerritories());
+		continents = getContinentFromContinentZone(model.getContinents());
+	}
+
 	/**
 	 * getContinentFromContinentZone gets the continents from the continent zone
 	 * @param continents2

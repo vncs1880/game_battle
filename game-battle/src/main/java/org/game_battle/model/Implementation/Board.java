@@ -109,34 +109,13 @@ public class Board extends Observable {
 		mapinterface = new MapInterface();
 		playerStrategy = new PlayerStrategy();
 		playerStrategy.setStrategy(new UI());
-		totalNoOfCountries = MapInterface.getCountries().size();
-		int numofCountries = MapInterface.getCountries().size();
 		LOG.info("\r\n\r\n<<UI prompt in the background. Please use ALT-TAB>>");// TODO make the UI come to foreground
 		int totalPlayers = playerStrategy.askNumber("Initializing board", "How many players?", 2, 6, 0, false);
 
-		LinkedList<Player> players = new LinkedList<Player>();
-		for (int i = 0; i < totalPlayers; i++) {
-			String name = "dummy player";
-			name = playerStrategy.askText("What is player " + (i + 1) + " name?",
-					"Initializing board - " + totalPlayers + " players");
-			String tempPrompt = "Select your player type of " + name;
-			String tempTitle = "Player Type";
-			List<String> playersType = new ArrayList();
-			playersType.add("Human");
-			playersType.add("Aggresive");
-			playersType.add("Benevolent");
-			playersType.add("Random");
-			playersType.add("Cheater");
-			Object[] playerMode_array = playersType.toArray();
-			String playerMode = (String) JOptionPane.showInputDialog(null, tempPrompt, tempTitle,
-					JOptionPane.QUESTION_MESSAGE, null, playerMode_array, playerMode_array[0]);
-			players.add(new Player(this, name, playerMode));
-
-		}
-
-		setPlayers(players);
-		// added 23rd as part of pahse 2
-		actionTakingPlace = "Players playing in the game : " + players;
+		LinkedList<Player> players = initPlayers(totalPlayers);
+		
+		totalNoOfCountries = MapInterface.getCountries().size();
+		//int numofCountries = MapInterface.getCountries().size(); //used nowhere
 		/*
 		 * setPlayers(new LinkedList<Player>(Arrays.asList(new Player(this, "x"), new
 		 * Player(this, "y"), new Player(this, "z"), new Player(this, "a"))));
@@ -170,6 +149,51 @@ public class Board extends Observable {
 		// User chooses the number of players,
 		// getBoardInfo();
 
+	}
+	public Board(String mapPath) {//overloaded for tournament mode
+		mapinterface = new MapInterface(mapPath);
+		//LOG.info("\r\n\r\n<<UI prompt in the background. Please use ALT-TAB>>");// TODO make the UI come to foreground
+		playerStrategy = new PlayerStrategy();
+		totalNoOfCountries = MapInterface.getCountries().size();
+		List<Player> players = new ArrayList<Player>();
+		String[] strategies = {"Aggresive", "Benevolent", "Random","Cheater"};
+		players.add(new Player(this, "computer 1", strategies[0] /*strategies[RANDOM.nextInt(strategies.length)]*/));
+		players.add(new Player(this, "computer 2", "Aggresive" /* strategies[RANDOM.nextInt(strategies.length)] */));
+		setPlayers(players);
+		distributeCountries(getPlayers().size());
+		actionTakingPlace = "After Random Distribution of the countries to the players: " + players;
+		continents = MapInterface.getContinents();
+	}
+
+	/**
+	 * @param totalPlayers
+	 * @return
+	 */
+	private LinkedList<Player> initPlayers(int totalPlayers) {
+		LinkedList<Player> players = new LinkedList<Player>();
+		for (int i = 0; i < totalPlayers; i++) {
+			String name = "dummy player";
+			name = playerStrategy.askText("What is player " + (i + 1) + " name?",
+					"Initializing board - " + totalPlayers + " players");
+			String tempPrompt = "Select your player type of " + name;
+			String tempTitle = "Player Type";
+			List<String> playersType = new ArrayList();
+			playersType.add("Human");
+			playersType.add("Aggresive");
+			playersType.add("Benevolent");
+			playersType.add("Random");
+			playersType.add("Cheater");
+			Object[] playerMode_array = playersType.toArray();
+			String playerMode = (String) JOptionPane.showInputDialog(null, tempPrompt, tempTitle,
+					JOptionPane.QUESTION_MESSAGE, null, playerMode_array, playerMode_array[0]);
+			players.add(new Player(this, name, playerMode));
+
+		}
+
+		setPlayers(players);
+		// added 23rd as part of pahse 2
+		actionTakingPlace = "Players playing in the game : " + players;
+		return players;
 	}
 
 	public void distributeCountries(int playersCount) {
@@ -470,7 +494,6 @@ public class Board extends Observable {
 	}
 
 	public List<Player> getPlayers() {
-
 		return players;
 	}
 
