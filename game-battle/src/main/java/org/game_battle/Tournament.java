@@ -3,6 +3,7 @@
  */
 package org.game_battle;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -23,7 +24,7 @@ public class Tournament {
 
 	private static final Logger LOG = LogManager.getLogger(Tournament.class);
 	private TournamentMatch tournamentPanel[][];
-	private int player_strategies_number;
+	private List<Object> player_strategies;
 	private int games_number;
 	private int max_turns;
 	private List<Object> maps;
@@ -35,12 +36,13 @@ public class Tournament {
 	 * @param games_number 
 	 * 
 	 */
-	public Tournament(int games_number, List<Object> maps) {
+	public Tournament(HashMap config_arg) {
 		super();
-		gui = new UtilsGUI();
-		config = gui.initTournamentForm();
-		this.games_number = games_number;
-		this.maps = maps;
+		config = config_arg;//gui.initTournamentForm(maps);
+		this.games_number = (int) config.get("gamesnumber"); //games_number;
+		this.maps = (List<Object>)config.get("mapslist");
+		this.max_turns = (int) config.get("turnsnumber");
+		this.player_strategies = (List<Object>) config.get("strategieslist");
 	}
 	
 	/**
@@ -65,17 +67,25 @@ public class Tournament {
 		Map 2 Cheater Draw Cheater Aggressive
 		Map 3 Cheater Aggressive Cheater Draw 
 		*/
+				
+		UtilsGUI gui = new UtilsGUI();
+		HashMap config = gui.initTournamentForm(Arrays.asList("file.map","file2.map","InvalidMapConnection.map",
+				"InvalidMapFormat.map","InvalidMapFormat.txt","NEW_FILE.map","Newfile2.map","newMap.map"));
 		
-		Board board = null;
-		List<Object> M = null;
-		int player_strategies_number = 4; 
-		int games_number = 5;
-		int max_turns = 50;
+		Tournament tournament = new Tournament(config);
+		int gamesNumber = tournament.getGamesNumber();
+		int mapsNumber = tournament.getMapsNumber();
+		tournament.setTournamentPanel(new TournamentMatch[gamesNumber][mapsNumber]);
 		
-		Tournament tournament = new Tournament(games_number, M);
-		tournament.setTournamentPanel(new TournamentMatch[tournament.getGamesNumber()][player_strategies_number]);
-		
-		LOG.info("cabou");
+		LOG.info("finish");
+	}
+
+	private int getMapsNumber() {
+		return this.maps.size();
+	}
+
+	private int getStrategiesNumber() {
+		return this.player_strategies.size();
 	}
 
 	private int getGamesNumber() {
@@ -84,11 +94,12 @@ public class Tournament {
 
 	private void setTournamentPanel(TournamentMatch[][] tournamentPanel) {
 		this.tournamentPanel = tournamentPanel;
-		List<Object> mapslist = (List<Object>)this.config.get("mapslist");
 		
-		for (int game = 0; game < (int)(this.config.get("gamesnumber")); game++) {	
-			for (int map = 0; map < mapslist.size(); map++) {
-				TournamentMatch tm = new TournamentMatch(map, new GamePlay("resource/file.map"), (int)this.config.get("turnsnumber"));
+		for (int game = 0; game < (int)(this.config.get("gamesnumber")); game++) {
+			for (int map = 0; map < maps.size(); map++) {
+				String mapPath = "resource/"+(String) maps.get(map);
+				int max_turns2 = (int)this.config.get("turnsnumber");
+				TournamentMatch tm = new TournamentMatch(new GamePlay(mapPath), max_turns2);
 
 				this.tournamentPanel[game][map] = tm;
 				this.tournamentPanel[game][map].startMatch();

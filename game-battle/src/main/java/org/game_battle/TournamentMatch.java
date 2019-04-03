@@ -28,7 +28,7 @@ public class TournamentMatch implements TurnSubscriber {
 	private GamePlay game;
 	private ProgressMonitor progressMonitor;
 
-	public TournamentMatch(int map, GamePlay gamePlay, int max_turns) {
+	public TournamentMatch(GamePlay gamePlay, int max_turns) {
 		this.map = map;
 		this.game = gamePlay;
 		progressMonitor = new ProgressMonitor(null, "Running " + gamePlay, "", 0, max_turns);
@@ -39,7 +39,7 @@ public class TournamentMatch implements TurnSubscriber {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		TournamentMatch tm = new TournamentMatch(1, new GamePlay("resource/file.map"), 5000);
+		TournamentMatch tm = new TournamentMatch(new GamePlay("resource/file.map"), 5000);
 		tm.startMatch();
 		LOG.info("cabou");
 	}

@@ -73,7 +73,7 @@ public class UtilsGUI {
 		return text;
 	}
 
-	public HashMap initTournamentForm() {
+	public HashMap initTournamentForm(List<Object> maps_arg) {
 		/*
 		 * String[] items = {"One", "Two", "Three", "Four", "Five"}; JComboBox<String>
 		 * combo = new JComboBox<>(items); JTextField field1 = new
@@ -82,10 +82,10 @@ public class UtilsGUI {
         JPanel panel1 = new JPanel(new GridLayout(0, 1));
         ((GridLayout) panel1.getLayout()).setVgap(3);
         //panel.add(new JLabel("Maps:"));panel.add(combo);
-        String[] maps = {"Map 1", "Map 2", "Map 3","Map 4","Map 5"};
+        //String[] maps = {"Map 1", "Map 2", "Map 3","Map 4","Map 5"};
         //panel1.add(new JLabel("Maps:"));			 
-        JList<Object> mapslist = new JList<Object>(maps);
-        mapslist.setLayoutOrientation(JList.VERTICAL_WRAP);
+        JList<Object> mapslist = new JList<Object>(maps_arg.toArray());
+        mapslist.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         mapslist.setVisibleRowCount(-1);
 		panel1.add(mapslist);
         String[] strategies = {"Aggresive", "Benevolent", "Random","Cheater"};
