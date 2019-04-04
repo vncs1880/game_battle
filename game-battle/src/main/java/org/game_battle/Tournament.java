@@ -103,7 +103,7 @@ public class Tournament {
 
 				this.tournamentPanel[game][map] = tm;
 				this.tournamentPanel[game][map].startMatch();
-				tm.setWinner("Draw");
+				//tm.setWinner("Draw");
 			}
 		}
 	}

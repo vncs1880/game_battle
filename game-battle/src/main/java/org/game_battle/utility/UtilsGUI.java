@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
@@ -116,6 +117,18 @@ public class UtilsGUI {
         } else {
             return res;
         }
+		
+	}
+
+	public void progressBar() {
+		JPanel panel1 = new JPanel(new GridLayout(0, 1));
+		JProgressBar progressBar = new JProgressBar(0, 100);
+		progressBar.setValue(0);
+        progressBar.setStringPainted(true);
+        progressBar.setIndeterminate(true);
+        panel1.add(progressBar);
+        int result = JOptionPane.showConfirmDialog(null, panel1, "Tournament match",
+            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		
 	}
 

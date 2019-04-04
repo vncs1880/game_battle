@@ -528,6 +528,7 @@ public class Board extends Observable {
 	private void broadcastTurnChanged(int turn) {
 		for (TurnSubscriber subscriber : turnsubscribers) {
 			subscriber.turnChangedTo(turn);
+			LOG.info("Broadcasting turn "+turn+" to "+subscriber);
 		}
 	}
 
