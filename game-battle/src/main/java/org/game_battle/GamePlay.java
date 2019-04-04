@@ -38,6 +38,8 @@ public class GamePlay {
 	private PlayerDominationView playerDominationView;
 	private CardView cardView;
 
+	private boolean isTournamentMode = false;
+
 	/**
 	 * Gameplay constructor
 	 * 
@@ -50,6 +52,7 @@ public class GamePlay {
 
 	public GamePlay(String mapPath) {//overloaded for tournament mode
 		super();
+		isTournamentMode = true;
 		board = new Board(mapPath);
 		initGamePlay();
 	}
@@ -221,6 +224,16 @@ public class GamePlay {
 			// If length(defeated.getCountryList()) == 0: //lost last country
 			// cardslist = GameBoard.getDistributedCards
 			// cardslist[winner].append(cardslist[defeated])
+			
+			if (isTournamentMode ) {
+				//delay execution for progress bar
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				//no need to keep track of max turns for draw as gameplay notifies this
+			}
 		}
 	}
 
