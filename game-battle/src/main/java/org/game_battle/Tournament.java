@@ -101,8 +101,16 @@ public class Tournament {
 				int max_turns2 = (int)this.config.get("turnsnumber");
 				TournamentMatch tm = new TournamentMatch(new GamePlay(mapPath), max_turns2);
 
-				this.tournamentPanel[game][map] = tm;
-				this.tournamentPanel[game][map].startMatch();
+				final int game_number = game;
+				final int map_number = map;
+				
+				new Thread("game: " + game + " map: " + map){
+			        public void run(){
+			          System.out.println("Thread: " + getName() + " running");
+			          tournamentPanel[game_number][map_number] = tm;
+			          tournamentPanel[game_number][map_number].startMatch();
+			        }
+			      }.start();
 				//tm.setWinner("Draw");
 			}
 		}
