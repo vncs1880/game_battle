@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
@@ -84,7 +85,13 @@ public class TournamentMatch implements TurnSubscriber, PropertyChangeListener {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-  		TournamentMatch tm = new TournamentMatch(new GamePlay("resource/file.map"), 50);
+  		HashMap<String,Object> config = new HashMap<String,Object>() {{
+  			put("mapslist", null);
+  			put("strategieslist", null);
+  			put("gamesnumber", 3);
+  			put("turnsnumber", 30);
+  			}};
+		TournamentMatch tm = new TournamentMatch(new GamePlay("resource/file.map",config), 50);//TODO replace nulls
    		tm.startMatch();
 	}
 

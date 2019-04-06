@@ -99,7 +99,7 @@ public class Tournament {
 			for (int map = 0; map < maps.size(); map++) {
 				String mapPath = "resource/"+(String) maps.get(map);
 				int max_turns2 = (int)this.config.get("turnsnumber");
-				TournamentMatch tm = new TournamentMatch(new GamePlay(mapPath), max_turns2);
+				TournamentMatch tm = new TournamentMatch(new GamePlay(mapPath,config), max_turns2);
 
 				final int game_number = game;
 				final int map_number = map;

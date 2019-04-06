@@ -150,13 +150,14 @@ public class Board extends Observable {
 		// getBoardInfo();
 
 	}
-	public Board(String mapPath) {//overloaded for tournament mode
+	public Board(String mapPath, HashMap config) {//overloaded for tournament mode
 		mapinterface = new MapInterface(mapPath);
 		//LOG.info("\r\n\r\n<<UI prompt in the background. Please use ALT-TAB>>");// TODO make the UI come to foreground
 		playerStrategy = new PlayerStrategy();
 		totalNoOfCountries = MapInterface.getCountries().size();
 		List<Player> players = new ArrayList<Player>();
-		String[] strategies = {"Aggresive", "Benevolent", "Random","Cheater"};
+		//String[] strategies = {"Aggresive", "Benevolent", "Random","Cheater"};
+		String[] strategies = (String[]) ((List<Object>)(config.get("strategieslist"))).toArray();
 		players.add(new Player(this, "computer 1", /*strategies[0]*/ strategies[RANDOM.nextInt(strategies.length)]));
 		players.add(new Player(this, "computer 2", /* "Aggresive" */ strategies[RANDOM.nextInt(strategies.length)]));
 		setPlayers(players);

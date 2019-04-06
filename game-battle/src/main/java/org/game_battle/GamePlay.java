@@ -1,5 +1,6 @@
 package org.game_battle;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -51,10 +52,10 @@ public class GamePlay {
 		initGamePlay();
 	}
 
-	public GamePlay(String mapPath) {//overloaded for tournament mode
+	public GamePlay(String mapPath, HashMap config) {//overloaded for tournament mode
 		super();
 		isTournamentMode = true;
-		board = new Board(mapPath);
+		board = new Board(mapPath,config);
 		initGamePlay();
 	}
 
