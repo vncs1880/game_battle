@@ -25,7 +25,7 @@ public class Country {
 		return name + " armies: " + armies;// super.toString();
 	}
 
-	private int armies;
+	public int armies;
 	private String name;
 	// private TerritoryZone territoryZone = null;
 
@@ -72,7 +72,7 @@ public class Country {
 	 * @param n_armies number of armies
 	 **/
 	public void setArmyQty(int n_armies) {
-		armies = n_armies;
+		armies = (n_armies>0)?n_armies:0;
 	}
 
 	/**

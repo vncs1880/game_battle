@@ -341,10 +341,8 @@ public class Board extends Observable {
 		Player deffender = getOwner(deffendingCountry);
 		LOG.info("\r\nATTACKER: " + attacker + "\r\nDEFFENDER: " + deffender);
 
-		List<Integer> attackerDices = rollDices(attacker, offendingCountry,
-				(offendingCountry.getArmies() < MAX_DICE_ROLLS_ATTACKER) ? offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
-		List<Integer> deffenderDices = rollDices(deffender, deffendingCountry,
-				(offendingCountry.getArmies() < MAX_DICE_ROLLS_DEFFENDER)? offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
+		List<Integer> attackerDices  = rollDices(attacker, offendingCountry, (offendingCountry.getArmies() < MAX_DICE_ROLLS_ATTACKER) ? offendingCountry.getArmies():MAX_DICE_ROLLS_ATTACKER);
+		List<Integer> deffenderDices = rollDices(deffender, deffendingCountry, (offendingCountry.getArmies() < MAX_DICE_ROLLS_DEFFENDER)? offendingCountry.getArmies():MAX_DICE_ROLLS_DEFFENDER);
 
 		int deffender_dice_list_size = deffenderDices.size()<1?1:deffenderDices.size();
 		int attacker_dice_list_size = attackerDices.size()<1?1:attackerDices.size();
@@ -368,8 +366,8 @@ public class Board extends Observable {
 			deffenderBestDice = (deffenderDices.size()>0)?deffenderDices.get(deffender_dice_list_size - 1):getDiceRollResult(null);
 			attackerBestDice = (attackerDices.size()>0)?attackerDices.get(attacker_dice_list_size - 1):getDiceRollResult(null);
 			if (deffender_dice_list_size == 2) {// TODO check if this is working
-				deffender2ndBestDice = deffenderDices.get(deffender_dice_list_size - 2);
-				attacker2ndBestDice = attackerDices.get(attacker_dice_list_size - 2);
+				deffender2ndBestDice = (deffenderDices.size()>0)?deffenderDices.get(deffender_dice_list_size - 2):getDiceRollResult(null);
+				attacker2ndBestDice = (attackerDices.size()>0)?attackerDices.get(attacker_dice_list_size - 2):getDiceRollResult(null);
 			}
 		}
 

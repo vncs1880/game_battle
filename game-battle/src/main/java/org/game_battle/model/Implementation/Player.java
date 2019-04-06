@@ -334,7 +334,7 @@ public class Player extends Observable {
 				}
 
 				// TODO is it the player armies or the country armies
-				while (((OffendingCountry.getArmies() > 0) && (DeffendingCountry.getArmies() > 0))) {
+				while (((OffendingCountry.armies/* .getArmies() */ > 0) && (DeffendingCountry.armies/* .getArmies() */ > 0))) {
 					if (!this.board.getIsAllOutMode()) {
 						if (!board.playerStrategy.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
 							break;

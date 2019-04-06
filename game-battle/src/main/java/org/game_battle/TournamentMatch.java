@@ -105,7 +105,8 @@ public class TournamentMatch implements TurnSubscriber, PropertyChangeListener {
 		if (turn==-1||turn == max_turns) {
 			this.winner=game.getBoard().getWinner();
 			if (turn==max_turns) LOG.info("In order to minimize run completion time, each game is declared a draw after " + max_turns + " turns.");
-			if (turn==-1) LOG.info("match winner is "+winner);
+			if (turn==-1) LOG.info("match winner is "+winner); 
+			Thread.currentThread().setName(Thread.currentThread().getName() + ((this.winner==null)?" DRAW":" Winner is "+winner.getName()));
 			try {
 				synchronized (this) {
 				    this.wait();
