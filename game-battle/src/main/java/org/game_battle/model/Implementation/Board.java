@@ -157,8 +157,8 @@ public class Board extends Observable {
 		totalNoOfCountries = MapInterface.getCountries().size();
 		List<Player> players = new ArrayList<Player>();
 		String[] strategies = {"Aggresive", "Benevolent", "Random","Cheater"};
-		players.add(new Player(this, "computer 1", strategies[0] /*strategies[RANDOM.nextInt(strategies.length)]*/));
-		players.add(new Player(this, "computer 2", "Aggresive" /* strategies[RANDOM.nextInt(strategies.length)] */));
+		players.add(new Player(this, "computer 1", /*strategies[0]*/ strategies[RANDOM.nextInt(strategies.length)]));
+		players.add(new Player(this, "computer 2", /* "Aggresive" */ strategies[RANDOM.nextInt(strategies.length)]));
 		setPlayers(players);
 		distributeCountries(getPlayers().size());
 		actionTakingPlace = "After Random Distribution of the countries to the players: " + players;
