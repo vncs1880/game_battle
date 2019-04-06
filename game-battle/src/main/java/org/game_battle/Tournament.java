@@ -104,7 +104,7 @@ public class Tournament {
 				final int game_number = game;
 				final int map_number = map;
 				
-				new Thread("game: " + game + " map: " + map){
+				new Thread("game:" + (game + 1) + " map:" + (map + 1)){
 			        public void run(){
 			          //System.out.println("Thread: [" + getName() + "] running");
 			          tournamentPanel[game_number][map_number] = tm;

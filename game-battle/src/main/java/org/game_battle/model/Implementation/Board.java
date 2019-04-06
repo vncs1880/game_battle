@@ -68,6 +68,14 @@ public class Board extends Observable {
 	public PlayerStrategy playerStrategy;
 	// public Player currePlayer;
 	private List<TurnSubscriber> turnsubscribers = new LinkedList<TurnSubscriber>();
+	private Player winner = null;
+
+	/**
+	 * @return the winner
+	 */
+	public Player getWinner() {
+		return winner;
+	}
 
 	public String getActionTakingPlace() {
 		return actionTakingPlace;
@@ -603,6 +611,11 @@ public class Board extends Observable {
 
 	public void subscribeTurnEvents(TurnSubscriber turnsubscriber) {
 		this.turnsubscribers.add(turnsubscriber);
+		
+	}
+
+	public void setWinner(Player player) {
+		this.winner = player;
 		
 	}
 

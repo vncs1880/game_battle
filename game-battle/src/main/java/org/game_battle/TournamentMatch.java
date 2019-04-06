@@ -20,6 +20,7 @@ import javax.swing.SwingWorker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.game_battle.model.Contract.TurnSubscriber;
+import org.game_battle.model.Implementation.Player;
 import org.game_battle.utility.UtilsGUI;
 
 /**
@@ -29,7 +30,7 @@ import org.game_battle.utility.UtilsGUI;
 public class TournamentMatch implements TurnSubscriber, PropertyChangeListener {
 	private static final Random RANDOM = new Random();
 	private static final Logger LOG = LogManager.getLogger(TournamentMatch.class);
-	private String winner;
+	private Player winner;
 	private GamePlay game;
 	private ProgressMonitor progressMonitor;
 	private int turn;
@@ -101,13 +102,22 @@ public class TournamentMatch implements TurnSubscriber, PropertyChangeListener {
 
 	@Override
 	public void turnChangedTo(int turn) {
-		this.turn = turn;
-		LOG.info("Just been notified current turn is "+turn);
-		if (turn == max_turns/*progressMonitor.getMaximum() + 1*/) { // this.winner = "DRAW"; 
-			LOG.info("In order to minimize run completion time, each game is declared a draw after "
-				+ max_turns + " turns."); 
-			System.exit(0); 
-		} 
+		if (turn==-1||turn == max_turns) {
+			this.winner=game.getBoard().getWinner();
+			if (turn==max_turns) LOG.info("In order to minimize run completion time, each game is declared a draw after " + max_turns + " turns.");
+			if (turn==-1) LOG.info("match winner is "+winner);
+			try {
+				synchronized (this) {
+				    this.wait();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			//System.exit(0); 
+		} else {
+			this.turn = turn;
+			LOG.info("Just been notified current turn is "+turn);
+		}
 		/*
 		 * if (progressMonitor != null) { //progressMonitor.setProgress(turn); }
 		 */

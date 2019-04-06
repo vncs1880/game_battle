@@ -52,6 +52,7 @@ public class Player extends Observable {
 	private Continent ownedContinent;
 	private UI ui;
 	private String playerMode;
+	private boolean isDefeated=false;
 	// private boolean isAllOutMode = false;
 
 	public String getPlayerMode() {
@@ -493,6 +494,14 @@ public class Player extends Observable {
 
 	public List<Card> getCardExchange() {
 		return this.getCards();
+	}
+
+	public boolean isDefeated() {
+		return isDefeated;
+	}
+
+	public void setDefeated(boolean isDefeated) {
+		this.isDefeated = isDefeated;
 	}
 
 }

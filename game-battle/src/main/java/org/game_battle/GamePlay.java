@@ -8,6 +8,7 @@ import javax.naming.Context;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.message.ExitMessage;
 import org.game_battle.model.Implementation.AggresiveStrategyImpl;
 import org.game_battle.model.Implementation.BenevolentStrategyImpl;
 import org.game_battle.model.Implementation.Board;
@@ -104,6 +105,7 @@ public class GamePlay {
 			
 			for (Iterator<Player> iterator = players.iterator(); iterator.hasNext();/*Player player : players*/) {
 				Player player = iterator.next();
+				if (player.isDefeated()) continue;
 				
 				if (player.getPlayerMode().equals("Human")) {
 					board.playerStrategy.setStrategy(new UI());
@@ -178,10 +180,15 @@ public class GamePlay {
 					board.playerStrategy.askNumber("it is over :P",
 							"end of game! congratulations " + player.getName() + "!\r\n\r\nPlease rate this game:", 1,
 							5, 0, false);
+					board.setWinner(player);
 					gameOver = true;
+					getBoard().setTurn(-1);
+					//System.exit(0);
 				}
 				if (currentCountriesQty == 0) {
-					/*board.getPlayers()*/players.remove(player);
+					//players.remove(player);
+					//iterator.remove();
+					player.setDefeated(true);
 					action = player.getName()
 							+ ", you lost all your countries. Thank you for your participation. Good bye.";
 					board.setActionTakingPlace(action);
