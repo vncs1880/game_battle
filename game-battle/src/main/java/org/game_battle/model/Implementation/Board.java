@@ -157,14 +157,7 @@ public class Board extends Observable {
 		totalNoOfCountries = MapInterface.getCountries().size();
 		List<Player> players = new ArrayList<Player>();
 		//String[] strategies = {"Aggresive", "Benevolent", "Random","Cheater"};
-		//String[] strategies = (String[])((List<Object>)(config.get("strategieslist"))).toArray();
-		List<Object> strategies_list = ((List<Object>)(config.get("strategieslist")));
-		String[] strategies = new String[strategies_list.size()];
-		int index = 0;
-		for (Object value : strategies_list) {
-			strategies[index] = (String) value;
-		  index++;
-		}
+		String[] strategies = (String[]) ((List<Object>)(config.get("strategieslist"))).toArray();
 		players.add(new Player(this, "computer 1", /*strategies[0]*/ strategies[RANDOM.nextInt(strategies.length)]));
 		players.add(new Player(this, "computer 2", /* "Aggresive" */ strategies[RANDOM.nextInt(strategies.length)]));
 		setPlayers(players);
