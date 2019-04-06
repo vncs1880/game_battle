@@ -40,7 +40,7 @@ public class Player extends Observable {
 	 * @param armies the armies to set
 	 */
 	public void setArmies(int armies) {
-		this.armies = armies;
+		this.armies = (armies<0)?0:armies;
 	}
 
 	private Board board;

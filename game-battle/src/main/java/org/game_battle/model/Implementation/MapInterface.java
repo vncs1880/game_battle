@@ -160,6 +160,9 @@ public class MapInterface {
 	private static List<Country> getCountriesByContinentFromTerritoryZone(String name) {
 		List<Country> countrylist =  new LinkedList<Country>();
 		List<TerritoryZone> l = model.getCountriesByContinent(name);
+		if (l == null) {
+			l = new ArrayList<TerritoryZone>();
+		}
 		for (TerritoryZone territoryZone : l) {
 			Country countryByName = getCountryByName(territoryZone.getTerritoryName());
 			if (countryByName != null) {
@@ -192,6 +195,9 @@ public class MapInterface {
 	public static List<Country> getNeighbours(Country country) {
 		List<Country> countrylist = new LinkedList<Country>();
 		ArrayList<String> l = model.getTerritoryNeighbour(country.getName());
+		if (l == null) {
+			l = new ArrayList<String>();
+		}
 		LOG.info("Territory neighbours: "+l);
 		for (String countryname : l) {
 			Country countryByName = getCountryByName(countryname);

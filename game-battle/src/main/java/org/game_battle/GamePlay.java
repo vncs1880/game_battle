@@ -1,5 +1,6 @@
 package org.game_battle;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.naming.Context;
@@ -99,8 +100,10 @@ public class GamePlay {
 		while (!gameOver/* players.size() > 1 */) {
 			i++;
 			getBoard().setTurn(i);
-			for (Player player : players/*players_list*/) {
-
+			
+			for (Iterator<Player> iterator = players.iterator(); iterator.hasNext();/*Player player : players*/) {
+				Player player = iterator.next();
+				
 				if (player.getPlayerMode().equals("Human")) {
 					board.playerStrategy.setStrategy(new UI());
 				} else if (player.getPlayerMode().equals("Aggresive")) {
@@ -177,7 +180,7 @@ public class GamePlay {
 					gameOver = true;
 				}
 				if (currentCountriesQty == 0) {
-					board.getPlayers().remove(player);
+					/*board.getPlayers()*/players.remove(player);
 					action = player.getName()
 							+ ", you lost all your countries. Thank you for your participation. Good bye.";
 					board.setActionTakingPlace(action);
