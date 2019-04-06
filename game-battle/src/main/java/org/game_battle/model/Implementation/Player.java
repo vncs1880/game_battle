@@ -339,7 +339,7 @@ public class Player extends Observable {
 							break;
 						}
 					} else
-						LOG.info("All Out Mode: skipping user input.");
+					LOG.info("All Out Mode: skipping user input.");
 					LOG.info("Starting Battle: " + attacker + " attacking " + deffender + ".");
 					// Board.Battle(OffendingCountry, DeffendingCountry)
 					board.doBattle(OffendingCountry, DeffendingCountry);
