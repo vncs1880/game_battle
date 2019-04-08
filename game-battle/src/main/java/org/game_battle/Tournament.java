@@ -23,7 +23,7 @@ import org.game_battle.view.UI;
  */
 public class Tournament {
 
-	private static final Logger LOG = LogManager.getLogger(Tournament.class);
+	private final Logger LOG = LogManager.getLogger(Tournament.class);
 	private TournamentMatch tournamentPanel[][];
 	private List<Object> player_strategies;
 	private int games_number;
@@ -79,8 +79,6 @@ public class Tournament {
 		int gamesNumber = tournament.getGamesNumber();
 		int mapsNumber = tournament.getMapsNumber();
 		tournament.setTournamentPanel(new TournamentMatch[gamesNumber][mapsNumber]);
-		
-		LOG.info("finish");
 	}
 
 	private int getMapsNumber() {

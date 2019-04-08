@@ -28,8 +28,8 @@ import org.game_battle.utility.UtilsGUI;
  *
  */
 public class TournamentMatch implements TurnSubscriber, PropertyChangeListener {
-	private static final Random RANDOM = new Random();
-	private static final Logger LOG = LogManager.getLogger(TournamentMatch.class);
+	private final Random RANDOM = new Random();
+	private final Logger LOG = LogManager.getLogger(TournamentMatch.class);
 	private Player winner;
 	private GamePlay game;
 	/**

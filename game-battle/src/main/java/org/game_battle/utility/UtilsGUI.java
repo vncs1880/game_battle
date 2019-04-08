@@ -30,7 +30,7 @@ import org.game_battle.model.Implementation.MapInterface;
  *
  */
 public class UtilsGUI {
-	private static final Logger LOG = LogManager.getLogger(UtilsGUI.class);
+	private final Logger LOG = LogManager.getLogger(UtilsGUI.class);
 	/**
 	 * 
 	 */
