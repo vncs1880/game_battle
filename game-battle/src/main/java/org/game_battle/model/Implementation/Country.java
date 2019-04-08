@@ -27,6 +27,7 @@ public class Country {
 
 	public int armies;
 	private String name;
+	private MapInterface mapInterface;
 	// private TerritoryZone territoryZone = null;
 
 	/**
@@ -91,7 +92,12 @@ public class Country {
 	 *         country on the board
 	 **/
 	public List<Country> getNeighbours() {
-		return MapInterface.getNeighbours(this);
+		return this.mapInterface.getNeighbours(this);
+	}
+
+	public void setMapInterface(MapInterface mapInterface) {
+		this.mapInterface = mapInterface;
+		
 	}
 
 }

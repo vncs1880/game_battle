@@ -112,7 +112,7 @@ public class UtilsGUI {
         	res.put("strategieslist", strategieslist.getSelectedValuesList());
         	res.put("gamesnumber", gamesnumber.getValue());
         	res.put("turnsnumber", turnsnumber.getValue());
-        	LOG.info(res);
+        	LOG.info("Tournament config: "+res);
         	return res;
         } else {
             return res;

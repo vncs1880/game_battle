@@ -32,10 +32,39 @@ public class TournamentMatch implements TurnSubscriber, PropertyChangeListener {
 	private static final Logger LOG = LogManager.getLogger(TournamentMatch.class);
 	private Player winner;
 	private GamePlay game;
+	/**
+	 * @return the game
+	 */
+	public synchronized GamePlay getGame() {
+		return game;
+	}
+
+	/**
+	 * @param game the game to set
+	 */
+	public synchronized void setGame(GamePlay game) {
+		this.game = game;
+	}
+
 	private ProgressMonitor progressMonitor;
 	private int turn;
 	private Task task;
 	private int max_turns;
+	private Thread my_thread;
+
+	/**
+	 * @return the my_thread
+	 */
+	synchronized public Thread getMy_thread() {
+		return my_thread;
+	}
+
+	/**
+	 * @param my_thread the my_thread to set
+	 */
+	synchronized public void setMy_thread(Thread my_thread) {
+		this.my_thread = my_thread;
+	}
 
 	class Task extends SwingWorker<Void, Void> {
         @Override
@@ -66,6 +95,8 @@ public class TournamentMatch implements TurnSubscriber, PropertyChangeListener {
     }
 		
 	public TournamentMatch(GamePlay gamePlay, int max_turns) {
+		synchronized (this) {
+		//this.my_thread = mythread;
 		this.game = gamePlay;
 		this.max_turns = max_turns;
 		
@@ -80,6 +111,7 @@ public class TournamentMatch implements TurnSubscriber, PropertyChangeListener {
 		UtilsGUI gui = new UtilsGUI();
 		//gui.progressBar();
 		this.game.getBoard().subscribeTurnEvents(this);
+		}
 	}
 
 	/**
@@ -96,25 +128,28 @@ public class TournamentMatch implements TurnSubscriber, PropertyChangeListener {
    		tm.startMatch();
 	}
 
-	public void startMatch() {
+	synchronized public void startMatch() {
 		this.game.startMatch();
 	}
 
 	@Override
-	public void turnChangedTo(int turn) {
+	synchronized public void turnChangedTo(int turn) {
 		if (turn==-1||turn == max_turns) {
 			this.winner=game.getBoard().getWinner();
 			if (turn==max_turns) LOG.info("In order to minimize run completion time, each game is declared a draw after " + max_turns + " turns.");
 			if (turn==-1) LOG.info("match winner is "+winner); 
-			Thread.currentThread().setName(Thread.currentThread().getName() + ((this.winner==null)?" DRAW":" Winner is "+winner.getName()));
+			//Thread.currentThread().setName(Thread.currentThread().getName() + ((turn==max_turns)?" DRAW":" Winner is "+winner.getName()));
+			my_thread.setName(my_thread.getName() + ((turn==max_turns)?" DRAW":" Winner is "+winner.getName()));
 			try {
-				synchronized (this) {
-				    this.wait();
-				}
+				my_thread.join();
 			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//System.exit(0); 
+			/*
+			 * synchronized (this) { try { this.wait(); } catch (InterruptedException e) {
+			 * e.printStackTrace(); } }
+			 */
 		} else {
 			this.turn = turn;
 			LOG.info("Just been notified current turn is "+turn);

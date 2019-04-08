@@ -94,8 +94,6 @@ public class GamePlay {
 	}
 
 	public void startMatch(/* List<Player> players_list */) {
-		
-		
 		boolean gameOver = false;
 		int i = 0;
 		String action = "";
@@ -237,13 +235,11 @@ public class GamePlay {
 			// cardslist[winner].append(cardslist[defeated])
 			
 			if (isTournamentMode ) {
-				//delay execution for progress bar
-				try {
+				try {//delay execution
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				//no need to keep track of max turns for draw as gameplay notifies this
 			}
 		}
 	}
