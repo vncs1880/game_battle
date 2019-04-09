@@ -32,11 +32,11 @@ import org.game_battle.view.UI;
  **/
 public class GamePlay {
 	// System.setProperty("log4j.configurationFile","./path_to_the_log4j2_config_file/log4j2.xml");
-	private static final Logger LOG = LogManager.getLogger(GamePlay.class);
+	private final Logger LOG = LogManager.getLogger(GamePlay.class);
 
 	private Board board = null;
 	private Player player;
-	private static List<Player> players;
+	private List<Player> players;
 	private PhaseView phaseView;
 	private PlayerDominationView playerDominationView;
 	private CardView cardView;
@@ -94,8 +94,6 @@ public class GamePlay {
 	}
 
 	public void startMatch(/* List<Player> players_list */) {
-		
-		
 		boolean gameOver = false;
 		int i = 0;
 		String action = "";
@@ -237,13 +235,11 @@ public class GamePlay {
 			// cardslist[winner].append(cardslist[defeated])
 			
 			if (isTournamentMode ) {
-				//delay execution for progress bar
-				try {
+				try {//delay execution
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				//no need to keep track of max turns for draw as gameplay notifies this
 			}
 		}
 	}

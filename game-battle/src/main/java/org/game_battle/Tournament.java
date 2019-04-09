@@ -5,6 +5,7 @@ package org.game_battle;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -22,7 +23,7 @@ import org.game_battle.view.UI;
  */
 public class Tournament {
 
-	private static final Logger LOG = LogManager.getLogger(Tournament.class);
+	private final Logger LOG = LogManager.getLogger(Tournament.class);
 	private TournamentMatch tournamentPanel[][];
 	private List<Object> player_strategies;
 	private int games_number;
@@ -30,6 +31,8 @@ public class Tournament {
 	private List<Object> maps;
 	private UtilsGUI gui;
 	private HashMap config;
+	private List<Thread> matches = new LinkedList<Thread>();
+	private final Random RANDOM = new Random();
 	
 	/**
 	 * @param maps 
@@ -76,8 +79,6 @@ public class Tournament {
 		int gamesNumber = tournament.getGamesNumber();
 		int mapsNumber = tournament.getMapsNumber();
 		tournament.setTournamentPanel(new TournamentMatch[gamesNumber][mapsNumber]);
-		
-		LOG.info("finish");
 	}
 
 	private int getMapsNumber() {
@@ -99,21 +100,35 @@ public class Tournament {
 			for (int map = 0; map < maps.size(); map++) {
 				String mapPath = "resource/"+(String) maps.get(map);
 				int max_turns2 = (int)this.config.get("turnsnumber");
-				TournamentMatch tm = new TournamentMatch(new GamePlay(mapPath,config), max_turns2);
+
 
 				final int game_number = game;
 				final int map_number = map;
 				
-				new Thread("game:" + (game + 1) + " map:" + (map + 1)){
+				
+				
+				TournamentMatch tm = new TournamentMatch(new GamePlay(mapPath,config), max_turns2);
+				tournamentPanel[game_number][map_number] = tm;
+				
+				Player p1 = new Player(tm.getGame().getBoard(), "computer["+RANDOM.nextInt()+"]", (String)(player_strategies.get(RANDOM.nextInt(player_strategies.size()))));
+				
+				Thread match = new Thread("game:" + (game + 1) + " map:" + (map + 1)){
 			        public void run(){
-			          //System.out.println("Thread: [" + getName() + "] running");
-			          tournamentPanel[game_number][map_number] = tm;
-			          tournamentPanel[game_number][map_number].startMatch();
+			        	tm.setMy_thread(this);
+						tournamentPanel[game_number][map_number].startMatch();
 			        }
-			      }.start();
-				//tm.setWinner("Draw");
+			    };
+			    match.start();
+				
+				/*
+				 * try { match.join(); } catch (InterruptedException e) { e.printStackTrace(); }
+				 */
+				 
+			    matches.add(match);
 			}
 		}
+		
+		LOG.info("started all matches");
 	}
 
 }

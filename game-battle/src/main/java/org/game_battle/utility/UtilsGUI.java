@@ -4,6 +4,7 @@
 package org.game_battle.utility;
 
 import java.awt.GridLayout;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,7 +31,8 @@ import org.game_battle.model.Implementation.MapInterface;
  *
  */
 public class UtilsGUI {
-	private static final Logger LOG = LogManager.getLogger(UtilsGUI.class);
+	private final Logger LOG = LogManager.getLogger(UtilsGUI.class);
+	
 	/**
 	 * 
 	 */
@@ -45,9 +47,11 @@ public class UtilsGUI {
 		MapInterface m = new MapInterface("resource/file.map");
 		List<Country> countries = m.getCountries();
 
-		System.out.println(gui.getObjs("getobjs", countries.toArray()));
+		//System.out.println(gui.getObjs("getobjs", countries.toArray()));
 		
-		System.out.println(gui.selectObj("Select one (MANDATORY)", "select obj", countries));
+		//System.out.println(gui.selectObj("Select one (MANDATORY)", "select obj", countries));
+		
+		gui.initTournamentForm(Arrays.asList("file.map","file2.map","InvalidMapConnection.map","InvalidMapFormat.map","InvalidMapFormat.txt","NEW_FILE.map","Newfile2.map","newMap.map"));
 
 	}
 	
@@ -112,7 +116,7 @@ public class UtilsGUI {
         	res.put("strategieslist", strategieslist.getSelectedValuesList());
         	res.put("gamesnumber", gamesnumber.getValue());
         	res.put("turnsnumber", turnsnumber.getValue());
-        	LOG.info(res);
+        	LOG.info("Tournament config: "+res);
         	return res;
         } else {
             return res;

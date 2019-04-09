@@ -26,8 +26,8 @@ import org.game_battle.model.Implementation.Card.Sort;
  * @date 5/02/19
  **/
 public class Board extends Observable {
-	private static final int MAX_DICE_ROLLS_ATTACKER = 3;
-	private static final Logger LOG = LogManager.getLogger(Board.class);
+	private final int MAX_DICE_ROLLS_ATTACKER = 3;
+	private final Logger LOG = LogManager.getLogger(Board.class);
 
 	/*
 	 * (non-Javadoc)
@@ -35,13 +35,13 @@ public class Board extends Observable {
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	synchronized public String toString() {
 		String s = "\r\ncardsToGive: " + cardsToGive + ", lastDiceRollResult: " + lastDiceRollResult + ", \r\nplayers: "
 				+ players + " \r\ncontinents:" + continents;
 		return s;// super.toString();
 	}
 
-	private static final int CARDS_EQUAL_DIFFERENT_AMOUNT = 3;
+	private  final int CARDS_EQUAL_DIFFERENT_AMOUNT = 3;
 	private List<Continent> continents;
 	private List<List<Country>> countriesByContinent;
 	private List<Player> players;
@@ -54,11 +54,11 @@ public class Board extends Observable {
 	private String currentPlayer;
 	private String currentPlayerMode;
 
-	public String getCurrentPlayerMode() {
+	synchronized public String getCurrentPlayerMode() {
 		return currentPlayerMode;
 	}
 
-	public void setCurrentPlayerMode(String currentPlayerMode) {
+	synchronized public void setCurrentPlayerMode(String currentPlayerMode) {
 		this.currentPlayerMode = currentPlayerMode;
 	}
 
@@ -66,43 +66,43 @@ public class Board extends Observable {
 	private boolean isAllOutMode = false;
 	public UI ui;
 	public PlayerStrategy playerStrategy;
-	// public Player currePlayer;
+	// synchronized public Player currePlayer;
 	private List<TurnSubscriber> turnsubscribers = new LinkedList<TurnSubscriber>();
 	private Player winner = null;
 
 	/**
 	 * @return the winner
 	 */
-	public Player getWinner() {
+	synchronized public Player getWinner() {
 		return winner;
 	}
 
-	public String getActionTakingPlace() {
+	synchronized public String getActionTakingPlace() {
 		return actionTakingPlace;
 	}
 
-	public void setActionTakingPlace(String actionTakingPlace) {
+	synchronized public void setActionTakingPlace(String actionTakingPlace) {
 		this.actionTakingPlace = actionTakingPlace;
 	}
 
-	public String getCurrentPlayer() {
+	synchronized public String getCurrentPlayer() {
 		return currentPlayer;
 	}
 
-	public void setCurrentPlayer(String currentPlayer) {
+	synchronized public void setCurrentPlayer(String currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
 
-	public String getGamePhaseName() {
+	synchronized public String getGamePhaseName() {
 		return gamePhaseName;
 	}
 
-	public void setGamePhaseName(String gamePhaseName) {
+	synchronized public void setGamePhaseName(String gamePhaseName) {
 		this.gamePhaseName = gamePhaseName;
 	}
 
-	private static final Random RANDOM = new Random();
-	private static final int MAX_DICE_ROLLS_DEFFENDER = 2;
+	private final Random RANDOM = new Random();
+	private  final int MAX_DICE_ROLLS_DEFFENDER = 2;
 
 	/**
 	 * 
@@ -122,7 +122,7 @@ public class Board extends Observable {
 
 		LinkedList<Player> players = initPlayers(totalPlayers);
 		
-		totalNoOfCountries = MapInterface.getCountries().size();
+		totalNoOfCountries = mapinterface.getCountries().size();
 		//int numofCountries = MapInterface.getCountries().size(); //used nowhere
 		/*
 		 * setPlayers(new LinkedList<Player>(Arrays.asList(new Player(this, "x"), new
@@ -142,7 +142,7 @@ public class Board extends Observable {
 		// }
 		// User-driven creation of map elements, such as country, continent, and
 		// connectivity between countries. 4
-		continents = MapInterface.getContinents();
+		continents = mapinterface.getContinents();
 		// Saving a map to a text file exactly as edited (using the “conquest” game map
 		// format). 3
 		// Loading a map from an existing “conquest” map file, then editing the map, or
@@ -159,10 +159,11 @@ public class Board extends Observable {
 
 	}
 	public Board(String mapPath, HashMap config) {//overloaded for tournament mode
+		synchronized (this) {
 		mapinterface = new MapInterface(mapPath);
 		//LOG.info("\r\n\r\n<<UI prompt in the background. Please use ALT-TAB>>");// TODO make the UI come to foreground
 		playerStrategy = new PlayerStrategy();
-		totalNoOfCountries = MapInterface.getCountries().size();
+		totalNoOfCountries = mapinterface.getCountries().size();
 		List<Player> players = new ArrayList<Player>();
 		//String[] strategies = {"Aggresive", "Benevolent", "Random","Cheater"};
 		//String[] strategies = (String[])((List<Object>)(config.get("strategieslist"))).toArray();
@@ -173,12 +174,15 @@ public class Board extends Observable {
 			strategies[index] = (String) value;
 		  index++;
 		}
-		players.add(new Player(this, "computer 1", /*strategies[0]*/ strategies[RANDOM.nextInt(strategies.length)]));
-		players.add(new Player(this, "computer 2", /* "Aggresive" */ strategies[RANDOM.nextInt(strategies.length)]));
-		setPlayers(players);
+		
+			players.add(new Player(this, "computer "+RANDOM.nextInt(), /*strategies[0]*/ strategies[RANDOM.nextInt(strategies.length)]));
+			players.add(new Player(this, "computer "+RANDOM.nextInt(), /* "Aggresive" */ strategies[RANDOM.nextInt(strategies.length)]));
+			setPlayers(players);
+		
 		distributeCountries(getPlayers().size());
 		actionTakingPlace = "After Random Distribution of the countries to the players: " + players;
-		continents = MapInterface.getContinents();
+		continents = mapinterface.getContinents();
+		}
 	}
 
 	/**
@@ -212,8 +216,8 @@ public class Board extends Observable {
 		return players;
 	}
 
-	public void distributeCountries(int playersCount) {
-		List<Country> countriesToDistribute = MapInterface.getCountries();
+	synchronized public void distributeCountries(int playersCount) {
+		List<Country> countriesToDistribute = mapinterface.getCountries();
 		Collections.shuffle(countriesToDistribute);
 		/*
 		 * int i = 0; int delta = countriesToDistribute.size()/players.size(); for
@@ -235,7 +239,7 @@ public class Board extends Observable {
 		}
 	}
 
-	public int getArmiesFromCards(Player p) {
+	synchronized public int getArmiesFromCards(Player p) {
 		List<Card> player_cards = p.getCards();
 		Collection selected = new ArrayList();
 		while (selected.size() != 3) {
@@ -303,11 +307,11 @@ public class Board extends Observable {
 
 		/*
 		 * Collection<Integer> eqs = cardsCount.values(); LOG.info(" eqs: "+eqs);
-		 * eqs.removeIf(new Predicate<Integer>() { public boolean test(Integer i) {
+		 * eqs.removeIf(new Predicate<Integer>() { synchronized public boolean test(Integer i) {
 		 * return i < CARDS_EQUAL_DIFFERENT_AMOUNT; } }); boolean equals = eqs.size()>0;
 		 * 
 		 * Collection<Integer> diffs = cardsCount.values(); LOG.info(" diffs: "+diffs);
-		 * diffs.removeIf(new Predicate<Integer>() { public boolean test(Integer i) {
+		 * diffs.removeIf(new Predicate<Integer>() { synchronized public boolean test(Integer i) {
 		 * return i != 1; } }); boolean differents = diffs.size() >=
 		 * CARDS_EQUAL_DIFFERENT_AMOUNT;
 		 */
@@ -325,11 +329,11 @@ public class Board extends Observable {
 	}
 
 	/*
-	 * public List<Country> getElligibleTargets(Country offendingCountry) { return
+	 * synchronized public List<Country> getElligibleTargets(Country offendingCountry) { return
 	 * null; }
 	 */
 
-	public void doBattle(Country offendingCountry, Country deffendingCountry) {
+	synchronized public void doBattle(Country offendingCountry, Country deffendingCountry) {
 		// ALMOST DONE BUILD2 update players armies numbers according to logic below
 		/*
 		 * A battle is then simulated by the attacker rolling at most 3 dice (which
@@ -469,7 +473,7 @@ public class Board extends Observable {
 		return RANDOM.nextInt(6)+1;
 	}
 
-	public Player getOwner(Country country) {
+	synchronized public Player getOwner(Country country) {
 		for (Player player : getPlayers()) {
 			if (player.getCountries().contains(country)) {
 				return player;
@@ -496,15 +500,15 @@ public class Board extends Observable {
 		LOG.info("ANNEXING COUNTRY END\r\nattacker: " + attacker + "\r\ndefender: " + deffender);
 	}
 
-	public int getLastDiceRollResult() {
+	synchronized public int getLastDiceRollResult() {
 		return lastDiceRollResult;
 	}
 
-	public void setPlayers(List<Player> asList) {
+	synchronized public void setPlayers(List<Player> asList) {
 		players = asList;
 	}
 
-	public List<Player> getPlayers() {
+	synchronized public List<Player> getPlayers() {
 		return players;
 	}
 
@@ -512,26 +516,26 @@ public class Board extends Observable {
 	 * @param continent
 	 * @return the countriesByContinent
 	 */
-	public List<Country> getCountriesByContinent(Continent continent) {
-		return MapInterface.getCountriesByContinent(continent); // countriesByContinent.get(countriesByContinent.indexOf(continent));
+	synchronized public List<Country> getCountriesByContinent(Continent continent) {
+		return mapinterface.getCountriesByContinent(continent); // countriesByContinent.get(countriesByContinent.indexOf(continent));
 	}
 
-	public List<Continent> getContinents() {
-		List<Continent> continents = MapInterface.getContinents();
+	synchronized public List<Continent> getContinents() {
+		List<Continent> continents = mapinterface.getContinents();
 		return continents;
 	}
 
-	public List<Country> getCountries() {
-		List<Country> countries = MapInterface.getCountries();
+	synchronized public List<Country> getCountries() {
+		List<Country> countries = mapinterface.getCountries();
 		return countries;
 	}
 
-	public Card getRandomCard() {
+	synchronized public Card getRandomCard() {
 		Sort[] card_types = Sort.values();
 		return new Card(card_types[RANDOM.nextInt(card_types.length)]);
 	}
 
-	public void setTurn(int i) {
+	synchronized public void setTurn(int i) {
 		this.turn = i;
 		broadcastTurnChanged(turn);
 	}
@@ -543,18 +547,18 @@ public class Board extends Observable {
 		}
 	}
 
-	public int getTurn() {
+	synchronized public int getTurn() {
 		return this.turn;
 	}
 
-	public void getBoardInfo() {
+	synchronized public void getBoardInfo() {
 		setChanged();
 		// notify all attached Observers of a change
 		notifyObservers(this);
 
 	}
 
-	public HashMap<String, Double> getPercentageByPlayers() {
+	synchronized public HashMap<String, Double> getPercentageByPlayers() {
 		HashMap<String, Double> playersDomination = new HashMap<String, Double>();
 		for (Player x : players) {
 			float noOfCountriesOwned = x.getCountries().size();
@@ -567,7 +571,7 @@ public class Board extends Observable {
 
 	}
 
-	public HashMap<String, String> getContinentsByPlayers() {
+	synchronized public HashMap<String, String> getContinentsByPlayers() {
 		HashMap<String, String> continentOwner = new HashMap<String, String>();
 		for (Player x : players) {
 			if (x.getOwnedContinent() != null)
@@ -581,7 +585,7 @@ public class Board extends Observable {
 
 	}
 
-	public HashMap<String, Integer> getTotalArmiesOwnedByAllPlayers() {
+	synchronized public HashMap<String, Integer> getTotalArmiesOwnedByAllPlayers() {
 		HashMap<String, Integer> armiesList = new HashMap<String, Integer>();
 
 		for (Player x : players) {
@@ -599,20 +603,20 @@ public class Board extends Observable {
 
 	}
 
-	public boolean getIsAllOutMode() {
+	synchronized public boolean getIsAllOutMode() {
 		return this.isAllOutMode;
 	}
 
-	public void setIsAllOutMode(boolean userOk) {
+	synchronized public void setIsAllOutMode(boolean userOk) {
 		isAllOutMode = userOk;
 	}
 
-	public void subscribeTurnEvents(TurnSubscriber turnsubscriber) {
+	synchronized public void subscribeTurnEvents(TurnSubscriber turnsubscriber) {
 		this.turnsubscribers.add(turnsubscriber);
 		
 	}
 
-	public void setWinner(Player player) {
+	synchronized public void setWinner(Player player) {
 		this.winner = player;
 		
 	}

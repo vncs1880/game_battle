@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
  * @date 5/02/19
  **/
 public class Player extends Observable {
-	private static final Logger LOG = LogManager.getLogger(Player.class);
+	private final Logger LOG = LogManager.getLogger(Player.class);
 
 	/*
 	 * (non-Javadoc)
@@ -33,7 +33,7 @@ public class Player extends Observable {
 		return name + "(" + "armies:" + this.armies + ", cards:" + cards + ", countries:" + countries + ")";// super.toString();
 	}
 
-	private static final int MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK = 2;
+	private final int MINIMUM_ARMIES_TO_QUALIFY_FOR_ATTACK = 2;
 	private int armies = 0;
 
 	/**
