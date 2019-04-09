@@ -3,6 +3,7 @@
  */
 package org.game_battle.utility;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Arrays;
 import java.util.Collection;
@@ -98,6 +99,7 @@ public class UtilsGUI {
         JList<Object> strategieslist = new JList<Object>(strategies);
         strategieslist.setLayoutOrientation(JList.VERTICAL_WRAP);
         strategieslist.setVisibleRowCount(-1);
+        strategieslist.setPreferredSize(new Dimension(80, 80));
 		panel1.add(strategieslist);
         JPanel panel = new JPanel(new GridLayout(0, 2));
         panel.add(new JLabel("Number of games:"));	 

@@ -9,11 +9,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JDialog;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.game_battle.model.Implementation.AggresiveStrategyImpl;
 import org.game_battle.model.Implementation.Board;
 import org.game_battle.model.Implementation.Player;
+import org.game_battle.utility.TournamentConfigGUI;
 import org.game_battle.utility.UtilsGUI;
 import org.game_battle.view.UI;
 
@@ -30,7 +33,7 @@ public class Tournament {
 	private int max_turns;
 	private List<Object> maps;
 	private UtilsGUI gui;
-	private HashMap config;
+	private HashMap config = new HashMap<>();
 	private List<Thread> matches = new LinkedList<Thread>();
 	private final Random RANDOM = new Random();
 	
@@ -72,10 +75,18 @@ public class Tournament {
 		*/
 				
 		UtilsGUI gui = new UtilsGUI();
-		HashMap config = gui.initTournamentForm(Arrays.asList("file.map", "file2.map",
-				/*
-				 * "InvalidMapConnection.map", "InvalidMapFormat.map","InvalidMapFormat.txt",
-				 */"NEW_FILE.map"/* ,"Newfile2.map" */,"newMap.map"));
+		//HashMap config = gui.initTournamentForm(Arrays.asList("file.map", "file2.map","NEW_FILE.map","newMap.map"));
+		
+		//try {
+			TournamentConfigGUI dialog = new TournamentConfigGUI();
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			//dialog.setModal(true);
+			dialog.setVisible(true);
+			HashMap config = new HashMap<>();
+			config =  dialog.getConfig();
+		/*
+		 * } catch (Exception e) { e.printStackTrace(); }
+		 */
 		
 		Tournament tournament = new Tournament(config);
 		int gamesNumber = tournament.getGamesNumber();
