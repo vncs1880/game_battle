@@ -72,8 +72,10 @@ public class Tournament {
 		*/
 				
 		UtilsGUI gui = new UtilsGUI();
-		HashMap config = gui.initTournamentForm(Arrays.asList("file.map","file2.map","InvalidMapConnection.map",
-				"InvalidMapFormat.map","InvalidMapFormat.txt","NEW_FILE.map","Newfile2.map","newMap.map"));
+		HashMap config = gui.initTournamentForm(Arrays.asList("file.map", "file2.map",
+				/*
+				 * "InvalidMapConnection.map", "InvalidMapFormat.map","InvalidMapFormat.txt",
+				 */"NEW_FILE.map"/* ,"Newfile2.map" */,"newMap.map"));
 		
 		Tournament tournament = new Tournament(config);
 		int gamesNumber = tournament.getGamesNumber();
@@ -112,7 +114,7 @@ public class Tournament {
 				
 				Player p1 = new Player(tm.getGame().getBoard(), "computer["+RANDOM.nextInt()+"]", (String)(player_strategies.get(RANDOM.nextInt(player_strategies.size()))));
 				
-				Thread match = new Thread("game:" + (game + 1) + " map:" + (map + 1)){
+				Thread match = new Thread("game:" + (game + 1) + " map:" + (map + 1)){//TODO maybe show file name here
 			        public void run(){
 			        	tm.setMy_thread(this);
 						tournamentPanel[game_number][map_number].startMatch();
