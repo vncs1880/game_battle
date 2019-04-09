@@ -95,10 +95,14 @@ public class TournamentMatch implements TurnSubscriber{
 	synchronized public void turnChangedTo(int turn) {
 		if (turn==-1||turn == max_turns) {
 			this.winner=game.getBoard().getWinner();
+			
 			if (turn==max_turns) LOG.info("In order to minimize run completion time, ["+my_thread.getName()+"] was declared a draw after " + max_turns + " turns.");
-			if (turn==-1) LOG.info("match winner is "+winner); 
-
-			my_thread.setName(my_thread.getName() + ((turn==max_turns)?" DRAW":" Winner is "+winner.getName()));
+			if (turn==-1) { 
+				LOG.info("match winner is "+winner);
+				this.winner.setName("<"+this.winner.getName()+">");
+			} 
+			String competitors = game.getBoard().getPlayers().get(0).getName()+" vs "+game.getBoard().getPlayers().get(1).getName();
+			my_thread.setName(my_thread.getName() + ((turn==max_turns)?" DRAW":" "+competitors));
 			try {
 				my_thread.join();
 			} catch (InterruptedException e) {

@@ -9,11 +9,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JDialog;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.game_battle.model.Implementation.AggresiveStrategyImpl;
 import org.game_battle.model.Implementation.Board;
 import org.game_battle.model.Implementation.Player;
+import org.game_battle.utility.TournamentConfigGUI;
 import org.game_battle.utility.UtilsGUI;
 import org.game_battle.view.UI;
 
@@ -30,8 +33,8 @@ public class Tournament {
 	private int max_turns;
 	private List<Object> maps;
 	private UtilsGUI gui;
-	private HashMap config;
-	private List<Thread> matches = new LinkedList<Thread>();
+	private HashMap config = new HashMap<>();
+	//private List<Thread> matches = new LinkedList<Thread>();
 	private final Random RANDOM = new Random();
 	
 	/**
@@ -70,10 +73,11 @@ public class Tournament {
 		Map 2 Cheater Draw Cheater Aggressive
 		Map 3 Cheater Aggressive Cheater Draw 
 		*/
-				
-		UtilsGUI gui = new UtilsGUI();
-		HashMap config = gui.initTournamentForm(Arrays.asList("file.map","file2.map","InvalidMapConnection.map",
-				"InvalidMapFormat.map","InvalidMapFormat.txt","NEW_FILE.map","Newfile2.map","newMap.map"));
+		TournamentConfigGUI dialog = new TournamentConfigGUI();
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setVisible(true);
+		HashMap config = new HashMap<>();
+		config =  dialog.getConfig();
 		
 		Tournament tournament = new Tournament(config);
 		int gamesNumber = tournament.getGamesNumber();
@@ -101,34 +105,23 @@ public class Tournament {
 				String mapPath = "resource/"+(String) maps.get(map);
 				int max_turns2 = (int)this.config.get("turnsnumber");
 
-
 				final int game_number = game;
 				final int map_number = map;
 				
-				
-				
 				TournamentMatch tm = new TournamentMatch(new GamePlay(mapPath,config), max_turns2);
 				tournamentPanel[game_number][map_number] = tm;
-				
-				Player p1 = new Player(tm.getGame().getBoard(), "computer["+RANDOM.nextInt()+"]", (String)(player_strategies.get(RANDOM.nextInt(player_strategies.size()))));
-				
-				Thread match = new Thread("game:" + (game + 1) + " map:" + (map + 1)){
+
+				Thread match = new Thread("game:" + (game + 1) + " map:" + (map + 1)){//TODO maybe show file name here
 			        public void run(){
 			        	tm.setMy_thread(this);
 						tournamentPanel[game_number][map_number].startMatch();
 			        }
 			    };
 			    match.start();
-				
-				/*
-				 * try { match.join(); } catch (InterruptedException e) { e.printStackTrace(); }
-				 */
-				 
-			    matches.add(match);
 			}
 		}
 		
-		LOG.info("started all matches");
+		LOG.info("Tournament end");
 	}
 
 }

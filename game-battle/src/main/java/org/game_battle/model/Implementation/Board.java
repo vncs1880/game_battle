@@ -175,8 +175,8 @@ public class Board extends Observable {
 		  index++;
 		}
 		
-			players.add(new Player(this, "computer "+RANDOM.nextInt(), /*strategies[0]*/ strategies[RANDOM.nextInt(strategies.length)]));
-			players.add(new Player(this, "computer "+RANDOM.nextInt(), /* "Aggresive" */ strategies[RANDOM.nextInt(strategies.length)]));
+			players.add(new Player(this, "p1 "+RANDOM.nextInt(10000), /*strategies[0]*/ strategies[RANDOM.nextInt(strategies.length)]));
+			players.add(new Player(this, "p2 "+RANDOM.nextInt(10000), /* "Aggresive" */ strategies[RANDOM.nextInt(strategies.length)]));
 			setPlayers(players);
 		
 		distributeCountries(getPlayers().size());
