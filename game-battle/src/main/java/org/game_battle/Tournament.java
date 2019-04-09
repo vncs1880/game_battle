@@ -34,7 +34,7 @@ public class Tournament {
 	private List<Object> maps;
 	private UtilsGUI gui;
 	private HashMap config = new HashMap<>();
-	private List<Thread> matches = new LinkedList<Thread>();
+	//private List<Thread> matches = new LinkedList<Thread>();
 	private final Random RANDOM = new Random();
 	
 	/**
@@ -73,20 +73,11 @@ public class Tournament {
 		Map 2 Cheater Draw Cheater Aggressive
 		Map 3 Cheater Aggressive Cheater Draw 
 		*/
-				
-		UtilsGUI gui = new UtilsGUI();
-		//HashMap config = gui.initTournamentForm(Arrays.asList("file.map", "file2.map","NEW_FILE.map","newMap.map"));
-		
-		//try {
-			TournamentConfigGUI dialog = new TournamentConfigGUI();
+		TournamentConfigGUI dialog = new TournamentConfigGUI();
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			//dialog.setModal(true);
-			dialog.setVisible(true);
-			HashMap config = new HashMap<>();
-			config =  dialog.getConfig();
-		/*
-		 * } catch (Exception e) { e.printStackTrace(); }
-		 */
+		dialog.setVisible(true);
+		HashMap config = new HashMap<>();
+		config =  dialog.getConfig();
 		
 		Tournament tournament = new Tournament(config);
 		int gamesNumber = tournament.getGamesNumber();
@@ -114,17 +105,12 @@ public class Tournament {
 				String mapPath = "resource/"+(String) maps.get(map);
 				int max_turns2 = (int)this.config.get("turnsnumber");
 
-
 				final int game_number = game;
 				final int map_number = map;
 				
-				
-				
 				TournamentMatch tm = new TournamentMatch(new GamePlay(mapPath,config), max_turns2);
 				tournamentPanel[game_number][map_number] = tm;
-				
-				Player p1 = new Player(tm.getGame().getBoard(), "computer["+RANDOM.nextInt()+"]", (String)(player_strategies.get(RANDOM.nextInt(player_strategies.size()))));
-				
+
 				Thread match = new Thread("game:" + (game + 1) + " map:" + (map + 1)){//TODO maybe show file name here
 			        public void run(){
 			        	tm.setMy_thread(this);
@@ -132,16 +118,10 @@ public class Tournament {
 			        }
 			    };
 			    match.start();
-				
-				/*
-				 * try { match.join(); } catch (InterruptedException e) { e.printStackTrace(); }
-				 */
-				 
-			    matches.add(match);
 			}
 		}
 		
-		LOG.info("started all matches");
+		LOG.info("Tournament end");
 	}
 
 }
