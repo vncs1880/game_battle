@@ -3,6 +3,7 @@
  */
 package org.game_battle.model.Implementation;
 
+import org.game_battle.GamePlay;
 import org.game_battle.view.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +53,9 @@ public class Player extends Observable {
 	private Continent ownedContinent;
 	private UI ui;
 	private String playerMode;
+	public static Country sCountry;
 	private boolean isDefeated=false;
+	public static Country countrySelected;
 	// private boolean isAllOutMode = false;
 
 	public String getPlayerMode() {
@@ -105,6 +108,25 @@ public class Player extends Observable {
 
 	public void setCountries(List<Country> list) {
 		countries = list;
+	}
+	
+	public void setArmiesForCountry(Country c,int armyValue) {
+		for(Country cou : this.getCountries()) {
+			if(cou.equals(c)) {
+				cou.setArmyQty(armyValue);
+			}
+			
+		}
+	}
+	
+	public void reSetArmiesForCountry(Country c,int armyValue) {
+		if(playerMode.equals("Benevolent"))return ;
+		for(Country cou : this.getCountries()) {
+			if(cou.equals(c)) {
+				cou.setArmyQty(armyValue);
+			}
+			
+		}
 	}
 
 	public void Reinforcement() {
@@ -205,15 +227,17 @@ public class Player extends Observable {
 	    this.armies = board.playerStrategy.setArmies(this.armies);
        	
 		for (Country country : countries) {		
-			
+			sCountry=country;
 			int qtyArmies = board.playerStrategy.askNumber(
 							"Reinforcement phase", "How many armies do you want to put in country " + country.toString()
 									+ " ? [" + (countries.indexOf(country) + 1) + "/" + countries.size() + "]",
 							0, this.armies, numOfCountries, flag );
+			
 			if (qtyArmies <= this.armies) {
 				LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
 						+ country.getArmies()/* this.toString() */);
 				country.setArmyQty(country.getArmies() + qtyArmies);
+				
 				this.armies -= qtyArmies;
 				flag = true;
 			}
@@ -441,14 +465,18 @@ public class Player extends Observable {
 			if (country.getArmies() > 0 && neighbours.size() > 0) {
 				Country selected = board.playerStrategy.selectCountry("Fortification phase",
 						"Want to move armies from " + country + " to a neighbour?", neighbours);
+				countrySelected=selected;
 				if (selected != null && country.getArmies() > 0) {
 					int n_armies = board.playerStrategy.askNumber("Fortification phase",
 							"How many armies from " + country + " to " + selected, 0, country.getArmies(), 0, false);
-					country.setArmyQty(country.getArmies() - n_armies);
-					LOG.info("Player " + this.name + " moved " + n_armies + " army from " + country.getName() + " to "
-							+ selected.getName() + " previous army qty was " + selected.getArmies());
-					selected.setArmyQty(selected.getArmies() + n_armies);// DONE bug here. not really updating selected
-																			// army qty
+				//	country.setArmyQty(country.getArmies() - n_armies);
+				
+				//	selected.setArmyQty(selected.getArmies() + n_armies);// DONE bug here. not really updating selected
+					
+					this.reSetArmiesForCountry(country, country.getArmies() - n_armies);
+					this.reSetArmiesForCountry(selected, selected.getArmies() + n_armies);
+
+					// army qty
 					break;
 				}
 			} else {

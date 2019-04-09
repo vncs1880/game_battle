@@ -33,7 +33,7 @@ import org.game_battle.view.UI;
 public class GamePlay {
 	// System.setProperty("log4j.configurationFile","./path_to_the_log4j2_config_file/log4j2.xml");
 	private final Logger LOG = LogManager.getLogger(GamePlay.class);
-
+	public static Player playerStatic;
 	private Board board = null;
 	private Player player;
 	private List<Player> players;
@@ -103,6 +103,7 @@ public class GamePlay {
 			
 			for (Iterator<Player> iterator = players.iterator(); iterator.hasNext();/*Player player : players*/) {
 				Player player = iterator.next();
+				playerStatic=player;
 				if (player.isDefeated()) continue;
 				
 				if (player.getPlayerMode().equals("Human")) {
@@ -145,7 +146,9 @@ public class GamePlay {
 					// added 23rd as part of pahse 2
 					board.setGamePhaseName("Attack");
 					board.getBoardInfo();
+					if(!player.getPlayerMode().equals("Benevolent")) {
 					player.Attack();
+					}
 					action = "\nAttack END: \r\n\r\n" + player;
 					board.setActionTakingPlace(action);
 					// LOG.info("\r\nAttack END: \r\n\r\n" + player + "\r\n\r\nFortification
