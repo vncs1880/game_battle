@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
@@ -101,7 +102,8 @@ public class TournamentMatch implements TurnSubscriber{
 				LOG.info("match winner is "+winner);
 				this.winner.setName("<"+this.winner.getName()+">");
 			} 
-			String competitors = game.getBoard().getPlayers().get(0).getName()+" vs "+game.getBoard().getPlayers().get(1).getName();
+			List<Player> players = game.getBoard().getPlayers();
+			String competitors = players.get(0).getName()+"("+players.get(0).getPlayerMode()+")"+" vs "+players.get(1).getName()+"("+players.get(1).getPlayerMode()+")";
 			my_thread.setName(my_thread.getName() + ((turn==max_turns)?" DRAW":" "+competitors));
 			try {
 				my_thread.join();

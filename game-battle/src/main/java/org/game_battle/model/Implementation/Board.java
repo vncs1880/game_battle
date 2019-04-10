@@ -165,8 +165,6 @@ public class Board extends Observable {
 		playerStrategy = new PlayerStrategy();
 		totalNoOfCountries = mapinterface.getCountries().size();
 		List<Player> players = new ArrayList<Player>();
-		//String[] strategies = {"Aggresive", "Benevolent", "Random","Cheater"};
-		//String[] strategies = (String[])((List<Object>)(config.get("strategieslist"))).toArray();
 		List<Object> strategies_list = ((List<Object>)(config.get("strategieslist")));
 		String[] strategies = new String[strategies_list.size()];
 		int index = 0;
@@ -175,8 +173,13 @@ public class Board extends Observable {
 		  index++;
 		}
 		
-			players.add(new Player(this, "p1 "+RANDOM.nextInt(10000), /*strategies[0]*/ strategies[RANDOM.nextInt(strategies.length)]));
-			players.add(new Player(this, "p2 "+RANDOM.nextInt(10000), /* "Aggresive" */ strategies[RANDOM.nextInt(strategies.length)]));
+			Player player1 = new Player(this, ""+RANDOM.nextInt(10000), strategies[RANDOM.nextInt(strategies.length)]);
+			Player player2 = new Player(this, ""+RANDOM.nextInt(10000), strategies[RANDOM.nextInt(strategies.length)]);
+			while (player2.getPlayerMode().equalsIgnoreCase(player1.getPlayerMode())){
+				player2.setPlayerMode(strategies[RANDOM.nextInt(strategies.length)]);//avoid same strategy
+			}
+			players.add(player1);
+			players.add(player2);
 			setPlayers(players);
 		
 		distributeCountries(getPlayers().size());
