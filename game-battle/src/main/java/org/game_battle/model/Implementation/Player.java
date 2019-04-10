@@ -5,6 +5,10 @@ package org.game_battle.model.Implementation;
 
 import org.game_battle.GamePlay;
 import org.game_battle.view.*;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -53,9 +57,11 @@ public class Player extends Observable {
 	private Continent ownedContinent;
 	private UI ui;
 	private String playerMode;
+	public static String playerModeString;
 	public static Country sCountry;
 	private boolean isDefeated=false;
 	public static Country countrySelected;
+	private String gameSaveFileLocation=System.getProperty("user.dir")+"/SaveFile/gameSave.file";
 	// private boolean isAllOutMode = false;
 
 	public String getPlayerMode() {
@@ -94,6 +100,7 @@ public class Player extends Observable {
 		cards = new LinkedList<Card>(distributeCards(board));
 		ui = new UI();
 		this.playerMode = playerMode;
+		playerModeString=playerMode;
 		
 		
 	}
@@ -121,6 +128,7 @@ public class Player extends Observable {
 	
 	public void reSetArmiesForCountry(Country c,int armyValue) {
 		if(playerMode.equals("Benevolent"))return ;
+		if((playerMode.equals("Cheater"))&& (!c.getName().equals(countrySelected.getName())))return ;
 		for(Country cou : this.getCountries()) {
 			if(cou.equals(c)) {
 				cou.setArmyQty(armyValue);
@@ -239,7 +247,7 @@ public class Player extends Observable {
 				country.setArmyQty(country.getArmies() + qtyArmies);
 				
 				this.armies -= qtyArmies;
-				flag = true;
+				//flag = true;
 			}
 			if (this.armies == 0)
 				break;
@@ -388,7 +396,7 @@ public class Player extends Observable {
 					if (this.armies > 0) {
 						int minimumArmies = board.getLastDiceRollResult();
 						int armies_to_occupy = board.playerStrategy.askNumber("Attack phase",
-								"How many armies to occupy defeated country?", minimumArmies, this.armies, 0, false);
+								"How many armies to occupy defeated country?", minimumArmies, this.armies, 0, true);
 						DeffendingCountry.setArmyQty(DeffendingCountry.getArmies() + armies_to_occupy);
 						this.armies -= armies_to_occupy;
 						LOG.info(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
@@ -463,12 +471,13 @@ public class Player extends Observable {
 			LOG.info(
 					"Elligible territory neighbours owned by " + board.getOwner(country).getName() + ": " + neighbours);
 			if (country.getArmies() > 0 && neighbours.size() > 0) {
+				
 				Country selected = board.playerStrategy.selectCountry("Fortification phase",
 						"Want to move armies from " + country + " to a neighbour?", neighbours);
 				countrySelected=selected;
 				if (selected != null && country.getArmies() > 0) {
 					int n_armies = board.playerStrategy.askNumber("Fortification phase",
-							"How many armies from " + country + " to " + selected, 0, country.getArmies(), 0, false);
+							"How many armies from " + country + " to " + selected, 0, country.getArmies(), 0, true);
 				//	country.setArmyQty(country.getArmies() - n_armies);
 				
 				//	selected.setArmyQty(selected.getArmies() + n_armies);// DONE bug here. not really updating selected
@@ -531,5 +540,41 @@ public class Player extends Observable {
 	public void setDefeated(boolean isDefeated) {
 		this.isDefeated = isDefeated;
 	}
+	
+		
+		public void saveFile(Player player) {
+			// TODO Auto-generated method stub
+			File gameSave = new File(gameSaveFileLocation);
+			if (!gameSave.exists()) {
+				try {
+					
+					gameSave.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			
+			try {
+				FileWriter fileWriter=new FileWriter(gameSave,true);
+				fileWriter.write("Player Name "+getName()+"::"+"Player Mode "+getPlayerMode()+"\n");
+				fileWriter.write("Cards Owned By Player "+getCards()+"\n");
+				fileWriter.write("Continents owned by Player "+getOwnedContinent()+"\n");
+				fileWriter.write("Countries owned by player "+getCountries()+"\n");
+				fileWriter.write("Current Phase "+board.getGamePhaseName()+"\n");
+				fileWriter.close();
+				Thread.sleep(1000);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		
+	}
+
+	
 
 }
