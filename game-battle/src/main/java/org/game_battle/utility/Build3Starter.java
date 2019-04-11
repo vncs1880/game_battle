@@ -44,7 +44,7 @@ public class Build3Starter extends JDialog {
 	 */
 	public Build3Starter() {
 		setTitle("Select RISK mode");
-		setBounds(100, 100, 235, 156);
+		setBounds(100, 100, 283, 156);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -70,9 +70,10 @@ public class Build3Starter extends JDialog {
 				JButton okButton = new JButton("Start selected mode");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
+						Build3Starter.this.setVisible(false);
 						if (rdbtnSinglePlayer.isSelected()) {
 							GamePlay game = new GamePlay();
-							game.startMatch();
+							game.startMatch();							
 						} else {
 							TournamentConfigGUI dialog = new TournamentConfigGUI();
 							dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
