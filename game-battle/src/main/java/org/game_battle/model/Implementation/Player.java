@@ -344,8 +344,7 @@ public class Player extends Observable {
 			// showing adjacent, should look for connected. Actually this is correct.
 			LOG.info("neighbour countries/elligible targets: " + neighbours);
 			if (!neighbours.isEmpty()) {
-				Country DeffendingCountry = board.playerStrategy.selectCountry("Attack phase", "Select target country",
-						neighbours /* board.getElligibleTargets(OffendingCountry) */);
+				Country DeffendingCountry = board.playerStrategy.selectCountry("Attack phase", "Select target country", neighbours /* board.getElligibleTargets(OffendingCountry) */);
 				// The attacker can choose to continue attacking until either all his armies or
 				// all the defending armies have been eliminated.
 				// While (OffendingCountry.getTotalArmies() > 0) AND
@@ -365,23 +364,27 @@ public class Player extends Observable {
 					LOG.info("ALL OUT MODE ENABLED");
 				}
 
-				// TODO is it the player armies or the country armies
-				while (((OffendingCountry.armies/* .getArmies() */ > 0) && (DeffendingCountry.armies/* .getArmies() */ > 0))) {
+				boolean battled = false;
+				int battlenum = 0;
+				while (((OffendingCountry.armies > 0) && (DeffendingCountry.armies > 0))) {
+					//if (battlenum==5) break;
 					if (!this.board.getIsAllOutMode()) {
 						if (!board.playerStrategy.isUserOk("Attack phase", attacker + ", do you want to attack " + deffender + " ?")) {
 							break;
 						}
-					} else
-					LOG.info("All Out Mode: skipping user input.");
+					} else {
+						LOG.info("All Out Mode: skipping user input.");
+					}
 					LOG.info("Starting Battle: " + attacker + " attacking " + deffender + ".");
 					// Board.Battle(OffendingCountry, DeffendingCountry)
-					board.doBattle(OffendingCountry, DeffendingCountry);
-					// If all the defender's armies are eliminated the attacker captures the
-					// territory.
+					if ((OffendingCountry.armies > 0) && (DeffendingCountry.armies > 0)) {
+						battled = board.doBattle(OffendingCountry, DeffendingCountry);						
+					}
+					// If all the defender's armies are eliminated the attacker captures the territory.
 					// Board.updateTerritories(DeffendingCountry)
 					//// just change ownership if DeffendingCountry.getTotalArmies() == 0
 				}
-				if (DeffendingCountry.getArmies() == 0) {
+				if (battled && (DeffendingCountry.getArmies() == 0)) {
 					board.giveLoserCountryToWinnerPlayer(OffendingCountry, DeffendingCountry);
 					// LOG.info("All the defender's armies are eliminated." + attacker + " captured
 					// " + DeffendingCountry);
@@ -403,10 +406,7 @@ public class Player extends Observable {
 					} else
 						LOG.info("no armies to occupy defeated country.");
 
-				} /*
-					 * * else if (OffendingCountry.getArmies() == 0) { LOG.info(attacker +
-					 * " lost battle."); }
-					 */
+				}
 			} else {
 				LOG.info("No elligible target countries.");
 			}

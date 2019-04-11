@@ -33,7 +33,7 @@ public class GamePlay {
 	// System.setProperty("log4j.configurationFile","./path_to_the_log4j2_config_file/log4j2.xml");
 	private final Logger LOG = LogManager.getLogger(GamePlay.class);
 	public static Player playerStatic;
-	public static ArrayList<Player> playersList;
+	public static ArrayList<Player> playersList = new ArrayList<>();
 	private Board board = null;
 	private Player player;
 	private List<Player> players;
