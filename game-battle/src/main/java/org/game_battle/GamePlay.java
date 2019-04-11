@@ -1,26 +1,25 @@
 package org.game_battle;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.naming.Context;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.message.ExitMessage;
 import org.game_battle.model.Implementation.AggresiveStrategyImpl;
 import org.game_battle.model.Implementation.BenevolentStrategyImpl;
 import org.game_battle.model.Implementation.Board;
 import org.game_battle.model.Implementation.CheaterStrategyImpl;
-import org.game_battle.model.Implementation.MapInterface;
 import org.game_battle.model.Implementation.Player;
-import org.game_battle.model.Implementation.PlayerStrategy;
 import org.game_battle.model.Implementation.RandomStrategyImpl;
+import org.game_battle.view.CardView;
 import org.game_battle.view.PhaseView;
 import org.game_battle.view.PlayerDominationView;
-import org.game_battle.view.CardView;
-
 import org.game_battle.view.UI;
 
 /**
@@ -34,12 +33,14 @@ public class GamePlay {
 	// System.setProperty("log4j.configurationFile","./path_to_the_log4j2_config_file/log4j2.xml");
 	private final Logger LOG = LogManager.getLogger(GamePlay.class);
 	public static Player playerStatic;
+	public static ArrayList<Player> playersList;
 	private Board board = null;
 	private Player player;
 	private List<Player> players;
 	private PhaseView phaseView;
 	private PlayerDominationView playerDominationView;
 	private CardView cardView;
+	
 
 	private boolean isTournamentMode = false;
 
@@ -50,6 +51,7 @@ public class GamePlay {
 	public GamePlay() {
 		super();
 		board = new Board(); //Start up phase
+		playersList= new  ArrayList<Player>();
 		initGamePlay();
 	}
 
@@ -94,6 +96,11 @@ public class GamePlay {
 	}
 
 	public void startMatch(/* List<Player> players_list */) {
+		
+		
+		
+		
+			
 		boolean gameOver = false;
 		int i = 0;
 		String action = "";
@@ -104,6 +111,22 @@ public class GamePlay {
 			for (Iterator<Player> iterator = players.iterator(); iterator.hasNext();/*Player player : players*/) {
 				Player player = iterator.next();
 				playerStatic=player;
+				playersList.add(player);
+				Runnable task = () -> {
+					while(true) 
+					player.saveFile(player);
+					
+				};
+				
+				try {
+					Thread thread = new Thread(task);
+					thread.start();
+					
+					
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				if (player.isDefeated()) continue;
 				
 				if (player.getPlayerMode().equals("Human")) {
@@ -246,6 +269,8 @@ public class GamePlay {
 			}
 		}
 	}
+
+	
 
 	/**
 	 * 

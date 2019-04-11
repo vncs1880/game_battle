@@ -5,6 +5,7 @@ package org.game_battle.model.Implementation;
 
 import java.util.*;
 
+import org.game_battle.GamePlay;
 import org.game_battle.TournamentMatch;
 import org.game_battle.model.Contract.*;
 import org.game_battle.model.Implementation.*;
@@ -344,6 +345,8 @@ public class Board extends Observable {
 		 * country) and the defender rolling at most 2 dice (which should not be more
 		 * than the number of armies contained in the attacking country).
 		 */
+		Country winner ;
+		Country loser;
 		Player attacker = getOwner(offendingCountry);
 		Player deffender = getOwner(deffendingCountry);
 		LOG.info("\r\nATTACKER: " + attacker + "\r\nDEFFENDER: " + deffender);
@@ -403,8 +406,8 @@ public class Board extends Observable {
 //		this.playerStrategy.doAttack(offendingCountry,deffendingCountry,attackerLastDice,deffenderLastDice);
 //		
 		
-		Country winner = cn[0];
-		Country loser = cn[1];
+		winner = cn[0];
+		loser = cn[1];
 		LOG.info(winner.getName() + " (" + getOwner(winner).getName() + ") has the best dice roll of all. "
 				+ loser.getName() + " loses one army for that.");
 		// loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
@@ -420,6 +423,7 @@ public class Board extends Observable {
 		if (deffenderDiceRollResultSet.size() == 2) {// TODO fix this:assumes the attacker rolled more dices than the
 														// deffender
 			try {
+				if(!Player.playerModeString.equals("Cheater")) {
 				winner = (attackerDiceRollResultSet
 						.get(attackerDiceRollResultSet.size() - 2) > deffenderDiceRollResultSet.get(0))
 								? offendingCountry
@@ -433,6 +437,15 @@ public class Board extends Observable {
 				// loser.setArmies(loser.getArmies()>0?loser.getArmies()-1:0);
 				loser.setArmyQty(loser.getArmies() > 0 ? loser.getArmies() - 1 : 0); // update country army instead of
 																						// player army
+				}else {
+					winner=cn[0];
+					loser=cn[0];
+					LOG.info(winner.getName() + " (" + getOwner(winner).getName() + ") has the 2nd best dice roll. "
+							+ loser.getName() + " loses one army.");
+					loser.setArmyQty(loser.getArmies() > 0 ? loser.getArmies() - 1 : 0);
+				}
+					
+				
 				LOG.info("2nd round WINNER: " + winner + " LOSER: " + loser);
 			} catch (Exception e) {
 				// TODO e.printStackTrace();

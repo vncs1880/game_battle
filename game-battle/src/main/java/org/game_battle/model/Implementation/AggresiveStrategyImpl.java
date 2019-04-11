@@ -68,7 +68,7 @@ public class AggresiveStrategyImpl implements Strategy {
 			}
 			return maxCountryArmy;
 
-		} else if (prompt.equals("Select defender country")) {
+		} else if (prompt.equals("Select target country")) {
 
 			int armyCount = 9999;
 			for (Country tempStr : countries_array) {
