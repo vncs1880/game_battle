@@ -468,8 +468,7 @@ public class Player extends Observable {
 					neighbours.remove(neighbour);
 				}
 			}
-			LOG.info(
-					"Elligible territory neighbours owned by " + board.getOwner(country).getName() + ": " + neighbours);
+			LOG.debug("Elligible territory neighbours owned by " + board.getOwner(country).getName() + ": " + neighbours);
 			if (country.getArmies() > 0 && neighbours.size() > 0) {
 				
 				Country selected = board.playerStrategy.selectCountry("Fortification phase",

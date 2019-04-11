@@ -201,7 +201,7 @@ public class MapInterface {
 		if (l == null) {
 			l = new ArrayList<String>();
 		}
-		LOG.info("Territory neighbours: "+l);
+		LOG.debug("Territory neighbours: "+l);
 		for (String countryname : l) {
 			Country countryByName = getCountryByName(countryname);
 			if (countryByName != null) {

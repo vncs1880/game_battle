@@ -17,6 +17,7 @@ import org.game_battle.model.Implementation.AggresiveStrategyImpl;
 import org.game_battle.model.Implementation.Board;
 import org.game_battle.model.Implementation.Player;
 import org.game_battle.utility.TournamentConfigGUI;
+import org.game_battle.utility.TournamentOutput;
 import org.game_battle.utility.UtilsGUI;
 import org.game_battle.view.UI;
 
@@ -99,9 +100,16 @@ public class Tournament {
 
 	private void setTournamentPanel(TournamentMatch[][] tournamentPanel) {
 		this.tournamentPanel = tournamentPanel;
+
+		int colsnum = (int)(this.config.get("gamesnumber"));
+		int rowsnum = maps.size();
+		TournamentOutput tournamentOutputdialog = new TournamentOutput(rowsnum,colsnum);
+		tournamentOutputdialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		tournamentOutputdialog.setModel(this.tournamentPanel);
+		tournamentOutputdialog.setVisible(true);
 		
-		for (int game = 0; game < (int)(this.config.get("gamesnumber")); game++) {
-			for (int map = 0; map < maps.size(); map++) {
+		for (int game = 0; game < colsnum; game++) {
+			for (int map = 0; map < rowsnum; map++) {
 				String mapPath = "resource/"+(String) maps.get(map);
 				int max_turns2 = (int)this.config.get("turnsnumber");
 
@@ -111,13 +119,14 @@ public class Tournament {
 				GamePlay game1 = new GamePlay(mapPath,config);
 				List<Player> players = game1.getBoard().getPlayers();
 				String competitors = players.get(0).getName()+"("+players.get(0).getPlayerMode()+")"+" vs "+players.get(1).getName()+"("+players.get(1).getPlayerMode()+")";
-				TournamentMatch tm = new TournamentMatch(game1, max_turns2);
+				TournamentMatch tm = new TournamentMatch(tournamentOutputdialog,game1, max_turns2, map, game);
 				tournamentPanel[game_number][map_number] = tm;
 
 				Thread match = new Thread("game:" + (game + 1) + " map:" + (map + 1) + " " + competitors){//TODO maybe show file name here
 			        public void run(){
 			        	tm.setMy_thread(this);
 						tournamentPanel[game_number][map_number].startMatch();
+						tournamentOutputdialog.table.getModel().setValueAt(competitors, map_number, game_number);
 			        }
 			    };
 			    match.start();

@@ -22,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.game_battle.model.Contract.TurnSubscriber;
 import org.game_battle.model.Implementation.Player;
+import org.game_battle.utility.TournamentOutput;
 import org.game_battle.utility.UtilsGUI;
 
 /**
@@ -51,6 +52,9 @@ public class TournamentMatch implements TurnSubscriber{
 	private int turn;
 	private int max_turns;
 	private Thread my_thread;
+	private TournamentOutput output;
+	private int row;
+	private int col;
 
 	/**
 	 * @return the my_thread
@@ -66,11 +70,14 @@ public class TournamentMatch implements TurnSubscriber{
 		this.my_thread = my_thread;
 	}
 		
-	public TournamentMatch(GamePlay gamePlay, int max_turns) {
+	public TournamentMatch(TournamentOutput tournamentOutputdialog, GamePlay gamePlay, int max_turns, int row, int col) {
 		synchronized (this) {
 		this.game = gamePlay;
 		this.max_turns = max_turns;
 		this.game.getBoard().subscribeTurnEvents(this);//turn observer
+		this.output = tournamentOutputdialog;
+		this.row = row;
+		this.col = col;
 		}
 	}
 
@@ -84,7 +91,7 @@ public class TournamentMatch implements TurnSubscriber{
   			put("gamesnumber", 3);
   			put("turnsnumber", 30);
   			}};
-		TournamentMatch tm = new TournamentMatch(new GamePlay("resource/file.map",config), 50);//TODO replace nulls
+		TournamentMatch tm = new TournamentMatch(null,new GamePlay("resource/file.map",config), 50,0,0);//TODO replace nulls
    		tm.startMatch();
 	}
 
@@ -104,7 +111,11 @@ public class TournamentMatch implements TurnSubscriber{
 			} 
 			//List<Player> players = game.getBoard().getPlayers();
 			//String competitors = players.get(0).getName()+"("+players.get(0).getPlayerMode()+")"+" vs "+players.get(1).getName()+"("+players.get(1).getPlayerMode()+")";
-			my_thread.setName(my_thread.getName() + ((turn==max_turns)?" DRAW":" "+" WINNER is "+this.winner.getName()/*competitors*/));
+			String matchresult = (turn==max_turns)?" DRAW":" "+" WINNER is "+this.winner.getName();
+			my_thread.setName(my_thread.getName() + matchresult);
+			
+			output.table.getModel().setValueAt(matchresult, row, col);
+			
 			try {
 				my_thread.join();
 			} catch (InterruptedException e) {
