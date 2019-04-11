@@ -102,9 +102,9 @@ public class TournamentMatch implements TurnSubscriber{
 				LOG.info("match winner is "+winner);
 				this.winner.setName("<"+this.winner.getName()+">");
 			} 
-			List<Player> players = game.getBoard().getPlayers();
-			String competitors = players.get(0).getName()+"("+players.get(0).getPlayerMode()+")"+" vs "+players.get(1).getName()+"("+players.get(1).getPlayerMode()+")";
-			my_thread.setName(my_thread.getName() + ((turn==max_turns)?" DRAW":" "+competitors));
+			//List<Player> players = game.getBoard().getPlayers();
+			//String competitors = players.get(0).getName()+"("+players.get(0).getPlayerMode()+")"+" vs "+players.get(1).getName()+"("+players.get(1).getPlayerMode()+")";
+			my_thread.setName(my_thread.getName() + ((turn==max_turns)?" DRAW":" "+" WINNER is "+this.winner.getName()/*competitors*/));
 			try {
 				my_thread.join();
 			} catch (InterruptedException e) {

@@ -108,10 +108,13 @@ public class Tournament {
 				final int game_number = game;
 				final int map_number = map;
 				
-				TournamentMatch tm = new TournamentMatch(new GamePlay(mapPath,config), max_turns2);
+				GamePlay game1 = new GamePlay(mapPath,config);
+				List<Player> players = game1.getBoard().getPlayers();
+				String competitors = players.get(0).getName()+"("+players.get(0).getPlayerMode()+")"+" vs "+players.get(1).getName()+"("+players.get(1).getPlayerMode()+")";
+				TournamentMatch tm = new TournamentMatch(game1, max_turns2);
 				tournamentPanel[game_number][map_number] = tm;
 
-				Thread match = new Thread("game:" + (game + 1) + " map:" + (map + 1)){//TODO maybe show file name here
+				Thread match = new Thread("game:" + (game + 1) + " map:" + (map + 1) + " " + competitors){//TODO maybe show file name here
 			        public void run(){
 			        	tm.setMy_thread(this);
 						tournamentPanel[game_number][map_number].startMatch();
