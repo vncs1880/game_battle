@@ -180,7 +180,7 @@ public class TournamentConfigGUI extends JDialog {
 		res.put("strategieslist", strategieslist.getSelectedValuesList());
 		res.put("gamesnumber", gamesnumber.getValue());
 		res.put("turnsnumber", turnsnumber.getValue());
-		LOG.info("Tournament config: "+res);
+		LOG.debug("Tournament config: "+res);
 		return res;
 	}
 

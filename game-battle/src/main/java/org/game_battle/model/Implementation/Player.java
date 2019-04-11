@@ -201,21 +201,21 @@ public class Player extends Observable {
 		if ((!(player_cards.size() < 3)) && (board.playerStrategy.isUserOk("Reinforcement phase",
 				"Initiate Card Exchange? " + player_cards + "\r\nDo you wanna try to get MORE armies from your cards?")
 				|| player_cards.size() > 4)) {
-			LOG.info("Card Exchange started.");
+			LOG.debug("Card Exchange started.");
 			int armiesFromCards = board.getArmiesFromCards(this);
 
 			if (armiesFromCards > 0) {
 				setArmiesFortification(/* this.getArmies() + */ armiesFromCards);
-				LOG.info("Success exchanging cards, gained " + armiesFromCards + " armies.");
+				LOG.debug("Success exchanging cards, gained " + armiesFromCards + " armies.");
 
 				List<Card> playercards = new CopyOnWriteArrayList<Card>(player_cards);
 				for (Card card : playercards) {
 					getCards().remove(card);
-					LOG.info("Removing card " + card + " from player hand.");// TODO fix this removing all cards
+					LOG.debug("Removing card " + card + " from player hand.");// TODO fix this removing all cards
 				}
 			}
 		} else
-			LOG.info("Skipping Card Exchange view");
+			LOG.debug("Skipping Card Exchange view");
 		// LOG.info("Getting more armies from cards result: " + this.toString());
 	//}else LOG.info("User opted out of Card Exchange");
 
@@ -242,7 +242,7 @@ public class Player extends Observable {
 							0, this.armies, numOfCountries, flag );
 			
 			if (qtyArmies <= this.armies) {
-				LOG.info("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
+				LOG.debug("Adding " + qtyArmies + " armies to country " + country.getName() + ". Previous was "
 						+ country.getArmies()/* this.toString() */);
 				country.setArmyQty(country.getArmies() + qtyArmies);
 				
@@ -304,7 +304,7 @@ public class Player extends Observable {
 		if (i < 3) {
 			r = 3;
 		}
-		LOG.info("Updating " + r + " armies now. Previous amount was " + this.armies/* +" \r\n"+this.toString() */);
+		LOG.debug("Updating " + r + " armies now. Previous amount was " + this.armies/* +" \r\n"+this.toString() */);
 		this.armies += r;
 		/*
 		 * if (i == -1) { this.armies = 0; }
@@ -342,7 +342,7 @@ public class Player extends Observable {
 			}
 			// LOG.info("neighbours after filtering: "+neighbours); //DONE BUILD2 currently
 			// showing adjacent, should look for connected. Actually this is correct.
-			LOG.info("neighbour countries/elligible targets: " + neighbours);
+			LOG.debug("neighbour countries/elligible targets: " + neighbours);
 			if (!neighbours.isEmpty()) {
 				Country DeffendingCountry = board.playerStrategy.selectCountry("Attack phase", "Select target country", neighbours /* board.getElligibleTargets(OffendingCountry) */);
 				// The attacker can choose to continue attacking until either all his armies or
@@ -361,7 +361,7 @@ public class Player extends Observable {
 								+ "attacker cannot attack anymore.");
 				this.board.setIsAllOutMode(allOutModeOk);
 				if (allOutModeOk) {
-					LOG.info("ALL OUT MODE ENABLED");
+					LOG.debug("ALL OUT MODE ENABLED");
 				}
 
 				boolean battled = false;
@@ -373,7 +373,7 @@ public class Player extends Observable {
 							break;
 						}
 					} else {
-						LOG.info("All Out Mode: skipping user input.");
+						LOG.debug("All Out Mode: skipping user input.");
 					}
 					LOG.info("Starting Battle: " + attacker + " attacking " + deffender + ".");
 					// Board.Battle(OffendingCountry, DeffendingCountry)
@@ -402,17 +402,17 @@ public class Player extends Observable {
 								"How many armies to occupy defeated country?", minimumArmies, this.armies, 0, true);
 						DeffendingCountry.setArmyQty(DeffendingCountry.getArmies() + armies_to_occupy);
 						this.armies -= armies_to_occupy;
-						LOG.info(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
+						LOG.debug(attacker + " places " + armies_to_occupy + " armies in " + DeffendingCountry);
 					} else
-						LOG.info("no armies to occupy defeated country.");
+						LOG.debug("no armies to occupy defeated country.");
 
 				}
 			} else {
-				LOG.info("No elligible target countries.");
+				LOG.debug("No elligible target countries.");
 			}
 
 		} else {
-			LOG.info("No elligible attacker countries.");
+			LOG.debug("No elligible attacker countries.");
 		}
 	}
 
@@ -488,7 +488,7 @@ public class Player extends Observable {
 					break;
 				}
 			} else {
-				LOG.info(country.getName() + ": No armies or no neighbours to move around.");
+				LOG.debug(country.getName() + ": No armies or no neighbours to move around.");
 			}
 		}
 

@@ -265,7 +265,7 @@ public class Board extends Observable {
 			Sort cardtype = card.getType();
 			cardsCount.replace(cardtype, cardsCount.get(cardtype) + 1);
 		}
-		LOG.info("cards: " + cards + " cardtype: " + " cardscount: " + cardsCount);
+		LOG.debug("cards: " + cards + " cardtype: " + " cardscount: " + cardsCount);
 		// LOG.info("cards: " +cards+" cardscount: "+cardsCount);
 		// Finally, if the player owns three cards of different sorts or the same sorts,
 		// he can exchange them for armies.
@@ -297,13 +297,13 @@ public class Board extends Observable {
 		for (Integer count : cardsCountValues) {
 			if (count == CARDS_EQUAL_DIFFERENT_AMOUNT) {
 				equals = CARDS_EQUAL_DIFFERENT_AMOUNT;
-				LOG.info("detected " + CARDS_EQUAL_DIFFERENT_AMOUNT + " cards of equal type.");
+				LOG.debug("detected " + CARDS_EQUAL_DIFFERENT_AMOUNT + " cards of equal type.");
 
 				break;
 			} else if (count != 0) {
 				diffs++;
 				if (diffs == CARDS_EQUAL_DIFFERENT_AMOUNT) {
-					LOG.info("detected " + CARDS_EQUAL_DIFFERENT_AMOUNT + " cards of different type.");
+					LOG.debug("detected " + CARDS_EQUAL_DIFFERENT_AMOUNT + " cards of different type.");
 					break;
 				}
 			}
@@ -324,10 +324,10 @@ public class Board extends Observable {
 
 		if (equals >= CARDS_EQUAL_DIFFERENT_AMOUNT || diffs >= CARDS_EQUAL_DIFFERENT_AMOUNT) {
 			cardsToGive += 5;
-			LOG.info("player gained " + cardsToGive + " armies from their cards.");
+			LOG.debug("player gained " + cardsToGive + " armies from their cards.");
 			return cardsToGive;
 		} else {
-			LOG.info("player didnt get any armies from their cards.");
+			LOG.debug("player didnt get any armies from their cards.");
 			return 0;
 		}
 	}
@@ -407,7 +407,7 @@ public class Board extends Observable {
 		deffender.setDiceRollResultSet(deffenderDices);
 		List<Integer> attackerDiceRollResultSet = attacker.getDiceRollResultSet();
 		List<Integer> deffenderDiceRollResultSet = deffender.getDiceRollResultSet();
-		LOG.info("Battle dice rolls\r\nAttacker (" + attacker.getName() + "," + offendingCountry.getName() + ") dice rolls results: " + attackerDiceRollResultSet 
+		LOG.debug("Battle dice rolls\r\nAttacker (" + attacker.getName() + "," + offendingCountry.getName() + ") dice rolls results: " + attackerDiceRollResultSet 
 				+ "\r\nDeffender  (" + deffender.getName() + "," + deffendingCountry.getName() + ") dice rolls results: " + deffenderDiceRollResultSet);
 
 		/*
@@ -424,7 +424,7 @@ public class Board extends Observable {
 		cn = this.playerStrategy.doAttack(offendingCountry, deffendingCountry, attackerLastDice, deffenderLastDice);
 		winner = cn[0];
 		loser = cn[1];
-		LOG.info(winner.getName() + " (" + getOwner(winner).getName() + ") has the best dice roll of all. " + loser.getName() + " loses one army for that.");
+		LOG.debug(winner.getName() + " (" + getOwner(winner).getName() + ") has the best dice roll of all. " + loser.getName() + " loses one army for that.");
 
 		loser.setArmyQty(loser.getArmies() > 0 ? loser.getArmies() - 1 : 0); // update country army instead of player army
 
@@ -439,18 +439,18 @@ public class Board extends Observable {
 				if(!Player.playerModeString.equals("Cheater")) {
 					winner = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size() - 2) > deffenderDiceRollResultSet.get(0)) ? offendingCountry : deffendingCountry;
 					loser = (attackerDiceRollResultSet.get(attackerDiceRollResultSet.size() - 2) < deffenderDiceRollResultSet.get(0)) ? offendingCountry : deffendingCountry;
-					LOG.info(winner.getName() + " (" + getOwner(winner).getName() + ") has the 2nd best dice roll. " + loser.getName() + " loses one army.");
+					LOG.debug(winner.getName() + " (" + getOwner(winner).getName() + ") has the 2nd best dice roll. " + loser.getName() + " loses one army.");
 
 					loser.setArmyQty(loser.getArmies() > 0 ? loser.getArmies() - 1 : 0); // update country army instead of player army
 				}else {
 					winner=cn[0];
 					loser=cn[0];
-					LOG.info(winner.getName() + " (" + getOwner(winner).getName() + ") has the 2nd best dice roll. " + loser.getName() + " loses one army.");
+					LOG.debug(winner.getName() + " (" + getOwner(winner).getName() + ") has the 2nd best dice roll. " + loser.getName() + " loses one army.");
 					loser.setArmyQty(loser.getArmies() > 0 ? loser.getArmies() - 1 : 0);
 				}
 					
 				
-				LOG.info("2nd round WINNER: " + winner + " LOSER: " + loser);
+				LOG.debug("2nd round WINNER: " + winner + " LOSER: " + loser);
 			} catch (Exception e) {
 				// TODO e.printStackTrace();
 				LOG.error("deffender picked more dice rolls than attacker.. context not found on project description");
@@ -512,7 +512,7 @@ public class Board extends Observable {
 	void giveLoserCountryToWinnerPlayer(Country OffendingCountry, Country DeffendingCountry) {
 		Player attacker = getOwner(OffendingCountry);
 		Player deffender = getOwner(DeffendingCountry);
-		LOG.info("ANNEXING COUNTRY START\r\nattacker: " + attacker + "\r\ndefender: " + deffender);
+		LOG.debug("ANNEXING COUNTRY START\r\nattacker: " + attacker + "\r\ndefender: " + deffender);
 
 		List<Country> attacker_countries = new CopyOnWriteArrayList<Country>(attacker.getCountries());
 		attacker_countries.add(DeffendingCountry);
@@ -520,7 +520,7 @@ public class Board extends Observable {
 		List<Country> deffender_countries = new CopyOnWriteArrayList<Country>(deffender.getCountries());
 		deffender_countries.remove(DeffendingCountry);
 		deffender.setCountries(deffender_countries);
-		LOG.info("ANNEXING COUNTRY END\r\nattacker: " + attacker + "\r\ndefender: " + deffender);
+		LOG.debug("ANNEXING COUNTRY END\r\nattacker: " + attacker + "\r\ndefender: " + deffender);
 	}
 
 	synchronized public int getLastDiceRollResult() {

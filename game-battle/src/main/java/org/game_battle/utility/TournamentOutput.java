@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.JTableHeader;
 
 import org.game_battle.TournamentMatch;
 
@@ -39,8 +40,9 @@ public class TournamentOutput extends JDialog {
 	 * @param rowsnum 
 	 */
 	public TournamentOutput(int rowsnum, int colsnum) {
+		setTitle("Tournament Report");
 		//setModal(true);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 225);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -49,8 +51,7 @@ public class TournamentOutput extends JDialog {
 		{
 			JScrollPane scrollPane = new JScrollPane();
 			contentPanel.add(scrollPane);
-			{
-				//String[][] data = new String[rowsnum][colsnum]; 
+			{	//table.setTableHeader();
 				table = new JTable(rowsnum,colsnum);
 				scrollPane.setViewportView(table);
 				table.setPreferredScrollableViewportSize(new Dimension(500, 70));

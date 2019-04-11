@@ -104,7 +104,7 @@ public class TournamentMatch implements TurnSubscriber{
 		if (turn==-1||turn == max_turns) {
 			this.winner=game.getBoard().getWinner();
 			
-			if (turn==max_turns) LOG.info("In order to minimize run completion time, ["+my_thread.getName()+"] was declared a draw after " + max_turns + " turns.");
+			if (turn==max_turns) LOG.info("In order to minimize run completion time, was declared a draw after " + max_turns + " turns.");
 			if (turn==-1) { 
 				LOG.info("match winner is "+winner);
 				this.winner.setName("<"+this.winner.getName()+">");
