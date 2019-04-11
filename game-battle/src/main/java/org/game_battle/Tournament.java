@@ -122,11 +122,12 @@ public class Tournament {
 				TournamentMatch tm = new TournamentMatch(tournamentOutputdialog,game1, max_turns2, map, game);
 				tournamentPanel[game_number][map_number] = tm;
 
-				Thread match = new Thread("game:" + (game + 1) + " map:" + (map + 1) + " " + competitors){//TODO maybe show file name here
+				String threadname = "game:" + (game + 1) + " map:" + (map + 1) + " " + competitors;
+				Thread match = new Thread(threadname){//TODO maybe show file name here
 			        public void run(){
 			        	tm.setMy_thread(this);
 						tournamentPanel[game_number][map_number].startMatch();
-						tournamentOutputdialog.table.getModel().setValueAt(competitors, map_number, game_number);
+						tournamentOutputdialog.table.getModel().setValueAt(threadname, map_number, game_number);
 			        }
 			    };
 			    match.start();

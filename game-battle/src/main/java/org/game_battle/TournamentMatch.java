@@ -112,9 +112,10 @@ public class TournamentMatch implements TurnSubscriber{
 			//List<Player> players = game.getBoard().getPlayers();
 			//String competitors = players.get(0).getName()+"("+players.get(0).getPlayerMode()+")"+" vs "+players.get(1).getName()+"("+players.get(1).getPlayerMode()+")";
 			String matchresult = (turn==max_turns)?" DRAW":" "+" WINNER is "+this.winner.getName();
-			my_thread.setName(my_thread.getName() + matchresult);
+			String threadname = my_thread.getName() + matchresult;
+			my_thread.setName(threadname);
 			
-			output.table.getModel().setValueAt(matchresult, row, col);
+			output.table.getModel().setValueAt(threadname, row, col);
 			
 			try {
 				my_thread.join();
