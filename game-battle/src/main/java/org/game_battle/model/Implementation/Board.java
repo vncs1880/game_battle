@@ -332,20 +332,18 @@ public class Board extends Observable {
 		}
 	}
 
-	/*
-	 * synchronized public List<Country> getElligibleTargets(Country offendingCountry) { return
-	 * null; }
-	 */
-
 	synchronized public boolean doBattle(Country offendingCountry, Country deffendingCountry) {
 		LinkedList<Country> competitors = new LinkedList<Country>(Arrays.asList(offendingCountry, deffendingCountry));
-		//Country winner1 = competitors.get(RANDOM.nextInt(1));
-		Country loser1 = competitors.get(RANDOM.nextInt(2));//competitors.get(0)==winner1?competitors.get(1):competitors.get(0);
-		if(getOwner(offendingCountry).getPlayerMode().equalsIgnoreCase("Cheater")/*Player.playerModeString.equals("Cheater")*/) loser1 = deffendingCountry; //changed to avoid multi threading issues
+		Country loser1 = competitors.get(RANDOM.nextInt(2));
+		boolean isAttackerCheater = getOwner(offendingCountry).getPlayerMode().equalsIgnoreCase("Cheater");
+		if (isAttackerCheater) loser1 = deffendingCountry; //changed to avoid multi threading issues
 		if (loser1==deffendingCountry) {
 			int newLoserArmyQty = loser1.getArmies() - RANDOM.nextInt(loser1.getArmies()+1);
-			LOG.info(/*winner1.getName() + " (" + getOwner(winner1).getName() + ") has the best dice roll(s). "*/ loser1.getName() + " lost battle and armies.");
-			loser1.setArmyQty(/*loser1.getArmies() > 0 ? newLoserArmyQty : 0*/newLoserArmyQty);
+			if (isAttackerCheater) {
+				newLoserArmyQty = 0;  
+				LOG.info(" Cheater won battle.");
+			} else LOG.info(loser1.getName() + " lost battle and armies.");
+			loser1.setArmyQty(newLoserArmyQty);
 			return true;
 		}
 		LOG.info("Attacker lost battle.");
