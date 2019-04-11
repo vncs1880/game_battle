@@ -86,7 +86,7 @@ public class Tournament {
 		tournament.setTournamentPanel(new TournamentMatch[gamesNumber][mapsNumber]);
 	}
 
-	private int getMapsNumber() {
+	public int getMapsNumber() {
 		return this.maps.size();
 	}
 
@@ -94,11 +94,11 @@ public class Tournament {
 		return this.player_strategies.size();
 	}
 
-	private int getGamesNumber() {
+	public int getGamesNumber() {
 		return this.games_number;
 	}
 
-	private void setTournamentPanel(TournamentMatch[][] tournamentPanel) {
+	public void setTournamentPanel(TournamentMatch[][] tournamentPanel) {
 		this.tournamentPanel = tournamentPanel;
 
 		int colsnum = (int)(this.config.get("gamesnumber"));

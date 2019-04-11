@@ -159,7 +159,7 @@ public class TournamentConfigGUI extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if(strategieslist.getSelectedValuesList().size()>1) dispose();
+						if(strategieslist.getSelectedValuesList().size()>1 && mapslist.getSelectedValuesList().size()>0) dispose();
 					}
 				});
 				okButton.setActionCommand("OK");
