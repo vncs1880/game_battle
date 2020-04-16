@@ -1,7 +1,0 @@
-org.game_battle
-org.game_battle.controler
-org.game_battle.gameplay
-org.game_battle.model.Contract
-org.game_battle.model.Implementation
-org.game_battle.utility
-org.game_battle.view
