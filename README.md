@@ -1,4 +1,8 @@
 # SOEN 6441 - BUILD 3
+| Tournament      |Matches               |               
+| ------------- |:-------------:|
+|![test](game-battle/2020-04-16 15_24_08-Window.png)|![test](game-battle/2020-04-16 15_31_46-Window.png)
+
 | Criteria      |               |               |
 | ------------- |:-------------:|:-------------:|
 |Functional Requirements  |0%|30| 

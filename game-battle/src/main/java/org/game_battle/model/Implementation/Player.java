@@ -61,7 +61,7 @@ public class Player extends Observable {
 	public static Country sCountry;
 	private boolean isDefeated=false;
 	public static Country countrySelected;
-	private String gameSaveFileLocation=System.getProperty("user.dir")+"/SaveFile/gameSave.file";
+	private String gameSaveFileLocation=System.getProperty("user.dir")+"game-battle/SaveFile/gameSave.file";
 	// private boolean isAllOutMode = false;
 
 	public String getPlayerMode() {

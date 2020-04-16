@@ -9,8 +9,8 @@ package org.game_battle;
 
 public class Constant {
 	
-	public static String ReadFilePATH = "resource/newMap.map" ;
-	public static String WriteFilePATH = "resource/newMap.map" ;
+	public static String ReadFilePATH = "game-battle/resource/newMap.map" ;
+	public static String WriteFilePATH = "game-battle/resource/newMap.map" ;
 
 }
 
